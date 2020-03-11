@@ -23,6 +23,7 @@ void MUL_task();
 void DIV_task();
 void MOD_task();
 void EQ_task();
+void FEQ_task();
 void RUN_task();
 void POP_task();
 void REPEAT_task();

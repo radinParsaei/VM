@@ -101,6 +101,10 @@ void EQ_task(){
   stack.push_back(VM::isEQ(pop(), pop()));
 }
 
+void FEQ_task(){
+  stack.push_back(VM::isFEQ(pop(), pop()));
+}
+
 void PUT_task(int data){
   stack.push_back(data);
 }

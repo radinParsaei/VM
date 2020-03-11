@@ -22,6 +22,7 @@ int main(int argc, char const *argv[]){
   cout << "declare void @_Z8DIV_taskv()\n";
   cout << "declare void @_Z8MOD_taskv()\n";
   cout << "declare void @_Z7EQ_taskv()\n";
+  cout << "declare void @_Z8FEQ_taskv()\n";
   cout << "declare void @_Z10PRINT_taskv()\n";
   cout << "declare void @_Z9EXIT_taskv()\n";
   cout << "declare void @_Z11DLCALL_taskv()\n";
@@ -153,6 +154,9 @@ int main(int argc, char const *argv[]){
                 break;
               case EQ:
                 cout << "call void @_Z7EQ_taskv()\n";
+                break;
+              case FEQ:
+                cout << "call void @_Z8FEQ_taskv()\n";
                 break;
             }
           }
