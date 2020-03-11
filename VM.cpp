@@ -80,6 +80,9 @@ bool VM::disassemble(int prog, value val, std::string end){
     case REPEAT:
       std::cout << "REPEAT" << end;
       break;
+    case EQ:
+      std::cout << "EQ" << end;
+      break;
     default:
       std::cout << "???" << end;
       break;
@@ -109,6 +112,14 @@ value VM::pop(){
   return v;
 }
 
+bool VM::getValType(value v){
+  if(std::get_if<double>(&v) != 0){
+    return TYPE_NUM;
+  } else {
+    return TYPE_TEXT;
+  }
+}
+
 std::string VM::val2str(value v){
   auto ptr = std::get_if<double>(&v);
   if(ptr != 0){
@@ -117,14 +128,6 @@ std::string VM::val2str(value v){
     return strs.str();
   } else {
     return *std::get_if<std::string>(&v);
-  }
-}
-
-bool VM::getValType(value v){
-  if(std::get_if<double>(&v) != 0){
-    return TYPE_NUM;
-  } else {
-    return TYPE_TEXT;
   }
 }
 
@@ -179,6 +182,13 @@ value VM::mod2val(value v1, value v2){
     std::cerr << "STR in % ????\n";
     return 0;
   }
+}
+
+value VM::isEQ(value v1, value v2){
+  if(val2str(v1) == val2str(v2)){
+    return 1;
+  }
+  return 0;
 }
 
 double VM::toNUM(value v){
@@ -273,10 +283,7 @@ bool VM::run1(int prog, value arg){
         break;
       }
       dlerror();//clear errors
-      std::string fnName = val2str(pop());
-      std::ostringstream stream;
-      stream << "_Z" << fnName.size() << fnName << "St6vectorISt7variantIJdNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEESaIS7_EE";
-      fn = ((dlfunc)dlsym(lib, stream.str().c_str()));
+      fn = ((dlfunc)dlsym(lib, val2str(pop()).c_str()));
       stack = fn(stack);
       dlclose(lib);
       break;
@@ -290,7 +297,7 @@ bool VM::run1(int prog, value arg){
     case PRINTLN:
       std::cout << std::endl;
       break;
-    case REPEAT:
+    case REPEAT: {
       int count = toNUM(pop());
       std::vector<value> prog;
       int ps = std::get<double>(pop());
@@ -300,6 +307,10 @@ bool VM::run1(int prog, value arg){
       for(; count > 0; count--){
         run(prog);
       }
+      break;
+    }
+    case EQ:
+      stack.push_back(isEQ(pop(), pop()));
       break;
   }
   return res;

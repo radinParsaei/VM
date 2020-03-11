@@ -76,6 +76,8 @@ int main(int argc, char const **argv) {
       prog.push_back(LOGSTCK);
     } else if(line.find("REPEAT") == 0){
       prog.push_back(REPEAT);
+    } else if(line.find("EQ") == 0){
+      prog.push_back(EQ);
     } else if(line.find("EXIT") == 0){
       prog.push_back(EXIT);
     }
