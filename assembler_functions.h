@@ -7,6 +7,7 @@ struct Record{
   bool type = TYPE_NUM;
 };
 
+std::vector<value> assemble(std::string line);
 std::vector<Record> mkRec(std::vector<value> vals);
 
 #endif
