@@ -22,6 +22,7 @@
 #define REPEAT  15
 #define EQ      16
 #define FEQ     17
+#define GT      18
 
 #include <iostream>
 #include <vector>
@@ -60,6 +61,7 @@ class VM {
     static value mod2val(value v1, value v2);
     static value isEQ(value v1, value v2);
     static value isFEQ(value v1, value v2);
+    static value isGT(value v1, value v2);
     static bool getValType(value v);
     static double toNUM(value v);
     std::vector<value> getStack();
