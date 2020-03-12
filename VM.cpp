@@ -89,6 +89,9 @@ bool VM::disassemble(int prog, value val, std::string end){
     case GT:
       std::cout << "GT" << end;
       break;
+    case GE:
+      std::cout << "GE" << end;
+      break;
     default:
       std::cout << "???" << end;
       break;
@@ -208,7 +211,15 @@ value VM::isGT(value v1, value v2){
   if(!(getValType(v1) && getValType(v2))){
     return std::get<double>(v1) > std::get<double>(v2);
   }
-  std::cerr << "STR in < ????";
+  std::cerr << "STR in > ????";
+  return 0;
+}
+
+value VM::isGE(value v1, value v2){
+  if(!(getValType(v1) && getValType(v2))){
+    return std::get<double>(v1) >= std::get<double>(v2);
+  }
+  std::cerr << "STR in >= ????";
   return 0;
 }
 
@@ -338,6 +349,9 @@ bool VM::run1(int prog, value arg){
       break;
     case GT:
       stack.push_back(isGT(pop(), pop()));
+      break;
+    case GE:
+      stack.push_back(isGE(pop(), pop()));
       break;
   }
   return res;

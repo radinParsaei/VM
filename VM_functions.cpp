@@ -109,6 +109,10 @@ void GT_task(){
   stack.push_back(VM::isGT(pop(), pop()));
 }
 
+void GE_task(){
+  stack.push_back(VM::isGE(pop(), pop()));
+}
+
 void PUT_task(int data){
   stack.push_back(data);
 }
