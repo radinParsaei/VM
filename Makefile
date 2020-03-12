@@ -1,7 +1,7 @@
 CFLAGS=-std=c++17
 LDFLAGS=-ldl
 
-all: VM assembler disassembler mkll
+all: VM assembler disassembler mkll repl
 
 VM: VM.o main.o assembler_functions.o
 	$(CXX) $(CFLAGS) VM.o main.o assembler_functions.o -o VM $(LDFLAGS)
@@ -16,6 +16,9 @@ mkll: VM.o mkll.cpp VM_functions.cpp VM_functions.h
 	$(CXX) $(CFLAGS) -c VM_functions.cpp $(LDFLAGS)
 	$(CXX) $(CFLAGS) mkll.cpp VM.o -o mkll $(LDFLAGS)
 
+repl: repl.cpp assembler_functions.o VM.o
+	g++ $(CFLAGS) repl.cpp assembler_functions.o VM.o -o repl $(LDFLAGS)
+
 main.o: main.cpp
 	$(CXX) $(CFLAGS) -c main.cpp $(LDFLAGS)
 
@@ -26,4 +29,4 @@ assembler_functions.o:
 	$(CXX) $(CFLAGS) -c assembler_functions.cpp $(LDFLAGS)
 
 clean:
-	$(RM) *.o VM assembler disassembler mkll
+	$(RM) *.o VM assembler disassembler mkll repl
