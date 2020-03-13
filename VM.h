@@ -26,6 +26,15 @@
 #define GE      19
 #define LT      20
 #define LE      21
+#define LAND    22
+#define LOR     23
+#define AND     24
+#define OR      25
+#define NOT     26
+#define LNOT    27
+#define LSHIFT  28
+#define RSHIFT  29
+#define XOR     30
 
 #include <iostream>
 #include <vector>
@@ -56,6 +65,8 @@ class VM {
     VM();
     void run(std::vector<value> prog, bool forceRun = true, int pc = 0);
     bool run1(int prog, value arg);
+    static bool getValType(value v);
+    static double toNUM(value v);
     static std::string val2str(value v);
     static value add2val(value v1, value v2);
     static value sub2val(value v1, value v2);
@@ -68,8 +79,15 @@ class VM {
     static value isGE(value v1, value v2);
     static value isLT(value v1, value v2);
     static value isLE(value v1, value v2);
-    static bool getValType(value v);
-    static double toNUM(value v);
+    static value LAND2val(value v1, value v2); //logical AND
+    static value LOR2val(value v1, value v2); //logical OR
+    static value AND2val(value v1, value v2); //bitwise AND
+    static value OR2val(value v1, value v2); //bitwise OR
+    static value NOTval(value v); //bitwise NOT
+    static value LNOTval(value v); //logical AND
+    static value LSHIFT2val(value v1, value v2); //left shift
+    static value RSHIFT2val(value v1, value v2); //right shift
+    static value XOR2val(value v1, value v2); //XOR
     std::vector<value> getStack();
     void setStack(std::vector<value> v);
   private:

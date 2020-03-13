@@ -67,6 +67,24 @@ vector<value> assemble(string line){
     prog.push_back(LT);
   } else if(line.find("LE") == 0){
     prog.push_back(LE);
+  } else if(line.find("LAND") == 0){
+    prog.push_back(LAND);
+  } else if(line.find("AND") == 0){
+    prog.push_back(AND);
+  } else if(line.find("LOR") == 0){
+    prog.push_back(LOR);
+  } else if(line.find("OR") == 0){
+    prog.push_back(OR);
+  } else if(line.find("NOT") == 0){
+    prog.push_back(NOT);
+  } else if(line.find("LNOT") == 0){
+    prog.push_back(LNOT);
+  } else if(line.find("LSHIFT") == 0){
+    prog.push_back(LSHIFT);
+  } else if(line.find("RSHIFT") == 0){
+    prog.push_back(RSHIFT);
+  } else if(line.find("XOR") == 0){
+    prog.push_back(XOR);
   } else if(line.find("EXIT") == 0){
     prog.push_back(EXIT);
   }

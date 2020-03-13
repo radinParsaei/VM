@@ -97,6 +97,34 @@ bool VM::disassemble(int prog, value val, std::string end){
       break;
     case LE:
       std::cout << "LE" << end;
+      break;
+    case LAND:
+      std::cout << "LAND" << end;
+      break;
+    case LOR:
+      std::cout << "LOR" << end;
+      break;
+    case AND:
+      std::cout << "AND" << end;
+      break;
+    case OR:
+      std::cout << "OR" << end;
+      break;
+    case NOT:
+      std::cout << "OR" << end;
+      break;
+    case LNOT:
+      std::cout << "LNOT" << end;
+      break;
+    case LSHIFT:
+      std::cout << "LSHIFT" << end;
+      break;
+    case RSHIFT:
+      std::cout << "RSHIFT" << end;
+      break;
+    case XOR:
+      std::cout << "XOR" << end;
+      break;
     default:
       std::cout << "???" << end;
       break;
@@ -244,6 +272,78 @@ value VM::isLE(value v1, value v2){
   return 0;
 }
 
+value VM::LAND2val(value v1, value v2){
+  if(!(getValType(v1) && getValType(v2))){
+    return std::get<double>(v1) && std::get<double>(v2);
+  } else {
+    std::cerr << "STR in LOGICAL AND????" << std::endl;
+  }
+}
+
+value VM::LOR2val(value v1, value v2){
+  if(!(getValType(v1) && getValType(v2))){
+    return std::get<double>(v1) || std::get<double>(v2);
+  } else {
+    std::cerr << "STR in LOGICAL OR????" << std::endl;
+  }
+}
+
+value VM::AND2val(value v1, value v2){
+  if(!(getValType(v1) && getValType(v2))){
+    return ((int)std::get<double>(v1)) & ((int)std::get<double>(v2));
+  } else {
+    std::cerr << "STR in BITWISE AND????" << std::endl;
+  }
+}
+
+value VM::OR2val(value v1, value v2){
+  if(!(getValType(v1) && getValType(v2))){
+    return ((int)std::get<double>(v1)) | ((int)std::get<double>(v2));
+  } else {
+    std::cerr << "STR in BITWISE OR????" << std::endl;
+  }
+}
+
+value VM::NOTval(value v){
+  if(!getValType(v)){
+    return ~((int)std::get<double>(v));
+  } else {
+    std::cerr << "STR in BITWISE NOT????" << std::endl;
+  }
+}
+
+value VM::LNOTval(value v){
+  if(!getValType(v)){
+    return !std::get<double>(v);
+  } else {
+    std::cerr << "STR in LOGICAL NOT????" << std::endl;
+  }
+}
+
+value VM::LSHIFT2val(value v1, value v2){
+  if(!(getValType(v1) && getValType(v2))){
+    return ((int)std::get<double>(v1)) << ((int)std::get<double>(v2));
+  } else {
+    std::cerr << "STR in LEFT SHIFT????" << std::endl;
+  }
+}
+
+value VM::RSHIFT2val(value v1, value v2){
+  if(!(getValType(v1) && getValType(v2))){
+    return ((int)std::get<double>(v1)) >> ((int)std::get<double>(v2));
+  } else {
+    std::cerr << "STR in RIGHT SHIFT????" << std::endl;
+  }
+}
+
+value VM::XOR2val(value v1, value v2){
+  if(!(getValType(v1) && getValType(v2))){
+    return ((int)std::get<double>(v1)) ^ ((int)std::get<double>(v2));
+  } else {
+    std::cerr << "STR in XOR????" << std::endl;
+  }
+}
+
 double VM::toNUM(value v){
   if(getValType(v) == TYPE_NUM)return std::get<double>(v);
   else return std::stof(std::get<std::string>(v));
@@ -379,6 +479,34 @@ bool VM::run1(int prog, value arg){
       break;
     case LE:
       stack.push_back(isLE(pop(), pop()));
+      break;
+    case LAND:
+      stack.push_back(LAND2val(pop(), pop()));
+      break;
+    case LOR:
+      stack.push_back(LOR2val(pop(), pop()));
+      break;
+    case AND:
+      stack.push_back(AND2val(pop(), pop()));
+      break;
+    case OR:
+      stack.push_back(OR2val(pop(), pop()));
+      break;
+    case NOT:
+      stack.push_back(NOTval(pop()));
+      break;
+    case LNOT:
+      stack.push_back(LNOTval(pop()));
+      break;
+    case LSHIFT:
+      stack.push_back(LSHIFT2val(pop(), pop()));
+      break;
+    case RSHIFT:
+      stack.push_back(RSHIFT2val(pop(), pop()));
+      break;
+    case XOR:
+      stack.push_back(XOR2val(pop(), pop()));
+      break;
   }
   return res;
 }

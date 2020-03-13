@@ -121,6 +121,42 @@ void LE_task(){
   stack.push_back(VM::isLE(pop(), pop()));
 }
 
+void LAND_task(){
+  stack.push_back(VM::LAND2val(pop(), pop()));
+}
+
+void AND_task(){
+  stack.push_back(VM::AND2val(pop(), pop()));
+}
+
+void LOR_task(){
+  stack.push_back(VM::LOR2val(pop(), pop()));
+}
+
+void OR_task(){
+  stack.push_back(VM::OR2val(pop(), pop()));
+}
+
+void NOT_task(){
+  stack.push_back(VM::NOTval(pop()));
+}
+
+void LNOT_task(){
+  stack.push_back(VM::LNOTval(pop()));
+}
+
+void LSHIFT_task(){
+  stack.push_back(VM::LSHIFT2val(pop(), pop()));
+}
+
+void RSHIFT_task(){
+  stack.push_back(VM::RSHIFT2val(pop(), pop()));
+}
+
+void XOR_task(){
+  stack.push_back(VM::XOR2val(pop(), pop()));
+}
+
 void PUT_task(int data){
   stack.push_back(data);
 }

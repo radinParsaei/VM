@@ -27,6 +27,15 @@ int main(int argc, char const *argv[]){
   cout << "declare void @_Z7GE_taskv()\n";
   cout << "declare void @_Z7LT_taskv()\n";
   cout << "declare void @_Z7LE_taskv()\n";
+  cout << "declare void @_Z9LAND_taskv()\n";
+  cout << "declare void @_Z8LOR_taskv()\n";
+  cout << "declare void @_Z8AND_taskv()\n";
+  cout << "declare void @_Z7OR_taskv()\n";
+  cout << "declare void @_Z8NOT_taskv()\n";
+  cout << "declare void @_Z9LNOT_taskv()\n";
+  cout << "declare void @_Z11LSHIFT_taskv()\n";
+  cout << "declare void @_Z11RSHIFT_taskv()\n";
+  cout << "declare void @_Z8XOR_taskv()\n";
   cout << "declare void @_Z10PRINT_taskv()\n";
   cout << "declare void @_Z9EXIT_taskv()\n";
   cout << "declare void @_Z11DLCALL_taskv()\n";
@@ -173,6 +182,33 @@ int main(int argc, char const *argv[]){
                 break;
               case LE:
                 cout << "call void @_Z7LE_taskv()\n";
+                break;
+              case LAND:
+                cout << "call void @_Z9LAND_taskv()\n";
+                break;
+              case LOR:
+                cout << "call void @_Z8LOR_taskv()\n";
+                break;
+              case AND:
+                cout << "call void @_Z8AND_taskv()\n";
+                break;
+              case OR:
+                cout << "call void @_Z7OR_taskv()\n";
+                break;
+              case NOT:
+                cout << "call void @_Z8NOT_taskv()\n";
+                break;
+              case LNOT:
+                cout << "call void @_Z9LNOT_taskv()\n";
+                break;
+              case LSHIFT:
+                cout << "call void @_Z11LSHIFT_taskv()\n";
+                break;
+              case RSHIFT:
+                cout << "call void @_Z11RSHIFT_taskv()\n";
+                break;
+              case XOR:
+                cout << "call void @_Z8XOR_taskv()\n";
                 break;
             }
           }
