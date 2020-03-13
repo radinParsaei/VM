@@ -92,6 +92,11 @@ bool VM::disassemble(int prog, value val, std::string end){
     case GE:
       std::cout << "GE" << end;
       break;
+    case LT:
+      std::cout << "LT" << end;
+      break;
+    case LE:
+      std::cout << "LE" << end;
     default:
       std::cout << "???" << end;
       break;
@@ -220,6 +225,22 @@ value VM::isGE(value v1, value v2){
     return std::get<double>(v1) >= std::get<double>(v2);
   }
   std::cerr << "STR in >= ????";
+  return 0;
+}
+
+value VM::isLT(value v1, value v2){
+  if(!(getValType(v1) && getValType(v2))){
+    return std::get<double>(v1) < std::get<double>(v2);
+  }
+  std::cerr << "STR in < ????";
+  return 0;
+}
+
+value VM::isLE(value v1, value v2){
+  if(!(getValType(v1) && getValType(v2))){
+    return std::get<double>(v1) <= std::get<double>(v2);
+  }
+  std::cerr << "STR in <= ????";
   return 0;
 }
 
@@ -353,6 +374,11 @@ bool VM::run1(int prog, value arg){
     case GE:
       stack.push_back(isGE(pop(), pop()));
       break;
+    case LT:
+      stack.push_back(isLT(pop(), pop()));
+      break;
+    case LE:
+      stack.push_back(isLE(pop(), pop()));
   }
   return res;
 }

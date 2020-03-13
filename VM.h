@@ -24,6 +24,8 @@
 #define FEQ     17
 #define GT      18
 #define GE      19
+#define LT      20
+#define LE      21
 
 #include <iostream>
 #include <vector>
@@ -64,6 +66,8 @@ class VM {
     static value isFEQ(value v1, value v2);
     static value isGT(value v1, value v2);
     static value isGE(value v1, value v2);
+    static value isLT(value v1, value v2);
+    static value isLE(value v1, value v2);
     static bool getValType(value v);
     static double toNUM(value v);
     std::vector<value> getStack();

@@ -26,6 +26,8 @@ void EQ_task();
 void FEQ_task();
 void GT_task();
 void GE_task();
+void LT_task();
+void LE_task();
 void RUN_task();
 void POP_task();
 void REPEAT_task();

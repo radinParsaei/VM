@@ -113,6 +113,14 @@ void GE_task(){
   stack.push_back(VM::isGE(pop(), pop()));
 }
 
+void LT_task(){
+  stack.push_back(VM::isLT(pop(), pop()));
+}
+
+void LE_task(){
+  stack.push_back(VM::isLE(pop(), pop()));
+}
+
 void PUT_task(int data){
   stack.push_back(data);
 }

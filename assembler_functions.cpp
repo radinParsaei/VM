@@ -63,6 +63,10 @@ vector<value> assemble(string line){
     prog.push_back(GT);
   } else if(line.find("GE") == 0){
     prog.push_back(GE);
+  } else if(line.find("LT") == 0){
+    prog.push_back(LT);
+  } else if(line.find("LE") == 0){
+    prog.push_back(LE);
   } else if(line.find("EXIT") == 0){
     prog.push_back(EXIT);
   }
