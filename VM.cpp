@@ -148,6 +148,10 @@ void VM::run(std::vector<value> prog, bool forceRun, int pc) {
   for (; pc < prog.size(); pc++) {//fetch
     if(running)pc += run1(std::get<double>(prog[pc]), (prog.size() - 1) == pc? 0:prog[pc + 1]);
     else break;
+    if(isBreaked){
+      isBreaked = false;
+      break;
+    }
 	}
 }
 
@@ -522,6 +526,9 @@ bool VM::run1(int prog, value arg){
       break;
     case NEG:
       stack.push_back(NEGval(pop()));
+      break;
+    case BREAK:
+      isBreaked = true;
       break;
   }
   return res;

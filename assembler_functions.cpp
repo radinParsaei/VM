@@ -87,6 +87,8 @@ vector<value> assemble(string line){
     prog.push_back(XOR);
   } else if(line.find("NEG") == 0){
     prog.push_back(NEG);
+  } else if(line.find("BREAK") == 0){
+    prog.push_back(BREAK);
   } else if(line.find("EXIT") == 0){
     prog.push_back(EXIT);
   }

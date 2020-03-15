@@ -36,6 +36,7 @@
 #define RSHIFT  29
 #define XOR     30
 #define NEG     31
+#define BREAK   32
 
 #include <iostream>
 #include <vector>
@@ -99,6 +100,7 @@ class VM {
     int rec = 0;
     int recsize;
     int exit_code;
+    bool isBreaked = false;
 };
 
 #endif
