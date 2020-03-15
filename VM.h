@@ -35,8 +35,9 @@
 #define LSHIFT  28
 #define RSHIFT  29
 #define XOR     30
-#define NEG     31
+#define NEG     31    //negative
 #define BREAK   32
+#define WTRUN   33    //while(top of stack) RUN
 
 #include <iostream>
 #include <vector>

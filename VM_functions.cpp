@@ -73,6 +73,29 @@ void REPEAT_task(){
   }
 }
 
+void WTRUN_task(){
+  if(!VM::getValType(stack[stack.size() - 1])){
+    bool tos = std::get<double>(stack[stack.size() - 1]);
+    if(tos){
+      stack.pop_back();
+      std::vector<value> prog;
+      int ps = std::get<double>(pop());
+      for(; ps > 0; ps--){
+        prog.insert(prog.begin(), pop());
+      }
+      while(tos){
+        VM vm;
+        vm.setStack(stack);
+        vm.autoKill = true;
+        vm.run(prog);
+        stack = vm.getStack();
+        tos = std::get<double>(stack[stack.size() - 1]);
+        if(tos)stack.pop_back();
+      }
+    }
+  }
+}
+
 void EXIT_task(){
   exit(VM::toNUM(pop()));
 }

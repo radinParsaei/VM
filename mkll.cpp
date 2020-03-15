@@ -44,6 +44,7 @@ int main(int argc, char const *argv[]){
   cout << "declare void @_Z12LOGSTCK_taskv()\n";
   cout << "declare void @_Z12PRINTLN_taskv()\n";
   cout << "declare void @_Z11REPEAT_taskv()\n";
+  cout << "declare void @_Z10WTRUN_taskv()\n";
   cout << "declare void @_Z8NEG_taskv()\n";
   vector<value> vals;
   Record r;
@@ -213,6 +214,9 @@ int main(int argc, char const *argv[]){
                 break;
               case NEG:
                 cout << "call void @_Z8NEG_taskv()\n";
+                break;
+              case WTRUN:
+                cout << "call void @_Z10WTRUN_taskv()\n";
                 break;
             }
           }
