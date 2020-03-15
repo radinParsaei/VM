@@ -125,6 +125,9 @@ bool VM::disassemble(int prog, value val, std::string end){
     case XOR:
       std::cout << "XOR" << end;
       break;
+    case NEG:
+      std::cout << "NEG" << end;
+      break;
     default:
       std::cout << "???" << end;
       break;
@@ -344,6 +347,16 @@ value VM::XOR2val(value v1, value v2){
   }
 }
 
+value VM::NEGval(value v){
+  if(!getValType(v)){
+    return -std::get<double>(v);
+  } else {
+    std::string str = std::get<std::string>(v);
+    std::reverse(str.begin(), str.end());
+    return str;
+  }
+}
+
 double VM::toNUM(value v){
   if(getValType(v) == TYPE_NUM)return std::get<double>(v);
   else return std::stof(std::get<std::string>(v));
@@ -506,6 +519,9 @@ bool VM::run1(int prog, value arg){
       break;
     case XOR:
       stack.push_back(XOR2val(pop(), pop()));
+      break;
+    case NEG:
+      stack.push_back(NEGval(pop()));
       break;
   }
   return res;

@@ -157,6 +157,10 @@ void XOR_task(){
   stack.push_back(VM::XOR2val(pop(), pop()));
 }
 
+void NEG_task(){
+  stack.push_back(VM::NEGval(pop()));
+}
+
 void PUT_task(int data){
   stack.push_back(data);
 }

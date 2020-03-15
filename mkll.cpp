@@ -44,6 +44,7 @@ int main(int argc, char const *argv[]){
   cout << "declare void @_Z12LOGSTCK_taskv()\n";
   cout << "declare void @_Z12PRINTLN_taskv()\n";
   cout << "declare void @_Z11REPEAT_taskv()\n";
+  cout << "declare void @_Z8NEG_taskv()\n";
   vector<value> vals;
   Record r;
   bool wait = false;
@@ -209,6 +210,9 @@ int main(int argc, char const *argv[]){
                 break;
               case XOR:
                 cout << "call void @_Z8XOR_taskv()\n";
+                break;
+              case NEG:
+                cout << "call void @_Z8NEG_taskv()\n";
                 break;
             }
           }

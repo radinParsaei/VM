@@ -35,6 +35,7 @@
 #define LSHIFT  28
 #define RSHIFT  29
 #define XOR     30
+#define NEG     31
 
 #include <iostream>
 #include <vector>
@@ -42,6 +43,7 @@
 #include <sstream>
 #include <variant>
 #include <dlfcn.h>
+#include <bits/stdc++.h>
 
 #include "VM_confs.h"
 
@@ -88,6 +90,7 @@ class VM {
     static value LSHIFT2val(value v1, value v2); //left shift
     static value RSHIFT2val(value v1, value v2); //right shift
     static value XOR2val(value v1, value v2); //XOR
+    static value NEGval(value v); //NEG
     std::vector<value> getStack();
     void setStack(std::vector<value> v);
   private:

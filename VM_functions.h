@@ -37,6 +37,7 @@ void LNOT_task();
 void LSHIFT_task();
 void RSHIFT_task();
 void XOR_task();
+void NEG_task();
 void RUN_task();
 void POP_task();
 void REPEAT_task();
