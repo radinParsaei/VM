@@ -128,6 +128,9 @@ bool VM::disassemble(int prog, value val, std::string end){
     case NEG:
       std::cout << "NEG" << end;
       break;
+    case BREAK:
+      std::cout << "BREAK" << end;
+      break;
     default:
       std::cout << "???" << end;
       break;
