@@ -476,7 +476,7 @@ bool VM::run1(int prog, value arg){
       int count = toNUM(pop());
       std::vector<value> prog;
       int ps = std::get<double>(pop());
-      for(int i = 0; i < ps; i++){
+      for(; ps > 0; ps--){
         prog.insert(prog.begin(), pop());
       }
       for(; count > 0; count--){
