@@ -38,6 +38,7 @@
 #define NEG     31    //negative
 #define BREAK   32
 #define WTRUN   33    //while(top of stack) RUN
+#define WFRUN   34    //while(!top of stack) RUN
 
 #include <iostream>
 #include <vector>

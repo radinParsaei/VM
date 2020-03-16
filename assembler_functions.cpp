@@ -91,6 +91,8 @@ vector<value> assemble(string line){
     prog.push_back(BREAK);
   } else if(line.find("WTRUN") == 0){
     prog.push_back(WTRUN);
+  } else if(line.find("WFRUN") == 0){
+    prog.push_back(WFRUN);
   } else if(line.find("EXIT") == 0){
     prog.push_back(EXIT);
   }

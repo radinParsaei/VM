@@ -40,6 +40,7 @@ void XOR_task();
 void NEG_task();
 void RUN_task();
 void WTRUN_task();
+void WFRUN_task();
 void POP_task();
 void REPEAT_task();
 void PRINTLN_task();
