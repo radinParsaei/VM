@@ -45,7 +45,11 @@
 #include <string.h>
 #include <sstream>
 #include <variant>
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
+#include <windows.h>
+#else
 #include <dlfcn.h>
+#endif
 #include <bits/stdc++.h>
 
 #include "VM_confs.h"
@@ -59,7 +63,11 @@
 #endif
 
 typedef std::variant<double, std::string> value;
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
+typedef std::vector<value> (__stdcall *dlfunc)(std::vector<value>);
+#else
 typedef std::vector<value> (*dlfunc)(std::vector<value> args);
+#endif
 
 class VM {
   public:

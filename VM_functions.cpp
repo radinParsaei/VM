@@ -7,21 +7,44 @@ value pop(){
 }
 
 void DLCALL_task(){
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
+  HINSTANCE hinstLib;
+  dlfunc fn;
+  std::string s = std::get<std::string>(pop());
+  int len;
+  int slength = (int)s.length() + 1;
+  len = MultiByteToWideChar(CP_ACP, 0, s.c_str(), slength, 0, 0);
+  wchar_t* buf = new wchar_t[len];
+  MultiByteToWideChar(CP_ACP, 0, s.c_str(), slength, buf, len);
+  std::wstring r(buf);
+  delete[] buf;
+  hinstLib = LoadLibrary(r.c_str());
+  if(hinstLib != NULL){
+    fn = (dlfunc) GetProcAddress(hinstLib, (LPCSTR)std::get<std::string>(pop()).c_str());
+    if (NULL != fn){
+      stack = fn(stack);
+    } else {
+      std::cerr << "SYMBOL NOT FOUND" << GetLastError();
+    }
+    FreeLibrary(hinstLib);
+  } else {
+    std::cerr << "CANNOT OPEN LIBRARY\n";
+    std::cerr << GetLastError();
+  }
+#else
   void* lib;
   dlfunc fn;
-  lib = dlopen(VM::val2str(pop()).c_str(), RTLD_LAZY);
+  lib = dlopen(val2str(pop()).c_str(), RTLD_LAZY);
   if(!lib){
     std::cerr << "CANNOT OPEN LIBRARY\n";
     std::cerr << dlerror();
-    return;
+    break;
   }
   dlerror();//clear errors
-  std::string fnName = VM::val2str(pop());
-  std::ostringstream stream;
-  stream << "_Z" << fnName.size() << fnName << "St6vectorISt7variantIJdNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEESaIS7_EE";
-  fn = ((dlfunc)dlsym(lib, stream.str().c_str()));
+  fn = ((dlfunc)dlsym(lib, val2str(pop()).c_str()));
   stack = fn(stack);
   dlclose(lib);
+#endif
 }
 
 void RUN_task(){
