@@ -34,14 +34,14 @@ void DLCALL_task(){
 #else
   void* lib;
   dlfunc fn;
-  lib = dlopen(val2str(pop()).c_str(), RTLD_LAZY);
+  lib = dlopen(VM::val2str(pop()).c_str(), RTLD_LAZY);
   if(!lib){
     std::cerr << "CANNOT OPEN LIBRARY\n";
     std::cerr << dlerror();
-    break;
+    return;
   }
   dlerror();//clear errors
-  fn = ((dlfunc)dlsym(lib, val2str(pop()).c_str()));
+  fn = ((dlfunc)dlsym(lib, VM::val2str(pop()).c_str()));
   stack = fn(stack);
   dlclose(lib);
 #endif
