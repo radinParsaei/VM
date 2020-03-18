@@ -17,7 +17,7 @@ mkll: VM.o mkll.cpp VM_functions.cpp VM_functions.h
 	$(CXX) $(CFLAGS) mkll.cpp VM.o -o mkll $(LDFLAGS)
 
 repl: repl.cpp assembler_functions.o VM.o
-	g++ $(CFLAGS) repl.cpp assembler_functions.o VM.o -o repl $(LDFLAGS)
+	$(CXX) $(CFLAGS) repl.cpp assembler_functions.o VM.o -o repl $(LDFLAGS)
 
 main.o: main.cpp
 	$(CXX) $(CFLAGS) -c main.cpp $(LDFLAGS)
