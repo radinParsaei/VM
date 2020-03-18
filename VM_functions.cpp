@@ -6,7 +6,7 @@ value pop(){
   return v;
 }
 
-void DLCALL_task(){
+extern "C" void DLCALL_task(){
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
   HINSTANCE hinstLib;
   dlfunc fn;
@@ -47,7 +47,7 @@ void DLCALL_task(){
 #endif
 }
 
-void RUN_task(){
+extern "C" void RUN_task(){
   VM vm;
   std::vector<value> prog;
   int ps = std::get<double>(pop());
@@ -60,11 +60,11 @@ void RUN_task(){
   stack = vm.getStack();
 }
 
-void POP_task(){
+extern "C" void POP_task(){
   stack.pop_back();
 }
 
-void LOGSTCK_task(){
+extern "C" void LOGSTCK_task(){
   std::cout << "[";
   for(int i = 0; i < stack.size(); i++){
     std::cout << VM::val2str(stack[i]) << ((i + 1) == stack.size()? "":", ");
@@ -72,15 +72,15 @@ void LOGSTCK_task(){
   std::cout << "]";
 }
 
-void PRINTLN_task(){
+extern "C" void PRINTLN_task(){
   std::cout << std::endl;
 }
 
-void PRINT_task(){
+extern "C" void PRINT_task(){
   std::cout << VM::val2str(pop());
 }
 
-void REPEAT_task(){
+extern "C" void REPEAT_task(){
   VM vm;
   int count = VM::toNUM(pop());
   std::vector<value> prog;
@@ -96,7 +96,7 @@ void REPEAT_task(){
   }
 }
 
-void WTRUN_task(){
+extern "C" void WTRUN_task(){
   if(!VM::getValType(stack[stack.size() - 1])){
     bool tos = std::get<double>(stack[stack.size() - 1]);
     if(tos){
@@ -119,7 +119,7 @@ void WTRUN_task(){
   }
 }
 
-void WFRUN_task(){
+extern "C" void WFRUN_task(){
   if(!VM::getValType(stack[stack.size() - 1])){
     bool tos = std::get<double>(stack[stack.size() - 1]);
     if(!tos){
@@ -142,98 +142,98 @@ void WFRUN_task(){
   }
 }
 
-void EXIT_task(){
+extern "C" void EXIT_task(){
   exit(VM::toNUM(pop()));
 }
 
-void ADD_task(){
+extern "C" void ADD_task(){
   stack.push_back(VM::add2val(pop(), pop()));
 }
 
-void SUB_task(){
+extern "C" void SUB_task(){
   stack.push_back(VM::sub2val(pop(), pop()));
 }
 
-void MUL_task(){
+extern "C" void MUL_task(){
   stack.push_back(VM::mul2val(pop(), pop()));
 }
 
-void DIV_task(){
+extern "C" void DIV_task(){
   stack.push_back(VM::div2val(pop(), pop()));
 }
 
-void MOD_task(){
+extern "C" void MOD_task(){
   stack.push_back(VM::mod2val(pop(), pop()));
 }
 
-void EQ_task(){
+extern "C" void EQ_task(){
   stack.push_back(VM::isEQ(pop(), pop()));
 }
 
-void FEQ_task(){
+extern "C" void FEQ_task(){
   stack.push_back(VM::isFEQ(pop(), pop()));
 }
 
-void GT_task(){
+extern "C" void GT_task(){
   stack.push_back(VM::isGT(pop(), pop()));
 }
 
-void GE_task(){
+extern "C" void GE_task(){
   stack.push_back(VM::isGE(pop(), pop()));
 }
 
-void LT_task(){
+extern "C" void LT_task(){
   stack.push_back(VM::isLT(pop(), pop()));
 }
 
-void LE_task(){
+extern "C" void LE_task(){
   stack.push_back(VM::isLE(pop(), pop()));
 }
 
-void LAND_task(){
+extern "C" void LAND_task(){
   stack.push_back(VM::LAND2val(pop(), pop()));
 }
 
-void AND_task(){
+extern "C" void AND_task(){
   stack.push_back(VM::AND2val(pop(), pop()));
 }
 
-void LOR_task(){
+extern "C" void LOR_task(){
   stack.push_back(VM::LOR2val(pop(), pop()));
 }
 
-void OR_task(){
+extern "C" void OR_task(){
   stack.push_back(VM::OR2val(pop(), pop()));
 }
 
-void NOT_task(){
+extern "C" void NOT_task(){
   stack.push_back(VM::NOTval(pop()));
 }
 
-void LNOT_task(){
+extern "C" void LNOT_task(){
   stack.push_back(VM::LNOTval(pop()));
 }
 
-void LSHIFT_task(){
+extern "C" void LSHIFT_task(){
   stack.push_back(VM::LSHIFT2val(pop(), pop()));
 }
 
-void RSHIFT_task(){
+extern "C" void RSHIFT_task(){
   stack.push_back(VM::RSHIFT2val(pop(), pop()));
 }
 
-void XOR_task(){
+extern "C" void XOR_task(){
   stack.push_back(VM::XOR2val(pop(), pop()));
 }
 
-void NEG_task(){
+extern "C" void NEG_task(){
   stack.push_back(VM::NEGval(pop()));
 }
 
-void PUT_task(int data){
+extern "C" void PUT_taski(int data){
   stack.push_back(data);
 }
 
-void PUT_task(const char* data){
+extern "C" void PUT_tasks(const char* data){
   stack.push_back(std::string(data));
 }
