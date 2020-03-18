@@ -365,8 +365,7 @@ value VM::NEGval(value v){
     return -std::get<double>(v);
   } else {
     std::string str = std::get<std::string>(v);
-    std::reverse(str.begin(), str.end());
-    return str;
+    return std::string(str.rbegin(), str.rend());
   }
 }
 

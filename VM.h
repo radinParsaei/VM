@@ -50,7 +50,6 @@
 #else
 #include <dlfcn.h>
 #endif
-#include <bits/stdc++.h>
 
 #include "VM_confs.h"
 
