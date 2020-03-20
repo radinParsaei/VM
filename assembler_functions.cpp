@@ -93,6 +93,10 @@ vector<value> assemble(string line){
     prog.push_back(WTRUN);
   } else if(line.find("WFRUN") == 0){
     prog.push_back(WFRUN);
+  } else if(line.find("IFFRUN") == 0){
+    prog.push_back(IFFRUN);
+  } else if(line.find("IFTRUN") == 0){
+    prog.push_back(IFTRUN);
   } else if(line.find("EXIT") == 0){
     prog.push_back(EXIT);
   }

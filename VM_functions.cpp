@@ -97,6 +97,7 @@ extern "C" void REPEAT_task(){
 }
 
 extern "C" void WTRUN_task(){
+  if(stack.size() < 2)return;
   if(!VM::getValType(stack[stack.size() - 1])){
     bool tos = std::get<double>(stack[stack.size() - 1]);
     if(tos){
@@ -119,7 +120,49 @@ extern "C" void WTRUN_task(){
   }
 }
 
+
+extern "C" void IFTRUN_task(){
+  if(stack.size() < 2)return;
+  if(!VM::getValType(stack[stack.size() - 1])){
+    bool tos = std::get<double>(stack[stack.size() - 1]);
+    if(tos){
+      stack.pop_back();
+      std::vector<value> prog;
+      int ps = std::get<double>(pop());
+      for(; ps > 0; ps--){
+        prog.insert(prog.begin(), pop());
+      }
+      VM vm;
+      vm.setStack(stack);
+      vm.autoKill = true;
+      vm.run(prog);
+      stack = vm.getStack();
+    }
+  }
+}
+
+extern "C" void IFFRUN_task(){
+  if(stack.size() < 2)return;
+  if(!VM::getValType(stack[stack.size() - 1])){
+    bool tos = std::get<double>(stack[stack.size() - 1]);
+    if(!tos){
+      stack.pop_back();
+      std::vector<value> prog;
+      int ps = std::get<double>(pop());
+      for(; ps > 0; ps--){
+        prog.insert(prog.begin(), pop());
+      }
+      VM vm;
+      vm.setStack(stack);
+      vm.autoKill = true;
+      vm.run(prog);
+      stack = vm.getStack();
+    }
+  }
+}
+
 extern "C" void WFRUN_task(){
+  if(stack.size() < 2)return;
   if(!VM::getValType(stack[stack.size() - 1])){
     bool tos = std::get<double>(stack[stack.size() - 1]);
     if(!tos){

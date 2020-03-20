@@ -18,6 +18,7 @@ int main(int argc, char const *argv[]){
   cout << "declare void @PUT_tasks(i8*)\n";
   cout << "declare void @PUT_taski(i32)\n";
   cout << "declare void @ADD_task()\n";
+  cout << "declare void @SUB_task()\n";
   cout << "declare void @MUL_task()\n";
   cout << "declare void @DIV_task()\n";
   cout << "declare void @MOD_task()\n";
@@ -46,6 +47,8 @@ int main(int argc, char const *argv[]){
   cout << "declare void @REPEAT_task()\n";
   cout << "declare void @WTRUN_task()\n";
   cout << "declare void @WFRUN_task()\n";
+  cout << "declare void @IFTRUN_task()\n";
+  cout << "declare void @IFFRUN_task()\n";
   cout << "declare void @NEG_task()\n";
   vector<value> vals;
   Record r;
@@ -221,6 +224,11 @@ int main(int argc, char const *argv[]){
                 break;
               case WFRUN:
                 cout << "call void @WFRUN_task()\n";
+                break;
+              case IFTRUN:
+                cout << "call void @IFTRUN_task()\n";
+              case IFFRUN:
+                cout << "call void @IFFRUN_task()\n";
                 break;
             }
           }

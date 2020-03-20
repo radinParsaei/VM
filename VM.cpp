@@ -137,6 +137,12 @@ bool VM::disassemble(int prog, value val, std::string end){
     case WFRUN:
       std::cout << "WFRUN" << end;
       break;
+    case IFFRUN:
+      std::cout << "IFFRUN" << end;
+      break;
+    case IFTRUN:
+      std::cout << "IFTRUN" << end;
+      break;
     default:
       std::cout << "???" << end;
       break;
@@ -565,6 +571,7 @@ bool VM::run1(int prog, value arg){
       isBreaked = true;
       break;
     case WTRUN:
+      if(stack.size() < 2)break;
       if(!getValType(stack[stack.size() - 1])){
         bool tos = std::get<double>(stack[stack.size() - 1]);
         if(tos){
@@ -583,6 +590,7 @@ bool VM::run1(int prog, value arg){
       }
       break;
     case WFRUN:
+      if(stack.size() < 2)break;
       if(!getValType(stack[stack.size() - 1])){
         bool tos = std::get<double>(stack[stack.size() - 1]);
         if(!tos){
@@ -600,6 +608,36 @@ bool VM::run1(int prog, value arg){
         }
       }
       break;
-  }
+    case IFTRUN:
+      if(stack.size() < 2)break;
+      if(!getValType(stack[stack.size() - 1])){
+        bool tos = std::get<double>(stack[stack.size() - 1]);
+        if(tos){
+          stack.pop_back();
+          std::vector<value> prog;
+          int ps = std::get<double>(pop());
+          for(; ps > 0; ps--){
+            prog.insert(prog.begin(), pop());
+          }
+          run(prog);
+        }
+      }
+      break;
+    case IFFRUN:
+      if(stack.size() < 2)break;
+      if(!getValType(stack[stack.size() - 1])){
+        bool tos = std::get<double>(stack[stack.size() - 1]);
+        if(!tos){
+          stack.pop_back();
+          std::vector<value> prog;
+          int ps = std::get<double>(pop());
+          for(; ps > 0; ps--){
+            prog.insert(prog.begin(), pop());
+          }
+          run(prog);
+        }
+      }
+      break;
+    }
   return res;
 }

@@ -41,6 +41,8 @@ extern "C" void NEG_task();
 extern "C" void RUN_task();
 extern "C" void WTRUN_task();
 extern "C" void WFRUN_task();
+extern "C" void IFTRUN_task();
+extern "C" void IFFRUN_task();
 extern "C" void POP_task();
 extern "C" void REPEAT_task();
 extern "C" void PRINTLN_task();
