@@ -11,7 +11,7 @@ extern "C" void DLCALL_task(){
   HINSTANCE hinstLib;
   dlfunc fn;
   std::string s = std::get<std::string>(pop());
-  hinstLib = LoadLibrary(s.c_str());
+  hinstLib = LoadLibraryA(s.c_str());
   if(hinstLib != NULL){
     fn = (dlfunc) GetProcAddress(hinstLib, (LPCSTR)std::get<std::string>(pop()).c_str());
     if (NULL != fn){
