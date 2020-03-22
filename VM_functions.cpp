@@ -6,6 +6,10 @@ value pop(){
   return v;
 }
 
+extern "C" void MEMPUT_task(){
+  mem->push_back(pop());
+}
+
 extern "C" void MEMSIZE_task(){
   stack.push_back(mem->size());
 }

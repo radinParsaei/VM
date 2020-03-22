@@ -156,6 +156,9 @@ bool VM::disassemble(int prog, value val, std::string end){
     case MEMSET:
       std::cout << "MEMSET" << end;
       break;
+    case MEMPUT:
+      std::cout << "MEMPUT" << end;
+      break;
     case MEMSIZE:
       std::cout << "MEMSIZE" << end;
     default:
@@ -671,6 +674,9 @@ bool VM::run1(int prog, value arg){
       break;
     case MEMSIZE:
       stack.push_back(mempointer->size());
+      break;
+    case MEMPUT:
+      mempointer->push_back(pop());
       break;
   }
   return res;

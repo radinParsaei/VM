@@ -200,6 +200,9 @@ int main(int argc, char const *argv[]){
               case MEMSIZE:
                 cout << "MEMSIZE_task();\n";
                 break;
+              case MEMPUT:
+                cout << "MEMPUT_task();\n";
+                break;
             }
           }
         }

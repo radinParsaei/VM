@@ -105,6 +105,8 @@ vector<value> assemble(string line){
     prog.push_back(MEMSET);
   } else if(line.find("MEMSIZE") == 0){
     prog.push_back(MEMSIZE);
+  } else if(line.find("MEMPUT") == 0){
+    prog.push_back(MEMPUT);
   } else if(line.find("EXIT") == 0){
     prog.push_back(EXIT);
   }

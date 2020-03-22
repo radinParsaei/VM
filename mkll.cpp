@@ -54,6 +54,7 @@ int main(int argc, char const *argv[]){
   cout << "declare void @MEMGET_task()\n";
   cout << "declare void @MEMSET_task()\n";
   cout << "declare void @MEMSIZE_task()\n";
+  cout << "declare void @MEMPUT_task()\n";
   vector<value> vals;
   Record r;
   bool wait = false;
@@ -246,6 +247,9 @@ int main(int argc, char const *argv[]){
                 break;
               case MEMSIZE:
                 cout << "call void @MEMSIZE_task()\n";
+                break;
+              case MEMPUT:
+                cout << "call void @MEMPUT_task()\n";
                 break;
             }
           }
