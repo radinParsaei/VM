@@ -251,6 +251,9 @@ int main(int argc, char const *argv[]){
               case MEMPUT:
                 cout << "call void @MEMPUT_task()\n";
                 break;
+              case MEMINS:
+                cout << "call void @MEMINS_task()\n";
+                break;
             }
           }
         }

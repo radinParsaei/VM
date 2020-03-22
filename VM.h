@@ -46,6 +46,7 @@
 #define MEMGET  39
 #define MEMSIZE 40
 #define MEMPUT  41
+#define MEMINS  42
 
 #include <iostream>
 #include <vector>

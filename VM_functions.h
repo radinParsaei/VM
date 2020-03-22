@@ -56,5 +56,6 @@ extern "C" void MEMSET_task();
 extern "C" void MEMGET_task();
 extern "C" void MEMSIZE_task();
 extern "C" void MEMPUT_task();
+extern "C" void MEMINS_task();
 extern "C" void EXIT_task();
 #endif
