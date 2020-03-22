@@ -15,6 +15,7 @@
 
 typedef std::variant<double, std::string> value;
 inline std::vector<value> stack;
+inline std::vector<value> *mem = new std::vector<value>();
 
 extern "C" void DLCALL_task();
 extern "C" void PRINT_task();
@@ -51,5 +52,7 @@ extern "C" void PRINTLN_task();
 extern "C" void LOGSTCK_task();
 extern "C" void PUT_tasks(const char* data);
 extern "C" void PUT_taski(int data);
+extern "C" void MEMSET_task();
+extern "C" void MEMGET_task();
 extern "C" void EXIT_task();
 #endif

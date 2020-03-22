@@ -12,6 +12,8 @@ int main(int argc, char const **argv) {
   vector<value> prog;
   string line;
   VM *vm = new VM();
+  vector<value> mem;
+  vm->attachMem(&mem);
   while(getline(cin, line)){
     for(value val : assemble(line)){
       prog.push_back(val);

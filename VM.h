@@ -42,6 +42,8 @@
 #define IFTRUN  35    //if(top of stack) RUN
 #define IFFRUN  36    //if(!top of stack) RUN
 #define THREAD  37
+#define MEMSET  38
+#define MEMGET  39
 
 #include <iostream>
 #include <vector>

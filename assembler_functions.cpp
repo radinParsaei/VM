@@ -99,6 +99,10 @@ vector<value> assemble(string line){
     prog.push_back(IFTRUN);
   } else if(line.find("THREAD") == 0){
     prog.push_back(THREAD);
+  } else if(line.find("MEMGET") == 0){
+    prog.push_back(MEMGET);
+  } else if(line.find("MEMSET") == 0){
+    prog.push_back(MEMSET);
   } else if(line.find("EXIT") == 0){
     prog.push_back(EXIT);
   }

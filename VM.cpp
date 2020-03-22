@@ -150,6 +150,12 @@ bool VM::disassemble(int prog, value val, std::string end){
     case THREAD:
       std::cout << "THREAD" << end;
       break;
+    case MEMGET:
+      std::cout << "MEMGET" << end;
+      break;
+    case MEMSET:
+      std::cout << "MEMSET" << end;
+      break;
     default:
       std::cout << "???" << end;
       break;
@@ -638,7 +644,7 @@ bool VM::run1(int prog, value arg){
         }
       }
       break;
-    case THREAD:
+    case THREAD: {
       std::vector<value> prog;
       int ps = std::get<double>(pop());
       for(; ps > 0; ps--){
@@ -652,5 +658,15 @@ bool VM::run1(int prog, value arg){
       t.detach();
       break;
     }
+    case MEMSET: {
+      int n = std::get<double>(pop());
+      if(mempointer->size() < (n + 1))mempointer->resize(n + 1);
+      mempointer->at(n) = pop();
+      break;
+    }
+    case MEMGET:
+      stack.push_back(mempointer->at(std::get<double>(pop())));
+      break;
+  }
   return res;
 }

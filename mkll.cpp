@@ -51,6 +51,8 @@ int main(int argc, char const *argv[]){
   cout << "declare void @IFTRUN_task()\n";
   cout << "declare void @IFFRUN_task()\n";
   cout << "declare void @NEG_task()\n";
+  cout << "declare void @MEMGET_task()\n";
+  cout << "declare void @MEMSET_task()\n";
   vector<value> vals;
   Record r;
   bool wait = false;
@@ -234,6 +236,12 @@ int main(int argc, char const *argv[]){
                 break;
               case THREAD:
                 cout << "call void @THREAD_task()\n";
+                break;
+              case MEMSET:
+                cout << "call void @MEMSET_task()\n";
+                break;
+              case MEMGET:
+                cout << "call void @MEMGET_task()\n";
                 break;
             }
           }

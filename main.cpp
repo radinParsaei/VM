@@ -1,6 +1,7 @@
 #include "VM.h"
 #include <fstream>
 #include <sstream>
+#include <vector>
 #include "assembler_functions.h"
 
 using namespace std;
@@ -11,6 +12,8 @@ int main(int argc, char const *argv[]){
     return 1;
   }
   VM *vm = new VM();
+  vector<value> mem;
+  vm->attachMem(&mem);
   vm->autoKill = true;
   ifstream f(argv[1], ios::binary);
   if(!f){

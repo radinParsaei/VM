@@ -6,6 +6,16 @@ value pop(){
   return v;
 }
 
+extern "C" void MEMSET_task(){
+  int n = std::get<double>(pop());
+  if(mem->size() < (n + 1))mem->resize(n + 1);
+  mem->at(n) = pop();
+}
+
+extern "C" void MEMGET_task(){
+  stack.push_back(mem->at(std::get<double>(pop())));
+}
+
 extern "C" void THREAD_task(){
   std::vector<value> prog;
   int ps = std::get<double>(pop());
@@ -13,9 +23,9 @@ extern "C" void THREAD_task(){
     prog.insert(prog.begin(), pop());
   }
   std::thread t([=]{
-    VM *vm = new VM();
-    // vm->attachMem(mempointer);
-    vm->run(prog);
+    VM vm;
+    vm.attachMem(mem);
+    vm.run(prog);
   });
   t.detach();
 }
@@ -56,6 +66,7 @@ extern "C" void DLCALL_task(){
 
 extern "C" void RUN_task(){
   VM vm;
+  vm.attachMem(mem);
   std::vector<value> prog;
   int ps = std::get<double>(pop());
   for(int i = 0; i < ps; i++){
@@ -89,6 +100,7 @@ extern "C" void PRINT_task(){
 
 extern "C" void REPEAT_task(){
   VM vm;
+  vm.attachMem(mem);
   int count = VM::toNUM(pop());
   std::vector<value> prog;
   int ps = std::get<double>(pop());
@@ -116,6 +128,7 @@ extern "C" void WTRUN_task(){
       }
       while(tos){
         VM vm;
+        vm.attachMem(mem);
         vm.setStack(stack);
         vm.autoKill = true;
         vm.run(prog);
@@ -140,6 +153,7 @@ extern "C" void IFTRUN_task(){
         prog.insert(prog.begin(), pop());
       }
       VM vm;
+      vm.attachMem(mem);
       vm.setStack(stack);
       vm.autoKill = true;
       vm.run(prog);
@@ -160,6 +174,7 @@ extern "C" void IFFRUN_task(){
         prog.insert(prog.begin(), pop());
       }
       VM vm;
+      vm.attachMem(mem);
       vm.setStack(stack);
       vm.autoKill = true;
       vm.run(prog);
@@ -181,6 +196,7 @@ extern "C" void WFRUN_task(){
       }
       while(!tos){
         VM vm;
+        vm.attachMem(mem);
         vm.setStack(stack);
         vm.autoKill = true;
         vm.run(prog);

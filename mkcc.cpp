@@ -191,6 +191,12 @@ int main(int argc, char const *argv[]){
               case THREAD:
                 cout << "THREAD_task();\n";
                 break;
+              case MEMSET:
+                cout << "MEMSET_task();\n";
+                break;
+              case MEMGET:
+                cout << "MEMGET_task();\n";
+                break;
             }
           }
         }
