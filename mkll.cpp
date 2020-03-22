@@ -55,6 +55,8 @@ int main(int argc, char const *argv[]){
   cout << "declare void @MEMSET_task()\n";
   cout << "declare void @MEMSIZE_task()\n";
   cout << "declare void @MEMPUT_task()\n";
+  cout << "declare void @MEMDEL_task()\n";
+  cout << "declare void @MEMINS_task()\n";
   vector<value> vals;
   Record r;
   bool wait = false;
@@ -253,6 +255,9 @@ int main(int argc, char const *argv[]){
                 break;
               case MEMINS:
                 cout << "call void @MEMINS_task()\n";
+                break;
+              case MEMDEL:
+                cout << "call void @MEMDEL_task()\n";
                 break;
             }
           }

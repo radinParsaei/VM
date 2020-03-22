@@ -14,6 +14,10 @@ extern "C" void MEMINS_task(){
   mem->insert(mem->begin() + std::get<double>(pop()), pop());
 }
 
+extern "C" void MEMDEL_task(){
+  mem->erase(mem->begin() + std::get<double>(pop()));
+}
+
 extern "C" void MEMSIZE_task(){
   stack.push_back(mem->size());
 }

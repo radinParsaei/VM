@@ -206,6 +206,9 @@ int main(int argc, char const *argv[]){
               case MEMINS:
                 cout << "MEMINS_task();\n";
                 break;
+              case MEMDEL:
+                cout << "MEMDEL_task();\n";
+                break;
             }
           }
         }

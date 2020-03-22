@@ -681,6 +681,9 @@ bool VM::run1(int prog, value arg){
     case MEMINS:
       mempointer->insert(mempointer->begin() + std::get<double>(pop()), pop());
       break;
+    case MEMDEL:
+      mempointer->erase(mempointer->begin() + std::get<double>(pop()));
+      break;
   }
   return res;
 }

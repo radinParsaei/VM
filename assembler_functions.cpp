@@ -109,6 +109,8 @@ vector<value> assemble(string line){
     prog.push_back(MEMPUT);
   } else if(line.find("MEMINS") == 0){
     prog.push_back(MEMINS);
+  } else if(line.find("MEMDEL") == 0){
+    prog.push_back(MEMDEL);
   } else if(line.find("EXIT") == 0){
     prog.push_back(EXIT);
   }
