@@ -197,6 +197,9 @@ int main(int argc, char const *argv[]){
               case MEMGET:
                 cout << "MEMGET_task();\n";
                 break;
+              case MEMSIZE:
+                cout << "MEMSIZE_task();\n";
+                break;
             }
           }
         }

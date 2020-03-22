@@ -54,5 +54,6 @@ extern "C" void PUT_tasks(const char* data);
 extern "C" void PUT_taski(int data);
 extern "C" void MEMSET_task();
 extern "C" void MEMGET_task();
+extern "C" void MEMSIZE_task();
 extern "C" void EXIT_task();
 #endif

@@ -44,6 +44,7 @@
 #define THREAD  37
 #define MEMSET  38
 #define MEMGET  39
+#define MEMSIZE 40
 
 #include <iostream>
 #include <vector>

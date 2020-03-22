@@ -6,6 +6,10 @@ value pop(){
   return v;
 }
 
+extern "C" void MEMSIZE_task(){
+  stack.push_back(mem->size());
+}
+
 extern "C" void MEMSET_task(){
   int n = std::get<double>(pop());
   if(mem->size() < (n + 1))mem->resize(n + 1);
