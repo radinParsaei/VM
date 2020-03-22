@@ -115,7 +115,7 @@ bool VM::disassemble(int prog, value val, std::string end){
       std::cout << "OR" << end;
       break;
     case NOT:
-      std::cout << "OR" << end;
+      std::cout << "NOT" << end;
       break;
     case LNOT:
       std::cout << "LNOT" << end;
