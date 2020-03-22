@@ -10,6 +10,7 @@
 #include <sstream>
 #include <cassert>
 #include <variant>
+#include <thread>
 #include "VM.h"
 
 typedef std::variant<double, std::string> value;
@@ -43,6 +44,7 @@ extern "C" void WTRUN_task();
 extern "C" void WFRUN_task();
 extern "C" void IFTRUN_task();
 extern "C" void IFFRUN_task();
+extern "C" void THREAD_task();
 extern "C" void POP_task();
 extern "C" void REPEAT_task();
 extern "C" void PRINTLN_task();

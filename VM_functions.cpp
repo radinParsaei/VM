@@ -6,6 +6,20 @@ value pop(){
   return v;
 }
 
+extern "C" void THREAD_task(){
+  std::vector<value> prog;
+  int ps = std::get<double>(pop());
+  for(; ps > 0; ps--){
+    prog.insert(prog.begin(), pop());
+  }
+  std::thread t([=]{
+    VM *vm = new VM();
+    // vm->attachMem(mempointer);
+    vm->run(prog);
+  });
+  t.detach();
+}
+
 extern "C" void DLCALL_task(){
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
   HINSTANCE hinstLib;

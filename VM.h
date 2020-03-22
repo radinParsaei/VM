@@ -41,6 +41,7 @@
 #define WFRUN   34    //while(!top of stack) RUN
 #define IFTRUN  35    //if(top of stack) RUN
 #define IFFRUN  36    //if(!top of stack) RUN
+#define THREAD  37
 
 #include <iostream>
 #include <vector>
@@ -52,6 +53,7 @@
 #else
 #include <dlfcn.h>
 #endif
+#include <thread>
 
 #include "VM_confs.h"
 
@@ -105,8 +107,10 @@ class VM {
     static value NEGval(value v); //NEG
     std::vector<value> getStack();
     void setStack(std::vector<value> v);
+    void attachMem(std::vector<value> *mem);
   private:
     std::vector<value> stack;//stack memory
+    std::vector<value> *mempointer;//storage for saving variables data
     value pop();//pops a data from the stack
     int rec = 0;
     int recsize;

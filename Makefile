@@ -1,5 +1,5 @@
 CFLAGS=-std=c++17
-LDFLAGS=-ldl
+LDFLAGS=-ldl -pthread
 
 all: VM assembler disassembler mkll repl
 

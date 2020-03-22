@@ -97,6 +97,8 @@ vector<value> assemble(string line){
     prog.push_back(IFFRUN);
   } else if(line.find("IFTRUN") == 0){
     prog.push_back(IFTRUN);
+  } else if(line.find("THREAD") == 0){
+    prog.push_back(THREAD);
   } else if(line.find("EXIT") == 0){
     prog.push_back(EXIT);
   }

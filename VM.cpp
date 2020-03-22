@@ -5,6 +5,10 @@ VM::VM(){
   recsize = 0;
 }
 
+void VM::attachMem(std::vector<value> *mem){
+  mempointer = mem;
+}
+
 std::vector<value> VM::getStack(){
   return stack;
 }
@@ -142,6 +146,9 @@ bool VM::disassemble(int prog, value val, std::string end){
       break;
     case IFTRUN:
       std::cout << "IFTRUN" << end;
+      break;
+    case THREAD:
+      std::cout << "THREAD" << end;
       break;
     default:
       std::cout << "???" << end;
@@ -630,6 +637,19 @@ bool VM::run1(int prog, value arg){
           run(prog);
         }
       }
+      break;
+    case THREAD:
+      std::vector<value> prog;
+      int ps = std::get<double>(pop());
+      for(; ps > 0; ps--){
+        prog.insert(prog.begin(), pop());
+      }
+      std::thread t([=]{
+        VM *vm = new VM();
+        vm->attachMem(mempointer);
+        vm->run(prog);
+      });
+      t.detach();
       break;
     }
   return res;

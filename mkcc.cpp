@@ -188,6 +188,9 @@ int main(int argc, char const *argv[]){
               case IFFRUN:
                 cout << "IFFRUN_task();\n";
                 break;
+              case THREAD:
+                cout << "THREAD_task();\n";
+                break;
             }
           }
         }

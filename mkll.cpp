@@ -41,6 +41,7 @@ int main(int argc, char const *argv[]){
   cout << "declare void @EXIT_task()\n";
   cout << "declare void @DLCALL_task()\n";
   cout << "declare void @RUN_task()\n";
+  cout << "declare void @THREAD_task()\n";
   cout << "declare void @POP_task()\n";
   cout << "declare void @LOGSTCK_task()\n";
   cout << "declare void @PRINTLN_task()\n";
@@ -227,8 +228,12 @@ int main(int argc, char const *argv[]){
                 break;
               case IFTRUN:
                 cout << "call void @IFTRUN_task()\n";
+                break;
               case IFFRUN:
                 cout << "call void @IFFRUN_task()\n";
+                break;
+              case THREAD:
+                cout << "call void @THREAD_task()\n";
                 break;
             }
           }
