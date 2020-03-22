@@ -12,9 +12,14 @@ assembler: VM.o assembler_functions.o assembler.cpp
 disassembler: VM.o assembler_functions.o disassembler.cpp
 	$(CXX) $(CFLAGS) disassembler.cpp assembler_functions.o VM.o -o disassembler $(LDFLAGS)
 
-mkll: VM.o mkll.cpp VM_functions.cpp VM_functions.h
-	$(CXX) $(CFLAGS) -c VM_functions.cpp $(LDFLAGS)
+mkll: VM.o mkll.cpp VM_functions.o
 	$(CXX) $(CFLAGS) mkll.cpp VM.o -o mkll $(LDFLAGS)
+
+mkcc: VM.o mkcc.cpp VM_functions.o
+	$(CXX) $(CFLAGS) mkcc.cpp VM.o -o mkcc $(LDFLAGS)
+
+VM_functions.o: VM_functions.cpp VM_functions.h
+	$(CXX) $(CFLAGS) -c VM_functions.cpp $(LDFLAGS)
 
 repl: repl.cpp assembler_functions.o VM.o
 	$(CXX) $(CFLAGS) repl.cpp assembler_functions.o VM.o -o repl $(LDFLAGS)

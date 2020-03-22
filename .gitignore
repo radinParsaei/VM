@@ -8,3 +8,4 @@ assembler
 VM
 tmp
 repl
+mkcc
