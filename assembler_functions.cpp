@@ -25,7 +25,17 @@ vector<value> assemble(string line){
       while (isdigit(line[i++]));
       prog.push_back(stof(line.substr(0, i)));
     } else {
-      prog.push_back(line.substr(3, line.size() - 3));
+      line = line.substr(3, line.size() - 3);
+      line = VM::strReplace(line, "\\n", "\n");
+      line = VM::strReplace(line, "\\\n", "\\n");
+      line = VM::strReplace(line, "\\t", "\t");
+      line = VM::strReplace(line, "\\\t", "\\t");
+      line = VM::strReplace(line, "\\r", "\r");
+      line = VM::strReplace(line, "\\\r", "\\r");
+      line = VM::strReplace(line, "\\a", "\a");
+      line = VM::strReplace(line, "\\\a", "\\a");
+      line = VM::strReplace(line, "\\\\", "\\");
+      prog.push_back(line);
     }
   } else if(line.find("ADD") == 0){
     prog.push_back(ADD);

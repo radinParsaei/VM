@@ -17,7 +17,7 @@ void VM::setStack(std::vector<value> v){
   stack = v;
 }
 
-std::string strReplace(std::string str, std::string from, std::string to) {
+std::string VM::strReplace(std::string str, std::string from, std::string to) {
   if(from.empty())
     return str;
   size_t start_pos = 0;

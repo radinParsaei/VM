@@ -87,6 +87,7 @@ class VM {
     VM();
     void run(std::vector<value> prog, bool forceRun = true, int pc = 0);
     bool run1(int prog, value arg);
+    static std::string strReplace(std::string str, std::string from, std::string to);
     static bool getValType(value v);
     static double toNUM(value v);
     static std::string val2str(value v);
