@@ -58,5 +58,7 @@ extern "C" void MEMSIZE_task();
 extern "C" void MEMPUT_task();
 extern "C" void MEMINS_task();
 extern "C" void MEMDEL_task();
+extern "C" void TONUM_task();
+extern "C" void TOTXT_task();
 extern "C" void EXIT_task();
 #endif

@@ -209,6 +209,12 @@ int main(int argc, char const *argv[]){
               case MEMDEL:
                 cout << "MEMDEL_task();\n";
                 break;
+              case TOTXT:
+                cout << "TOTXT_task();\n";
+                break;
+              case TONUM:
+                cout << "TONUM_task();\n";
+                break;
             }
           }
         }

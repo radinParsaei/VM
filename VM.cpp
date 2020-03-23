@@ -162,14 +162,17 @@ bool VM::disassemble(int prog, value val, std::string end){
     case MEMSIZE:
       std::cout << "MEMSIZE" << end;
       break;
-    case MEMPUT:
-      std::cout << "MEMPUT" << end;
-      break;
     case MEMDEL:
       std::cout << "MEMDEL" << end;
       break;
     case MEMINS:
       std::cout << "MEMINS" << end;
+      break;
+    case TOTXT:
+      std::cout << "TOTXT" << end;
+      break;
+    case TONUM:
+      std::cout << "TONUM" << end;
       break;
     default:
       std::cout << "???" << end;
@@ -693,6 +696,12 @@ bool VM::run1(int prog, value arg){
       break;
     case MEMDEL:
       mempointer->erase(mempointer->begin() + std::get<double>(pop()));
+      break;
+    case TOTXT:
+      stack.push_back(val2str(pop()));
+      break;
+    case TONUM:
+      stack.push_back(toNUM(pop()));
       break;
   }
   return res;

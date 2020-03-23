@@ -6,6 +6,14 @@ value pop(){
   return v;
 }
 
+extern "C" void TOTXT_task(){
+  stack.push_back(VM::val2str(pop()));
+}
+
+extern "C" void TONUM_task(){
+  stack.push_back(VM::toNUM(pop()));
+}
+
 extern "C" void MEMPUT_task(){
   mem->push_back(pop());
 }

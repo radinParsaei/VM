@@ -48,6 +48,8 @@
 #define MEMPUT  41
 #define MEMINS  42
 #define MEMDEL  43
+#define TONUM   44
+#define TOTXT   45
 
 #include <iostream>
 #include <vector>

@@ -127,6 +127,10 @@ vector<value> assemble(string line){
     prog.push_back(MEMINS);
   } else if(line.find("MEMDEL") == 0){
     prog.push_back(MEMDEL);
+  } else if(line.find("TOTXT") == 0){
+    prog.push_back(TOTXT);
+  } else if(line.find("TONUM") == 0){
+    prog.push_back(TONUM);
   } else if(line.find("EXIT") == 0){
     prog.push_back(EXIT);
   }

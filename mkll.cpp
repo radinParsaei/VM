@@ -57,6 +57,8 @@ int main(int argc, char const *argv[]){
   cout << "declare void @MEMPUT_task()\n";
   cout << "declare void @MEMDEL_task()\n";
   cout << "declare void @MEMINS_task()\n";
+  cout << "declare void @TOTXT_task()\n";;
+  cout << "declare void @TONUM_task()\n";
   vector<value> vals;
   Record r;
   bool wait = false;
@@ -258,6 +260,12 @@ int main(int argc, char const *argv[]){
                 break;
               case MEMDEL:
                 cout << "call void @MEMDEL_task()\n";
+                break;
+              case TOTXT:
+                cout << "call void @TOTXT_task()\n";
+                break;
+              case TONUM:
+                cout << "call void @TONUM_task()\n";
                 break;
             }
           }
