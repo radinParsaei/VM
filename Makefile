@@ -1,7 +1,7 @@
 CFLAGS=-std=c++17
 LDFLAGS=-ldl -pthread
 
-all: VM assembler disassembler mkll repl
+all: VM assembler disassembler mkcc mkll repl
 .PHONY: all
 
 VM: VM.o main.o
