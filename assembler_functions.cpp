@@ -34,6 +34,12 @@ vector<value> assemble(string line){
       line = VM::strReplace(line, "\\\r", "\\r");
       line = VM::strReplace(line, "\\a", "\a");
       line = VM::strReplace(line, "\\\a", "\\a");
+      line = VM::strReplace(line, "\\b", "\b");
+      line = VM::strReplace(line, "\\\b", "\\b");
+      line = VM::strReplace(line, "\\f", "\f");
+      line = VM::strReplace(line, "\\\f", "\\f");
+      line = VM::strReplace(line, "\\\'", "\'");
+      line = VM::strReplace(line, "\\\"", "\"");
       line = VM::strReplace(line, "\\\\", "\\");
       prog.push_back(line);
     }
