@@ -131,6 +131,10 @@ vector<value> assemble(string line){
     prog.push_back(TOTXT);
   } else if(line.find("TONUM") == 0){
     prog.push_back(TONUM);
+  } else if(line.find("CANNUM") == 0){
+    prog.push_back(CANNUM);
+  } else if(line.find("ISNUM") == 0){
+    prog.push_back(ISNUM);
   } else if(line.find("EXIT") == 0){
     prog.push_back(EXIT);
   }

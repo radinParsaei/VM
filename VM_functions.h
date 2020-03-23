@@ -60,5 +60,7 @@ extern "C" void MEMINS_task();
 extern "C" void MEMDEL_task();
 extern "C" void TONUM_task();
 extern "C" void TOTXT_task();
+extern "C" void CANNUM_task();
+extern "C" void ISNUM_task();
 extern "C" void EXIT_task();
 #endif

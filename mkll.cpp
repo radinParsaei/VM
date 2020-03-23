@@ -57,8 +57,10 @@ int main(int argc, char const *argv[]){
   cout << "declare void @MEMPUT_task()\n";
   cout << "declare void @MEMDEL_task()\n";
   cout << "declare void @MEMINS_task()\n";
-  cout << "declare void @TOTXT_task()\n";;
+  cout << "declare void @TOTXT_task()\n";
   cout << "declare void @TONUM_task()\n";
+  cout << "declare void @ISNUM_task()\n";
+  cout << "declare void @CANNUM_task()\n";
   vector<value> vals;
   Record r;
   bool wait = false;
@@ -266,6 +268,12 @@ int main(int argc, char const *argv[]){
                 break;
               case TONUM:
                 cout << "call void @TONUM_task()\n";
+                break;
+              case CANNUM:
+                cout << "call void @CANNUM_task()\n";
+                break;
+              case ISNUM:
+                cout << "call void @ISNUM_task()\n";
                 break;
             }
           }

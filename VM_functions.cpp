@@ -14,6 +14,27 @@ extern "C" void TONUM_task(){
   stack.push_back(VM::toNUM(pop()));
 }
 
+extern "C" void CANNUM_task(){
+  if(stack.size() == 0) return;
+  value v = stack[stack.size() - 1];
+  if(!VM::getValType(v)){
+    stack.push_back(1);
+  } else {
+    for(char c : std::get<std::string>(v)){
+      if(!isdigit(c)){
+        stack.push_back(0);
+        return;
+      }
+    }
+    stack.push_back(1);
+  }
+}
+
+extern "C" void ISNUM_task(){
+  if(stack.size() == 0) return;
+  stack.push_back(!VM::getValType(stack[stack.size() - 1]));
+}
+
 extern "C" void MEMPUT_task(){
   mem->push_back(pop());
 }

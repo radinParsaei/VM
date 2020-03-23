@@ -174,6 +174,12 @@ bool VM::disassemble(int prog, value val, std::string end){
     case TONUM:
       std::cout << "TONUM" << end;
       break;
+    case ISNUM:
+      std::cout << "ISNUM" << end;
+      break;
+    case CANNUM:
+      std::cout << "CANNUM" << end;
+      break;
     default:
       std::cout << "???" << end;
       break;
@@ -702,6 +708,25 @@ bool VM::run1(int prog, value arg){
       break;
     case TONUM:
       stack.push_back(toNUM(pop()));
+      break;
+    case ISNUM:
+      if(stack.size() == 0) break;
+      stack.push_back(!getValType(stack[stack.size() - 1]));
+      break;
+    case CANNUM:
+      if(stack.size() == 0) break;
+      value v = stack[stack.size() - 1];
+      if(!getValType(v)){
+        stack.push_back(1);
+      } else {
+        for(char c : std::get<std::string>(v)){
+          if(!isdigit(c)){
+            stack.push_back(0);
+            return res;
+          }
+        }
+        stack.push_back(1);
+      }
       break;
   }
   return res;

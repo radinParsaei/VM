@@ -50,6 +50,8 @@
 #define MEMDEL  43
 #define TONUM   44
 #define TOTXT   45
+#define ISNUM   46
+#define CANNUM  47
 
 #include <iostream>
 #include <vector>

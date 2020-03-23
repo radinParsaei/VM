@@ -215,6 +215,12 @@ int main(int argc, char const *argv[]){
               case TONUM:
                 cout << "TONUM_task();\n";
                 break;
+              case CANNUM:
+                cout << "CANNUM_task();\n";
+                break;
+              case ISNUM:
+                cout << "ISNUM_task();\n";
+                break;
             }
           }
         }
