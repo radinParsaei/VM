@@ -226,7 +226,7 @@ extern "C" void WFRUN_task(){
         vm.run(prog);
         stack = vm.getStack();
         tos = std::get<double>(stack[stack.size() - 1]);
-        if(tos)stack.pop_back();
+        if(!tos)stack.pop_back();
       }
     }
   }

@@ -627,7 +627,7 @@ bool VM::run1(int prog, value arg){
           while(!tos){
             run(prog);
             tos = std::get<double>(stack[stack.size() - 1]);
-            if(tos)stack.pop_back();
+            if(!tos)stack.pop_back();
           }
         }
       }
