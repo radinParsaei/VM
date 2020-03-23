@@ -161,6 +161,16 @@ bool VM::disassemble(int prog, value val, std::string end){
       break;
     case MEMSIZE:
       std::cout << "MEMSIZE" << end;
+      break;
+    case MEMPUT:
+      std::cout << "MEMPUT" << end;
+      break;
+    case MEMDEL:
+      std::cout << "MEMDEL" << end;
+      break;
+    case MEMINS:
+      std::cout << "MEMINS" << end;
+      break;
     default:
       std::cout << "???" << end;
       break;
