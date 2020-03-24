@@ -22,7 +22,7 @@ vector<value> assemble(string line){
     if(line.find("NUM") == 0){
       line = rtrim(line.substr(3, line.size() - 3));
       int i = 0;
-      while (isdigit(line[i++]));
+      while ((isdigit(line[i]) || line[i] == '.') || line[i] == '-')i++;
       prog.push_back(stof(line.substr(0, i)));
     } else {
       line = line.substr(3, line.size() - 3);
