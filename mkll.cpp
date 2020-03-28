@@ -16,7 +16,7 @@ int main(int argc, char const *argv[]){
     return 1;
   }
   cout << "declare void @PUT_tasks(i8*)\n";
-  cout << "declare void @PUT_taski(i32)\n";
+  cout << "declare void @PUT_taski(double)\n";
   cout << "declare void @ADD_task()\n";
   cout << "declare void @SUB_task()\n";
   cout << "declare void @MUL_task()\n";
@@ -103,19 +103,25 @@ int main(int argc, char const *argv[]){
             if(std::get<double>(vals[c]) == END){
               rec--;
               if(rec == 0){
-                cout << "call void @PUT_taski(i32 " << recsize << ")\n";
+                cout << "call void @PUT_taski(double " << recsize << ".0)\n";
                 recsize = 0;
                 c--;
                 continue;
               }
             }
             recsize++;
-            cout << "call void @PUT_taski(i32 " << VM::val2str(vals[c]) << ")\n";
+            if(VM::val2str(vals[c]).find(".") == -1)
+              cout << "call void @PUT_taski(double " << VM::val2str(vals[c]) << ".0)\n";
+            else
+              cout << "call void @PUT_taski(double " << VM::val2str(vals[c]) << ")\n";
             if(std::get<double>(vals[c]) == PUT){
               c++;
               recsize++;
               if(VM::getValType(vals[c]) == TYPE_NUM){
-                cout << "call void @PUT_taski(i32 " << VM::val2str(vals[c]) << ")\n";
+                if(VM::val2str(vals[c]).find(".") == -1)
+                  cout << "call void @PUT_taski(double " << VM::val2str(vals[c]) << ".0)\n";
+                else
+                  cout << "call void @PUT_taski(double " << VM::val2str(vals[c]) << ")\n";
               } else {
                 strc++;
                 strings << "@.str" << strc << " = private unnamed_addr constant [" << VM::val2str(vals[c]).size() + 1 << " x i8] c\"" << VM::val2str(vals[c]) << "\\00\"\n";
@@ -134,7 +140,10 @@ int main(int argc, char const *argv[]){
               case PUT:
                 c++;
                 if(VM::getValType(vals[c]) == TYPE_NUM){
-                  cout << "call void @PUT_taski(i32 " << VM::val2str(vals[c]) << ")\n";
+                  if(VM::val2str(vals[c]).find(".") == -1)
+                    cout << "call void @PUT_taski(double " << VM::val2str(vals[c]) << ".0)\n";
+                  else
+                    cout << "call void @PUT_taski(double " << VM::val2str(vals[c]) << ")\n";
                 } else {
                   strc++;
                   strings << "@.str" << strc << " = private unnamed_addr constant [" << VM::val2str(vals[c]).size() + 1 << " x i8] c\"" << VM::val2str(vals[c]) << "\\00\"\n";

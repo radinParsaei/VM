@@ -51,7 +51,7 @@ extern "C" void REPEAT_task();
 extern "C" void PRINTLN_task();
 extern "C" void LOGSTCK_task();
 extern "C" void PUT_tasks(const char* data);
-extern "C" void PUT_taski(int data);
+extern "C" void PUT_taski(double data);
 extern "C" void MEMSET_task();
 extern "C" void MEMGET_task();
 extern "C" void MEMSIZE_task();

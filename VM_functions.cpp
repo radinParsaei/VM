@@ -341,7 +341,7 @@ extern "C" void NEG_task(){
   stack.push_back(VM::NEGval(pop()));
 }
 
-extern "C" void PUT_taski(int data){
+extern "C" void PUT_taski(double data){
   stack.push_back(data);
 }
 
