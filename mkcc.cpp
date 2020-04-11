@@ -53,7 +53,7 @@ int main(int argc, char const *argv[]){
         value v = vals[c];
         if(rec){
           if(VM::getValType(vals[c]) == TYPE_NUM){
-            if(std::get<double>(vals[c]) == END){
+            if(std::get<BigNumber>(vals[c]) == END){
               rec--;
               if(rec == 0){
                 cout << "PUT_taski(" << recsize << ");\n";
@@ -64,7 +64,7 @@ int main(int argc, char const *argv[]){
             }
             recsize++;
             cout << "PUT_taski(" << VM::val2str(vals[c]) << ");\n";
-            if(std::get<double>(vals[c]) == PUT){
+            if(std::get<BigNumber>(vals[c]) == PUT){
               c++;
               recsize++;
               if(VM::getValType(vals[c]) == TYPE_NUM){
@@ -72,14 +72,14 @@ int main(int argc, char const *argv[]){
               } else {
                 cout << "PUT_tasks(\"" << VM::val2str(vals[c]) << "\");\n";
               }
-            } else if(std::get<double>(vals[c]) == REC){
+            } else if(std::get<BigNumber>(vals[c]) == REC){
               rec++;
             }
           } else {
             cout << "PUT_tasks(\"" << VM::val2str(vals[c]) << "\");\n";
           }
         } else if (VM::getValType(v) == TYPE_NUM) {
-            switch ((int)get<double>(v)) {
+            switch ((int)get<BigNumber>(v)) {
               case PUT:
                 c++;
                 if(VM::getValType(vals[c]) == TYPE_NUM){

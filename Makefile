@@ -1,4 +1,6 @@
-CFLAGS=-std=c++17
+INCLUDES=-IBigNumber/src/BigNumber
+DEFINES=-DCAST_TO_LONG
+CFLAGS=-std=c++17 $(DEFINES) $(INCLUDES) number.o BigNumber.o
 LDFLAGS=-ldl -pthread
 
 all: VM assembler disassembler mkcc mkll repl
@@ -22,13 +24,19 @@ mkcc: VM.o mkcc.cpp VM_functions.o
 repl: repl.cpp assembler_functions.o VM.o
 	$(CXX) $(CFLAGS) repl.cpp assembler_functions.o VM.o -o repl $(LDFLAGS)
 
+number.o: BigNumber/src/BigNumber/number.c BigNumber/src/BigNumber/number.h
+	$(CC) -c BigNumber/src/BigNumber/number.c
+
+BigNumber.o: BigNumber/src/BigNumber/BigNumber.cpp BigNumber/src/BigNumber/BigNumber.h
+	$(CXX) -c BigNumber/src/BigNumber/BigNumber.cpp $(DEFINES)
+
 VM_functions.o: VM_functions.cpp VM_functions.h
 	$(CXX) $(CFLAGS) -c VM_functions.cpp $(LDFLAGS)
 
 main.o: main.cpp
 	$(CXX) $(CFLAGS) -c main.cpp $(LDFLAGS)
 
-VM.o: VM.h VM.cpp VM_confs.h
+VM.o: VM.h VM.cpp VM_confs.h number.o BigNumber.o
 	$(CXX) $(CFLAGS) -c VM.cpp $(LDFLAGS)
 
 assembler_functions.o: assembler_functions.h assembler_functions.cpp

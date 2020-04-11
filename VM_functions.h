@@ -13,7 +13,6 @@
 #include <thread>
 #include "VM.h"
 
-typedef std::variant<double, std::string> value;
 inline std::vector<value> stack;
 inline std::vector<value> *mem = new std::vector<value>();
 

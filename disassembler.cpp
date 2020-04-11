@@ -47,7 +47,7 @@ int main(int argc, char const *argv[]){
     if(!wait){
       for(int c = 0; c < vals.size(); c++){
         if (VM::getValType(vals[c]) == TYPE_NUM) {
-          c += VM::disassemble(get<double>(vals[c]), (vals.size() == c - 1)? 0:vals[c + 1], "\n");
+          c += VM::disassemble(get<BigNumber>(vals[c]), (vals.size() - 1 == c)? 0:vals[c + 1], "\n");
         }
       }
       vals.clear();

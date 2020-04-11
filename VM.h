@@ -64,6 +64,7 @@
 #include <dlfcn.h>
 #endif
 #include <thread>
+#include <BigNumber.h>
 
 #include "VM_confs.h"
 
@@ -75,7 +76,7 @@
 #warning VM_DISASSEMBLE enabled
 #endif
 
-typedef std::variant<double, std::string> value;
+typedef std::variant<BigNumber, std::string> value;
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
 typedef std::vector<value> (__stdcall *dlfunc)(std::vector<value>);
 #else
@@ -93,7 +94,7 @@ class VM {
     bool run1(int prog, value arg);
     static std::string strReplace(std::string str, std::string from, std::string to);
     static bool getValType(value v);
-    static double toNUM(value v);
+    static BigNumber toNUM(value v);
     static std::string val2str(value v);
     static value add2val(value v1, value v2);
     static value sub2val(value v1, value v2);

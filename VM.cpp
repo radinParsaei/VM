@@ -1,6 +1,7 @@
 #include "VM.h"
 
 VM::VM(){
+  BigNumber::begin();
   running = true;
   recsize = 0;
 }
@@ -36,7 +37,7 @@ bool VM::disassemble(int prog, value val, std::string end){
     case PUT:
       std::cout << "PUT" << "\t";
       if(getValType(val) == TYPE_NUM){
-        std::cout << "NUM" << std::get<double>(val);
+        std::cout << "NUM" << std::get<BigNumber>(val);
       } else {
         std::cout << "TXT" << std::get<std::string>(val);
       }
@@ -198,7 +199,7 @@ void VM::printStack(){
 void VM::run(std::vector<value> prog, bool forceRun, int pc) {
   if(forceRun)running = true;
   for (; pc < prog.size(); pc++) {//fetch
-    if(running)pc += run1(std::get<double>(prog[pc]), (prog.size() - 1) == pc? 0:prog[pc + 1]);
+    if(running)pc += run1(std::get<BigNumber>(prog[pc]), (prog.size() - 1) == pc? 0:prog[pc + 1]);
     else break;
     if(isBreaked){
       isBreaked = false;
@@ -214,7 +215,7 @@ value VM::pop(){
 }
 
 bool VM::getValType(value v){
-  if(std::get_if<double>(&v) != 0){
+  if(std::get_if<BigNumber>(&v) != 0){
     return TYPE_NUM;
   } else {
     return TYPE_TEXT;
@@ -222,7 +223,7 @@ bool VM::getValType(value v){
 }
 
 std::string VM::val2str(value v){
-  auto ptr = std::get_if<double>(&v);
+  auto ptr = std::get_if<BigNumber>(&v);
   if(ptr != 0){
     std::ostringstream strs;
     strs << *ptr;
@@ -238,7 +239,7 @@ value VM::add2val(value v1, value v2){
     strs << val2str(v1) << val2str(v2);
     return strs.str();
   } else {
-    return std::get<double>(v1) + std::get<double>(v2);
+    return std::get<BigNumber>(v1) + std::get<BigNumber>(v2);
   }
 }
 
@@ -246,7 +247,7 @@ value VM::sub2val(value v1, value v2){
   if(getValType(v1) == TYPE_TEXT || getValType(v2) == TYPE_TEXT){
     return strReplace(val2str(v1), val2str(v2), "");
   } else {
-    return std::get<double>(v1) - std::get<double>(v2);
+    return std::get<BigNumber>(v1) - std::get<BigNumber>(v2);
   }
 }
 
@@ -254,13 +255,13 @@ value VM::mul2val(value v1, value v2){
   if(getValType(v1) + getValType(v2) == 1){
     std::string s = getValType(v1) == TYPE_TEXT? std::get<std::string>(v1) : std::get<std::string>(v2);
     std::string res = s;
-    int i = getValType(v1) == TYPE_NUM? std::get<double>(v1) : std::get<double>(v2);
+    int i = getValType(v1) == TYPE_NUM? std::get<BigNumber>(v1) : std::get<BigNumber>(v2);
     for (int j = 1; j < i; j++) {
       res += s;
     }
     return res;
   } else if(!(getValType(v1) && getValType(v2))){
-    return std::get<double>(v1) * std::get<double>(v2);
+    return std::get<BigNumber>(v1) * std::get<BigNumber>(v2);
   } else {
     std::cerr << "STR * STR ????\n";
     return 0;
@@ -269,7 +270,7 @@ value VM::mul2val(value v1, value v2){
 
 value VM::div2val(value v1, value v2){
   if(!(getValType(v1) && getValType(v2))){
-    return std::get<double>(v1) / std::get<double>(v2);
+    return std::get<BigNumber>(v1) / std::get<BigNumber>(v2);
   } else {
     std::cerr << "STR in / ????\n";
     return 0;
@@ -278,7 +279,7 @@ value VM::div2val(value v1, value v2){
 
 value VM::mod2val(value v1, value v2){
   if(!(getValType(v1) && getValType(v2))){
-    return ((int)std::get<double>(v1)) % ((int)std::get<double>(v2));
+    return ((int)std::get<BigNumber>(v1)) % ((int)std::get<BigNumber>(v2));
   } else {
     std::cerr << "STR in % ????\n";
     return 0;
@@ -301,7 +302,7 @@ value VM::isFEQ(value v1, value v2){
 
 value VM::isGT(value v1, value v2){
   if(!(getValType(v1) && getValType(v2))){
-    return std::get<double>(v1) > std::get<double>(v2);
+    return std::get<BigNumber>(v1) > std::get<BigNumber>(v2);
   }
   std::cerr << "STR in > ????";
   return 0;
@@ -309,7 +310,7 @@ value VM::isGT(value v1, value v2){
 
 value VM::isGE(value v1, value v2){
   if(!(getValType(v1) && getValType(v2))){
-    return std::get<double>(v1) >= std::get<double>(v2);
+    return std::get<BigNumber>(v1) >= std::get<BigNumber>(v2);
   }
   std::cerr << "STR in >= ????";
   return 0;
@@ -317,7 +318,7 @@ value VM::isGE(value v1, value v2){
 
 value VM::isLT(value v1, value v2){
   if(!(getValType(v1) && getValType(v2))){
-    return std::get<double>(v1) < std::get<double>(v2);
+    return std::get<BigNumber>(v1) < std::get<BigNumber>(v2);
   }
   std::cerr << "STR in < ????";
   return 0;
@@ -325,7 +326,7 @@ value VM::isLT(value v1, value v2){
 
 value VM::isLE(value v1, value v2){
   if(!(getValType(v1) && getValType(v2))){
-    return std::get<double>(v1) <= std::get<double>(v2);
+    return std::get<BigNumber>(v1) <= std::get<BigNumber>(v2);
   }
   std::cerr << "STR in <= ????";
   return 0;
@@ -333,7 +334,7 @@ value VM::isLE(value v1, value v2){
 
 value VM::LAND2val(value v1, value v2){
   if(!(getValType(v1) && getValType(v2))){
-    return std::get<double>(v1) && std::get<double>(v2);
+    return std::get<BigNumber>(v1) && std::get<BigNumber>(v2);
   } else {
     std::cerr << "STR in LOGICAL AND????" << std::endl;
   }
@@ -341,7 +342,7 @@ value VM::LAND2val(value v1, value v2){
 
 value VM::LOR2val(value v1, value v2){
   if(!(getValType(v1) && getValType(v2))){
-    return std::get<double>(v1) || std::get<double>(v2);
+    return std::get<BigNumber>(v1) || std::get<BigNumber>(v2);
   } else {
     std::cerr << "STR in LOGICAL OR????" << std::endl;
   }
@@ -349,7 +350,7 @@ value VM::LOR2val(value v1, value v2){
 
 value VM::AND2val(value v1, value v2){
   if(!(getValType(v1) && getValType(v2))){
-    return ((int)std::get<double>(v1)) & ((int)std::get<double>(v2));
+    return ((int)std::get<BigNumber>(v1)) & ((int)std::get<BigNumber>(v2));
   } else {
     std::cerr << "STR in BITWISE AND????" << std::endl;
   }
@@ -357,7 +358,7 @@ value VM::AND2val(value v1, value v2){
 
 value VM::OR2val(value v1, value v2){
   if(!(getValType(v1) && getValType(v2))){
-    return ((int)std::get<double>(v1)) | ((int)std::get<double>(v2));
+    return ((int)std::get<BigNumber>(v1)) | ((int)std::get<BigNumber>(v2));
   } else {
     std::cerr << "STR in BITWISE OR????" << std::endl;
   }
@@ -365,7 +366,7 @@ value VM::OR2val(value v1, value v2){
 
 value VM::NOTval(value v){
   if(!getValType(v)){
-    return ~((int)std::get<double>(v));
+    return ~((int)std::get<BigNumber>(v));
   } else {
     std::cerr << "STR in BITWISE NOT????" << std::endl;
   }
@@ -373,7 +374,7 @@ value VM::NOTval(value v){
 
 value VM::LNOTval(value v){
   if(!getValType(v)){
-    return !std::get<double>(v);
+    return !std::get<BigNumber>(v);
   } else {
     std::cerr << "STR in LOGICAL NOT????" << std::endl;
   }
@@ -381,7 +382,7 @@ value VM::LNOTval(value v){
 
 value VM::LSHIFT2val(value v1, value v2){
   if(!(getValType(v1) && getValType(v2))){
-    return ((int)std::get<double>(v1)) << ((int)std::get<double>(v2));
+    return ((int)std::get<BigNumber>(v1)) << ((int)std::get<BigNumber>(v2));
   } else {
     std::cerr << "STR in LEFT SHIFT????" << std::endl;
   }
@@ -389,7 +390,7 @@ value VM::LSHIFT2val(value v1, value v2){
 
 value VM::RSHIFT2val(value v1, value v2){
   if(!(getValType(v1) && getValType(v2))){
-    return ((int)std::get<double>(v1)) >> ((int)std::get<double>(v2));
+    return ((int)std::get<BigNumber>(v1)) >> ((int)std::get<BigNumber>(v2));
   } else {
     std::cerr << "STR in RIGHT SHIFT????" << std::endl;
   }
@@ -397,7 +398,7 @@ value VM::RSHIFT2val(value v1, value v2){
 
 value VM::XOR2val(value v1, value v2){
   if(!(getValType(v1) && getValType(v2))){
-    return ((int)std::get<double>(v1)) ^ ((int)std::get<double>(v2));
+    return ((int)std::get<BigNumber>(v1)) ^ ((int)std::get<BigNumber>(v2));
   } else {
     std::cerr << "STR in XOR????" << std::endl;
   }
@@ -405,16 +406,16 @@ value VM::XOR2val(value v1, value v2){
 
 value VM::NEGval(value v){
   if(!getValType(v)){
-    return -std::get<double>(v);
+    return BigNumber(-1) * std::get<BigNumber>(v);
   } else {
     std::string str = std::get<std::string>(v);
     return std::string(str.rbegin(), str.rend());
   }
 }
 
-double VM::toNUM(value v){
-  if(getValType(v) == TYPE_NUM)return std::get<double>(v);
-  else return std::stof(std::get<std::string>(v));
+BigNumber VM::toNUM(value v){
+  if(getValType(v) == TYPE_NUM)return std::get<BigNumber>(v);
+  else return BigNumber(std::get<std::string>(v).c_str());
 }
 
 bool VM::run1(int prog, value arg){
@@ -487,7 +488,7 @@ bool VM::run1(int prog, value arg){
       break;
     case RUN: {
       std::vector<value> prog;
-      int ps = std::get<double>(pop());
+      int ps = std::get<BigNumber>(pop());
       for(; ps > 0; ps--){
         prog.insert(prog.begin(), pop());
       }
@@ -540,7 +541,7 @@ bool VM::run1(int prog, value arg){
     case REPEAT: {
       int count = toNUM(pop());
       std::vector<value> prog;
-      int ps = std::get<double>(pop());
+      int ps = std::get<BigNumber>(pop());
       for(; ps > 0; ps--){
         prog.insert(prog.begin(), pop());
       }
@@ -603,17 +604,17 @@ bool VM::run1(int prog, value arg){
     case WTRUN:
       if(stack.size() < 2)break;
       if(!getValType(stack[stack.size() - 1])){
-        bool tos = std::get<double>(stack[stack.size() - 1]);
+        bool tos = std::get<BigNumber>(stack[stack.size() - 1]);
         if(tos){
           stack.pop_back();
           std::vector<value> prog;
-          int ps = std::get<double>(pop());
+          int ps = std::get<BigNumber>(pop());
           for(; ps > 0; ps--){
             prog.insert(prog.begin(), pop());
           }
           while(tos){
             run(prog);
-            tos = std::get<double>(stack[stack.size() - 1]);
+            tos = std::get<BigNumber>(stack[stack.size() - 1]);
             if(tos)stack.pop_back();
           }
         }
@@ -622,17 +623,17 @@ bool VM::run1(int prog, value arg){
     case WFRUN:
       if(stack.size() < 2)break;
       if(!getValType(stack[stack.size() - 1])){
-        bool tos = std::get<double>(stack[stack.size() - 1]);
+        bool tos = std::get<BigNumber>(stack[stack.size() - 1]);
         if(!tos){
           stack.pop_back();
           std::vector<value> prog;
-          int ps = std::get<double>(pop());
+          int ps = std::get<BigNumber>(pop());
           for(; ps > 0; ps--){
             prog.insert(prog.begin(), pop());
           }
           while(!tos){
             run(prog);
-            tos = std::get<double>(stack[stack.size() - 1]);
+            tos = std::get<BigNumber>(stack[stack.size() - 1]);
             if(!tos)stack.pop_back();
           }
         }
@@ -641,11 +642,11 @@ bool VM::run1(int prog, value arg){
     case IFTRUN:
       if(stack.size() < 2)break;
       if(!getValType(stack[stack.size() - 1])){
-        bool tos = std::get<double>(stack[stack.size() - 1]);
+        bool tos = std::get<BigNumber>(stack[stack.size() - 1]);
         if(tos){
           stack.pop_back();
           std::vector<value> prog;
-          int ps = std::get<double>(pop());
+          int ps = std::get<BigNumber>(pop());
           for(; ps > 0; ps--){
             prog.insert(prog.begin(), pop());
           }
@@ -656,11 +657,11 @@ bool VM::run1(int prog, value arg){
     case IFFRUN:
       if(stack.size() < 2)break;
       if(!getValType(stack[stack.size() - 1])){
-        bool tos = std::get<double>(stack[stack.size() - 1]);
+        bool tos = std::get<BigNumber>(stack[stack.size() - 1]);
         if(!tos){
           stack.pop_back();
           std::vector<value> prog;
-          int ps = std::get<double>(pop());
+          int ps = std::get<BigNumber>(pop());
           for(; ps > 0; ps--){
             prog.insert(prog.begin(), pop());
           }
@@ -670,7 +671,7 @@ bool VM::run1(int prog, value arg){
       break;
     case THREAD: {
       std::vector<value> prog;
-      int ps = std::get<double>(pop());
+      int ps = std::get<BigNumber>(pop());
       for(; ps > 0; ps--){
         prog.insert(prog.begin(), pop());
       }
@@ -683,25 +684,25 @@ bool VM::run1(int prog, value arg){
       break;
     }
     case MEMSET: {
-      int n = std::get<double>(pop());
+      int n = std::get<BigNumber>(pop());
       if(mempointer->size() < (n + 1))mempointer->resize(n + 1);
       mempointer->at(n) = pop();
       break;
     }
     case MEMGET:
-      stack.push_back(mempointer->at(std::get<double>(pop())));
+      stack.push_back(mempointer->at(std::get<BigNumber>(pop())));
       break;
     case MEMSIZE:
-      stack.push_back(mempointer->size());
+      stack.push_back((int)mempointer->size());
       break;
     case MEMPUT:
       mempointer->push_back(pop());
       break;
     case MEMINS:
-      mempointer->insert(mempointer->begin() + std::get<double>(pop()), pop());
+      mempointer->insert(mempointer->begin() + std::get<BigNumber>(pop()), pop());
       break;
     case MEMDEL:
-      mempointer->erase(mempointer->begin() + std::get<double>(pop()));
+      mempointer->erase(mempointer->begin() + std::get<BigNumber>(pop()));
       break;
     case TOTXT:
       stack.push_back(val2str(pop()));

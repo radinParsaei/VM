@@ -23,7 +23,7 @@ vector<value> assemble(string line){
       line = rtrim(line.substr(3, line.size() - 3));
       int i = 0;
       while ((isdigit(line[i]) || line[i] == '.') || line[i] == '-')i++;
-      prog.push_back(stof(line.substr(0, i)));
+      prog.push_back(BigNumber(line.substr(0, i).c_str()));
     } else {
       line = line.substr(3, line.size() - 3);
       line = VM::strReplace(line, "\\n", "\n");
@@ -147,7 +147,7 @@ vector<Record> mkRec(vector<value> vals){
     if(VM::getValType(v) == TYPE_NUM){
       Record r;
       r.type = TYPE_NUM;
-      r.value = get<double>(v);
+      r.value = stof(get<BigNumber>(v).toString());
       records.push_back(r);
     } else {
       Record r;

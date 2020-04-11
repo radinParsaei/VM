@@ -40,30 +40,30 @@ extern "C" void MEMPUT_task(){
 }
 
 extern "C" void MEMINS_task(){
-  mem->insert(mem->begin() + std::get<double>(pop()), pop());
+  mem->insert(mem->begin() + std::get<BigNumber>(pop()), pop());
 }
 
 extern "C" void MEMDEL_task(){
-  mem->erase(mem->begin() + std::get<double>(pop()));
+  mem->erase(mem->begin() + std::get<BigNumber>(pop()));
 }
 
 extern "C" void MEMSIZE_task(){
-  stack.push_back(mem->size());
+  stack.push_back((int)mem->size());
 }
 
 extern "C" void MEMSET_task(){
-  int n = std::get<double>(pop());
+  int n = std::get<BigNumber>(pop());
   if(mem->size() < (n + 1))mem->resize(n + 1);
   mem->at(n) = pop();
 }
 
 extern "C" void MEMGET_task(){
-  stack.push_back(mem->at(std::get<double>(pop())));
+  stack.push_back(mem->at(std::get<BigNumber>(pop())));
 }
 
 extern "C" void THREAD_task(){
   std::vector<value> prog;
-  int ps = std::get<double>(pop());
+  int ps = std::get<BigNumber>(pop());
   for(; ps > 0; ps--){
     prog.insert(prog.begin(), pop());
   }
@@ -113,7 +113,7 @@ extern "C" void RUN_task(){
   VM vm;
   vm.attachMem(mem);
   std::vector<value> prog;
-  int ps = std::get<double>(pop());
+  int ps = std::get<BigNumber>(pop());
   for(int i = 0; i < ps; i++){
     prog.insert(prog.begin(), pop());
   }
@@ -148,7 +148,7 @@ extern "C" void REPEAT_task(){
   vm.attachMem(mem);
   int count = VM::toNUM(pop());
   std::vector<value> prog;
-  int ps = std::get<double>(pop());
+  int ps = std::get<BigNumber>(pop());
   for(int i = 0; i < ps; i++){
     prog.insert(prog.begin(), pop());
   }
@@ -163,11 +163,11 @@ extern "C" void REPEAT_task(){
 extern "C" void WTRUN_task(){
   if(stack.size() < 2)return;
   if(!VM::getValType(stack[stack.size() - 1])){
-    bool tos = std::get<double>(stack[stack.size() - 1]);
+    bool tos = std::get<BigNumber>(stack[stack.size() - 1]);
     if(tos){
       stack.pop_back();
       std::vector<value> prog;
-      int ps = std::get<double>(pop());
+      int ps = std::get<BigNumber>(pop());
       for(; ps > 0; ps--){
         prog.insert(prog.begin(), pop());
       }
@@ -178,7 +178,7 @@ extern "C" void WTRUN_task(){
         vm.autoKill = true;
         vm.run(prog);
         stack = vm.getStack();
-        tos = std::get<double>(stack[stack.size() - 1]);
+        tos = std::get<BigNumber>(stack[stack.size() - 1]);
         if(tos)stack.pop_back();
       }
     }
@@ -189,11 +189,11 @@ extern "C" void WTRUN_task(){
 extern "C" void IFTRUN_task(){
   if(stack.size() < 2)return;
   if(!VM::getValType(stack[stack.size() - 1])){
-    bool tos = std::get<double>(stack[stack.size() - 1]);
+    bool tos = std::get<BigNumber>(stack[stack.size() - 1]);
     if(tos){
       stack.pop_back();
       std::vector<value> prog;
-      int ps = std::get<double>(pop());
+      int ps = std::get<BigNumber>(pop());
       for(; ps > 0; ps--){
         prog.insert(prog.begin(), pop());
       }
@@ -210,11 +210,11 @@ extern "C" void IFTRUN_task(){
 extern "C" void IFFRUN_task(){
   if(stack.size() < 2)return;
   if(!VM::getValType(stack[stack.size() - 1])){
-    bool tos = std::get<double>(stack[stack.size() - 1]);
+    bool tos = std::get<BigNumber>(stack[stack.size() - 1]);
     if(!tos){
       stack.pop_back();
       std::vector<value> prog;
-      int ps = std::get<double>(pop());
+      int ps = std::get<BigNumber>(pop());
       for(; ps > 0; ps--){
         prog.insert(prog.begin(), pop());
       }
@@ -231,11 +231,11 @@ extern "C" void IFFRUN_task(){
 extern "C" void WFRUN_task(){
   if(stack.size() < 2)return;
   if(!VM::getValType(stack[stack.size() - 1])){
-    bool tos = std::get<double>(stack[stack.size() - 1]);
+    bool tos = std::get<BigNumber>(stack[stack.size() - 1]);
     if(!tos){
       stack.pop_back();
       std::vector<value> prog;
-      int ps = std::get<double>(pop());
+      int ps = std::get<BigNumber>(pop());
       for(; ps > 0; ps--){
         prog.insert(prog.begin(), pop());
       }
@@ -246,7 +246,7 @@ extern "C" void WFRUN_task(){
         vm.autoKill = true;
         vm.run(prog);
         stack = vm.getStack();
-        tos = std::get<double>(stack[stack.size() - 1]);
+        tos = std::get<BigNumber>(stack[stack.size() - 1]);
         if(!tos)stack.pop_back();
       }
     }

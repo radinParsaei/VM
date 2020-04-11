@@ -100,7 +100,7 @@ int main(int argc, char const *argv[]){
         value v = vals[c];
         if(rec){
           if(VM::getValType(vals[c]) == TYPE_NUM){
-            if(std::get<double>(vals[c]) == END){
+            if(std::get<BigNumber>(vals[c]) == END){
               rec--;
               if(rec == 0){
                 cout << "call void @PUT_taski(double " << recsize << ".0)\n";
@@ -114,7 +114,7 @@ int main(int argc, char const *argv[]){
               cout << "call void @PUT_taski(double " << VM::val2str(vals[c]) << ".0)\n";
             else
               cout << "call void @PUT_taski(double " << VM::val2str(vals[c]) << ")\n";
-            if(std::get<double>(vals[c]) == PUT){
+            if(std::get<BigNumber>(vals[c]) == PUT){
               c++;
               recsize++;
               if(VM::getValType(vals[c]) == TYPE_NUM){
@@ -127,7 +127,7 @@ int main(int argc, char const *argv[]){
                 strings << "@.str" << strc << " = private unnamed_addr constant [" << VM::val2str(vals[c]).size() + 1 << " x i8] c\"" << VM::val2str(vals[c]) << "\\00\"\n";
                 cout << "call void @PUT_tasks(i8* getelementptr inbounds ([" << VM::val2str(vals[c]).size() + 1 << " x i8], [" << VM::val2str(vals[c]).size() + 1 << " x i8]* @.str" << strc << ", i32 0, i32 0))\n";
               }
-            } else if(std::get<double>(vals[c]) == REC){
+            } else if(std::get<BigNumber>(vals[c]) == REC){
               rec++;
             }
           } else {
@@ -136,7 +136,7 @@ int main(int argc, char const *argv[]){
             cout << "call void @PUT_tasks(i8* getelementptr inbounds ([" << VM::val2str(vals[c]).size() + 1 << " x i8], [" << VM::val2str(vals[c]).size() + 1 << " x i8]* @.str" << strc << ", i32 0, i32 0))\n";
           }
         } else if (VM::getValType(v) == TYPE_NUM) {
-            switch ((int)get<double>(v)) {
+            switch ((int)get<BigNumber>(v)) {
               case PUT:
                 c++;
                 if(VM::getValType(vals[c]) == TYPE_NUM){
