@@ -1,0 +1,6 @@
+[submodule "BigNumber"]
+	path = BigNumber
+	url = https://github.com/radinParsaei/BigNumber
+[submodule "Value"]
+	path = Value
+	url = https://github.com/radinParsaei/Value
