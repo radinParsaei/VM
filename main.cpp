@@ -12,7 +12,7 @@ int main(int argc, char const *argv[]){
     return 1;
   }
   VM *vm = new VM();
-  vector<value> mem;
+  vector<Value> mem;
   vm->attachMem(&mem);
   vm->autoKill = true;
   ifstream f(argv[1], ios::binary);
@@ -20,7 +20,7 @@ int main(int argc, char const *argv[]){
     cerr << "can't open file" << '\n';
     return 1;
   }
-  vector<value> vals;
+  vector<Value> vals;
   Record r;
   bool wait = false;
   while(f.read((char*)&r, sizeof(Record))){
@@ -33,7 +33,7 @@ int main(int argc, char const *argv[]){
         if(r.type != TYPE_NUM)
           stream << (char)r.value;
         else {
-          vals.push_back(stream.str());
+          vals.push_back(stream.str().c_str());
           add = false;
           vals.push_back(r.value);
           if(r.value == PUT){
@@ -42,7 +42,7 @@ int main(int argc, char const *argv[]){
           break;
         }
       }
-      if(add)vals.push_back(stream.str());
+      if(add)vals.push_back(stream.str().c_str());
     } else {
       vals.push_back(r.value);
       if(r.value == PUT){

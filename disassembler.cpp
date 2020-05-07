@@ -15,7 +15,7 @@ int main(int argc, char const *argv[]){
     cerr << "can't open file" << '\n';
     return 1;
   }
-  vector<value> vals;
+  vector<Value> vals;
   Record r;
   bool wait = false;
   while(f.read((char*)&r, sizeof(Record))){
@@ -28,7 +28,7 @@ int main(int argc, char const *argv[]){
         if(r.type != TYPE_NUM)
           stream << (char)r.value;
         else {
-          vals.push_back(stream.str());
+          vals.push_back(stream.str().c_str());
           add = false;
           vals.push_back(r.value);
           if(r.value == PUT){
@@ -37,7 +37,7 @@ int main(int argc, char const *argv[]){
           break;
         }
       }
-      if(add)vals.push_back(stream.str());
+      if(add)vals.push_back(stream.str().c_str());
     } else {
       vals.push_back(r.value);
       if(r.value == PUT){
@@ -46,8 +46,8 @@ int main(int argc, char const *argv[]){
     }
     if(!wait){
       for(int c = 0; c < vals.size(); c++){
-        if (VM::getValType(vals[c]) == TYPE_NUM) {
-          c += VM::disassemble(get<BigNumber>(vals[c]), (vals.size() - 1 == c)? 0:vals[c + 1], "\n");
+        if (vals[c].getType() == TYPE_NUM) {
+          c += VM::disassemble(vals[c].getLong(), (vals.size() - 1 == c)? 0:vals[c + 1], "\n");
         }
       }
       vals.clear();

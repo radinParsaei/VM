@@ -1,27 +1,27 @@
-INCLUDES=-IBigNumber/src/BigNumber
-DEFINES=-DCAST_TO_LONG
+INCLUDES=-IBigNumber/src/BigNumber -IValue
+DEFINES=-DUSE_UTILS -DSTD_INCLUDED
 CFLAGS=-std=c++17 $(DEFINES) $(INCLUDES) number.o BigNumber.o
 LDFLAGS=-ldl -pthread
 
 all: VM assembler disassembler mkcc mkll repl
 .PHONY: all
 
-VM: VM.o main.o
+VM: number.o BigNumber.o VM.o main.o
 	$(CXX) $(CFLAGS) VM.o main.o -o VM $(LDFLAGS)
 
-assembler: VM.o assembler_functions.o assembler.cpp
+assembler: number.o BigNumber.o VM.o assembler_functions.o assembler.cpp
 	$(CXX) $(CFLAGS) assembler.cpp VM.o assembler_functions.o -o assembler $(LDFLAGS)
 
-disassembler: VM.o assembler_functions.o disassembler.cpp
+disassembler: number.o BigNumber.o VM.o assembler_functions.o disassembler.cpp
 	$(CXX) $(CFLAGS) disassembler.cpp assembler_functions.o VM.o -o disassembler $(LDFLAGS)
 
-mkll: VM.o mkll.cpp VM_functions.o
+mkll: number.o BigNumber.o VM.o mkll.cpp VM_functions.o
 	$(CXX) $(CFLAGS) mkll.cpp VM.o -o mkll $(LDFLAGS)
 
-mkcc: VM.o mkcc.cpp VM_functions.o
+mkcc: number.o BigNumber.o VM.o mkcc.cpp VM_functions.o
 	$(CXX) $(CFLAGS) mkcc.cpp VM.o -o mkcc $(LDFLAGS)
 
-repl: repl.cpp assembler_functions.o VM.o
+repl: number.o BigNumber.o repl.cpp assembler_functions.o VM.o
 	$(CXX) $(CFLAGS) repl.cpp assembler_functions.o VM.o -o repl $(LDFLAGS)
 
 number.o: BigNumber/src/BigNumber/number.c BigNumber/src/BigNumber/number.h
@@ -33,15 +33,15 @@ BigNumber.o: BigNumber/src/BigNumber/BigNumber.cpp BigNumber/src/BigNumber/BigNu
 VM_functions.o: VM_functions.cpp VM_functions.h
 	$(CXX) $(CFLAGS) -c VM_functions.cpp $(LDFLAGS)
 
-main.o: main.cpp
+main.o: main.cpp number.o BigNumber.o
 	$(CXX) $(CFLAGS) -c main.cpp $(LDFLAGS)
 
 VM.o: VM.h VM.cpp VM_confs.h number.o BigNumber.o
-	$(CXX) $(CFLAGS) -c VM.cpp $(LDFLAGS)
+	$(CXX) $(CFLAGS) -c VM.cpp number.o BigNumber.o $(LDFLAGS)
 
-assembler_functions.o: assembler_functions.h assembler_functions.cpp
+assembler_functions.o: number.o BigNumber.o assembler_functions.h assembler_functions.cpp
 	$(CXX) $(CFLAGS) -c assembler_functions.cpp $(LDFLAGS)
 
 clean:
-	$(RM) *.o VM assembler disassembler mkll repl
+	$(RM) *.o VM assembler disassembler mkll repl mkcc
 .PHONY: clean

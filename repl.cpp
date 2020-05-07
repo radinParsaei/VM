@@ -9,13 +9,13 @@
 using namespace std;
 
 int main(int argc, char const **argv) {
-  vector<value> prog;
+  vector<Value> prog;
   string line;
   VM *vm = new VM();
-  vector<value> mem;
+  vector<Value> mem;
   vm->attachMem(&mem);
   while(getline(cin, line)){
-    for(value val : assemble(line)){
+    for(Value val : assemble(Utils::stringDuplicate(line.c_str()))){
       prog.push_back(val);
     }
     vm->autoKill = true;

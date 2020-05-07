@@ -13,8 +13,8 @@
 #include <thread>
 #include "VM.h"
 
-inline std::vector<value> stack;
-inline std::vector<value> *mem = new std::vector<value>();
+inline std::vector<Value> stack;
+inline std::vector<Value> *mem = new std::vector<Value>();
 
 extern "C" void DLCALL_task();
 extern "C" void PRINT_task();
@@ -63,3 +63,4 @@ extern "C" void CANNUM_task();
 extern "C" void ISNUM_task();
 extern "C" void EXIT_task();
 #endif
+

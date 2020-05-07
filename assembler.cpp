@@ -21,10 +21,10 @@ int main(int argc, char const **argv) {
   ofile.open(filename, ios::binary);
   ifstream fin;
   fin.open(argv[1]);
-  vector<value> prog;
+  vector<Value> prog;
   string line;
   while(getline(fin, line)){
-    for(value val : assemble(line)){
+    for(Value val : assemble(Utils::stringDuplicate(line.c_str()))){
       prog.push_back(val);
     }
   }

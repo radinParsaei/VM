@@ -3,155 +3,155 @@
 
 using namespace std;
 
-string rtrim(string s) {
+char* rtrim(char* s) {
   int i = 0;
   while (s[i] == ' ' || s[i] == '\t'){
     i++;
-    s = s.substr(i, s.size() - i);
+    s = Utils::substring(s, strlen(s) - i, i);
   }
   return s;
 }
 
-vector<value> assemble(string line){
-  vector<value> prog;
+vector<Value> assemble(char* line){
+  vector<Value> prog;
   line = rtrim(line);
-  if(line.find("PUT") == 0){
-    line = line.substr(3, line.size() - 3);
+  if(Utils::find(line, Utils::stringDuplicate("PUT")) == 0){
+    line = Utils::substring(line, strlen(line) - 3, 3);
     prog.push_back(PUT);
     line = rtrim(line);
-    if(line.find("NUM") == 0){
-      line = rtrim(line.substr(3, line.size() - 3));
+    if(Utils::find(line, Utils::stringDuplicate("NUM")) == 0){
+      line = rtrim(Utils::substring(line, strlen(line) - 3, 3));
       int i = 0;
       while ((isdigit(line[i]) || line[i] == '.') || line[i] == '-')i++;
-      prog.push_back(BigNumber(line.substr(0, i).c_str()));
+      prog.push_back(NUMBER(Utils::substring(line, i)));
     } else {
-      line = line.substr(3, line.size() - 3);
-      line = VM::strReplace(line, "\\n", "\n");
-      line = VM::strReplace(line, "\\\n", "\\n");
-      line = VM::strReplace(line, "\\t", "\t");
-      line = VM::strReplace(line, "\\\t", "\\t");
-      line = VM::strReplace(line, "\\r", "\r");
-      line = VM::strReplace(line, "\\\r", "\\r");
-      line = VM::strReplace(line, "\\a", "\a");
-      line = VM::strReplace(line, "\\\a", "\\a");
-      line = VM::strReplace(line, "\\b", "\b");
-      line = VM::strReplace(line, "\\\b", "\\b");
-      line = VM::strReplace(line, "\\f", "\f");
-      line = VM::strReplace(line, "\\\f", "\\f");
-      line = VM::strReplace(line, "\\\'", "\'");
-      line = VM::strReplace(line, "\\\"", "\"");
-      line = VM::strReplace(line, "\\\\", "\\");
+      line = Utils::stringDuplicate(Utils::substring(line, strlen(line) - 3, 3));
+      line = Utils::stringDuplicate(Utils::replace(line, "\\n", "\n"));
+      line = Utils::stringDuplicate(Utils::replace(line, "\\\n", "\\n"));
+      line = Utils::stringDuplicate(Utils::replace(line, "\\t", "\t"));
+      line = Utils::stringDuplicate(Utils::replace(line, "\\\t", "\\t"));
+      line = Utils::stringDuplicate(Utils::replace(line, "\\r", "\r"));
+      line = Utils::stringDuplicate(Utils::replace(line, "\\\r", "\\r"));
+      line = Utils::stringDuplicate(Utils::replace(line, "\\a", "\a"));
+      line = Utils::stringDuplicate(Utils::replace(line, "\\\a", "\\a"));
+      line = Utils::stringDuplicate(Utils::replace(line, "\\b", "\b"));
+      line = Utils::stringDuplicate(Utils::replace(line, "\\\b", "\\b"));
+      line = Utils::stringDuplicate(Utils::replace(line, "\\f", "\f"));
+      line = Utils::stringDuplicate(Utils::replace(line, "\\\f", "\\f"));
+      line = Utils::stringDuplicate(Utils::replace(line, "\\\'", "\'"));
+      line = Utils::stringDuplicate(Utils::replace(line, "\\\"", "\""));
+      line = Utils::stringDuplicate(Utils::replace(line, "\\\\", "\\"));
       prog.push_back(line);
     }
-  } else if(line.find("ADD") == 0){
+  } else if(Utils::find(line, Utils::stringDuplicate("ADD")) == 0){
     prog.push_back(ADD);
-  } else if(line.find("SUB") == 0){
+  } else if(Utils::find(line, Utils::stringDuplicate("SUB")) == 0){
     prog.push_back(SUB);
-  } else if(line.find("MUL") == 0){
+  } else if(Utils::find(line, Utils::stringDuplicate("MUL")) == 0){
     prog.push_back(MUL);
-  } else if(line.find("PRINTLN") == 0){
+  } else if(Utils::find(line, Utils::stringDuplicate("PRINTLN")) == 0){
     prog.push_back(PRINTLN);
-  } else if(line.find("DIV") == 0){
+  } else if(Utils::find(line, Utils::stringDuplicate("DIV")) == 0){
     prog.push_back(DIV);
-  } else if(line.find("MOD") == 0){
+  } else if(Utils::find(line, Utils::stringDuplicate("MOD")) == 0){
     prog.push_back(MOD);
-  } else if(line.find("PRINT") == 0){
+  } else if(Utils::find(line, Utils::stringDuplicate("PRINT")) == 0){
     prog.push_back(PRINT);
-  } else if(line.find("DLCALL") == 0){
+  } else if(Utils::find(line, Utils::stringDuplicate("DLCALL")) == 0){
     prog.push_back(DLCALL);
-  } else if(line.find("REC") == 0){
+  } else if(Utils::find(line, Utils::stringDuplicate("REC")) == 0){
     prog.push_back(REC);
-  } else if(line.find("END") == 0){
+  } else if(Utils::find(line, Utils::stringDuplicate("END")) == 0){
     prog.push_back(END);
-  } else if(line.find("RUN") == 0){
+  } else if(Utils::find(line, Utils::stringDuplicate("RUN")) == 0){
     prog.push_back(RUN);
-  } else if(line.find("POP") == 0){
+  } else if(Utils::find(line, Utils::stringDuplicate("POP")) == 0){
     prog.push_back(POP);
-  } else if(line.find("LOGSTCK") == 0){
+  } else if(Utils::find(line, Utils::stringDuplicate("LOGSTCK")) == 0){
     prog.push_back(LOGSTCK);
-  } else if(line.find("REPEAT") == 0){
+  } else if(Utils::find(line, Utils::stringDuplicate("REPEAT")) == 0){
     prog.push_back(REPEAT);
-  } else if(line.find("EQ") == 0){
+  } else if(Utils::find(line, Utils::stringDuplicate("EQ")) == 0){
     prog.push_back(EQ);
-  } else if(line.find("FEQ") == 0){
+  } else if(Utils::find(line, Utils::stringDuplicate("FEQ")) == 0){
     prog.push_back(FEQ);
-  } else if(line.find("GT") == 0){
+  } else if(Utils::find(line, Utils::stringDuplicate("GT")) == 0){
     prog.push_back(GT);
-  } else if(line.find("GE") == 0){
+  } else if(Utils::find(line, Utils::stringDuplicate("GE")) == 0){
     prog.push_back(GE);
-  } else if(line.find("LT") == 0){
+  } else if(Utils::find(line, Utils::stringDuplicate("LT")) == 0){
     prog.push_back(LT);
-  } else if(line.find("LE") == 0){
+  } else if(Utils::find(line, Utils::stringDuplicate("LE")) == 0){
     prog.push_back(LE);
-  } else if(line.find("LAND") == 0){
+  } else if(Utils::find(line, Utils::stringDuplicate("LAND")) == 0){
     prog.push_back(LAND);
-  } else if(line.find("AND") == 0){
+  } else if(Utils::find(line, Utils::stringDuplicate("AND")) == 0){
     prog.push_back(AND);
-  } else if(line.find("LOR") == 0){
+  } else if(Utils::find(line, Utils::stringDuplicate("LOR")) == 0){
     prog.push_back(LOR);
-  } else if(line.find("OR") == 0){
+  } else if(Utils::find(line, Utils::stringDuplicate("OR")) == 0){
     prog.push_back(OR);
-  } else if(line.find("NOT") == 0){
+  } else if(Utils::find(line, Utils::stringDuplicate("NOT")) == 0){
     prog.push_back(NOT);
-  } else if(line.find("LNOT") == 0){
+  } else if(Utils::find(line, Utils::stringDuplicate("LNOT")) == 0){
     prog.push_back(LNOT);
-  } else if(line.find("LSHIFT") == 0){
+  } else if(Utils::find(line, Utils::stringDuplicate("LSHIFT")) == 0){
     prog.push_back(LSHIFT);
-  } else if(line.find("RSHIFT") == 0){
+  } else if(Utils::find(line, Utils::stringDuplicate("RSHIFT")) == 0){
     prog.push_back(RSHIFT);
-  } else if(line.find("XOR") == 0){
+  } else if(Utils::find(line, Utils::stringDuplicate("XOR")) == 0){
     prog.push_back(XOR);
-  } else if(line.find("NEG") == 0){
+  } else if(Utils::find(line, Utils::stringDuplicate("NEG")) == 0){
     prog.push_back(NEG);
-  } else if(line.find("BREAK") == 0){
+  } else if(Utils::find(line, Utils::stringDuplicate("BREAK")) == 0){
     prog.push_back(BREAK);
-  } else if(line.find("WTRUN") == 0){
+  } else if(Utils::find(line, Utils::stringDuplicate("WTRUN")) == 0){
     prog.push_back(WTRUN);
-  } else if(line.find("WFRUN") == 0){
+  } else if(Utils::find(line, Utils::stringDuplicate("WFRUN")) == 0){
     prog.push_back(WFRUN);
-  } else if(line.find("IFFRUN") == 0){
+  } else if(Utils::find(line, Utils::stringDuplicate("IFFRUN")) == 0){
     prog.push_back(IFFRUN);
-  } else if(line.find("IFTRUN") == 0){
+  } else if(Utils::find(line, Utils::stringDuplicate("IFTRUN")) == 0){
     prog.push_back(IFTRUN);
-  } else if(line.find("THREAD") == 0){
+  } else if(Utils::find(line, Utils::stringDuplicate("THREAD")) == 0){
     prog.push_back(THREAD);
-  } else if(line.find("MEMGET") == 0){
+  } else if(Utils::find(line, Utils::stringDuplicate("MEMGET")) == 0){
     prog.push_back(MEMGET);
-  } else if(line.find("MEMSET") == 0){
+  } else if(Utils::find(line, Utils::stringDuplicate("MEMSET")) == 0){
     prog.push_back(MEMSET);
-  } else if(line.find("MEMSIZE") == 0){
+  } else if(Utils::find(line, Utils::stringDuplicate("MEMSIZE")) == 0){
     prog.push_back(MEMSIZE);
-  } else if(line.find("MEMPUT") == 0){
+  } else if(Utils::find(line, Utils::stringDuplicate("MEMPUT")) == 0){
     prog.push_back(MEMPUT);
-  } else if(line.find("MEMINS") == 0){
+  } else if(Utils::find(line, Utils::stringDuplicate("MEMINS")) == 0){
     prog.push_back(MEMINS);
-  } else if(line.find("MEMDEL") == 0){
+  } else if(Utils::find(line, Utils::stringDuplicate("MEMDEL")) == 0){
     prog.push_back(MEMDEL);
-  } else if(line.find("TOTXT") == 0){
+  } else if(Utils::find(line, Utils::stringDuplicate("TOTXT")) == 0){
     prog.push_back(TOTXT);
-  } else if(line.find("TONUM") == 0){
+  } else if(Utils::find(line, Utils::stringDuplicate("TONUM")) == 0){
     prog.push_back(TONUM);
-  } else if(line.find("CANNUM") == 0){
+  } else if(Utils::find(line, Utils::stringDuplicate("CANNUM")) == 0){
     prog.push_back(CANNUM);
-  } else if(line.find("ISNUM") == 0){
+  } else if(Utils::find(line, Utils::stringDuplicate("ISNUM")) == 0){
     prog.push_back(ISNUM);
-  } else if(line.find("EXIT") == 0){
+  } else if(Utils::find(line, Utils::stringDuplicate("EXIT")) == 0){
     prog.push_back(EXIT);
   }
   return prog;
 }
 
-vector<Record> mkRec(vector<value> vals){
+vector<Record> mkRec(vector<Value> vals){
   vector<Record> records;
-  for(value v : vals){
-    if(VM::getValType(v) == TYPE_NUM){
+  for(Value v : vals){
+    if(v.getType() == TYPE_NUM){
       Record r;
       r.type = TYPE_NUM;
-      r.value = stof(get<BigNumber>(v).toString());
+      r.value = stof(v.getNumber().toString());
       records.push_back(r);
     } else {
       Record r;
-      string str = get<string>(v);
+      string str = v.getString();
       r.type = TYPE_TEXT;
       for (size_t i = 0; i < str.size(); i++) {
         r.value = str[i];

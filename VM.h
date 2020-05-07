@@ -57,7 +57,6 @@
 #include <vector>
 #include <string.h>
 #include <sstream>
-#include <variant>
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
 #include <windows.h>
 #else
@@ -65,6 +64,7 @@
 #endif
 #include <thread>
 #include <BigNumber.h>
+#include <value.h>
 
 #include "VM_confs.h"
 
@@ -76,54 +76,50 @@
 #warning VM_DISASSEMBLE enabled
 #endif
 
-typedef std::variant<BigNumber, std::string> value;
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
-typedef std::vector<value> (__stdcall *dlfunc)(std::vector<value>);
+typedef std::vector<Value> (__stdcall *dlfunc)(std::vector<Value>);
 #else
-typedef std::vector<value> (*dlfunc)(std::vector<value> args);
+typedef std::vector<Value> (*dlfunc)(std::vector<Value> args);
 #endif
 
 class VM {
   public:
     void printStack();
-    static bool disassemble(int prog, value val, std::string end = "\t");
+    static bool disassemble(int prog, Value val, std::string end = "\t");
     bool running;
     bool autoKill;
     VM();
-    void run(std::vector<value> prog, bool forceRun = true, int pc = 0);
-    bool run1(int prog, value arg);
-    static std::string strReplace(std::string str, std::string from, std::string to);
-    static bool getValType(value v);
-    static BigNumber toNUM(value v);
-    static std::string val2str(value v);
-    static value add2val(value v1, value v2);
-    static value sub2val(value v1, value v2);
-    static value mul2val(value v1, value v2);
-    static value div2val(value v1, value v2);
-    static value mod2val(value v1, value v2);
-    static value isEQ(value v1, value v2);
-    static value isFEQ(value v1, value v2);
-    static value isGT(value v1, value v2);
-    static value isGE(value v1, value v2);
-    static value isLT(value v1, value v2);
-    static value isLE(value v1, value v2);
-    static value LAND2val(value v1, value v2); //logical AND
-    static value LOR2val(value v1, value v2); //logical OR
-    static value AND2val(value v1, value v2); //bitwise AND
-    static value OR2val(value v1, value v2); //bitwise OR
-    static value NOTval(value v); //bitwise NOT
-    static value LNOTval(value v); //logical AND
-    static value LSHIFT2val(value v1, value v2); //left shift
-    static value RSHIFT2val(value v1, value v2); //right shift
-    static value XOR2val(value v1, value v2); //XOR
-    static value NEGval(value v); //NEG
-    std::vector<value> getStack();
-    void setStack(std::vector<value> v);
-    void attachMem(std::vector<value> *mem);
+    void run(std::vector<Value> prog, bool forceRun = true, int pc = 0);
+    bool run1(int prog, Value arg);
+    static BigNumber toNUM(Value v);
+    static Value add2val(Value v1, Value v2);
+    static Value sub2val(Value v1, Value v2);
+    static Value mul2val(Value v1, Value v2);
+    static Value div2val(Value v1, Value v2);
+    static Value mod2val(Value v1, Value v2);
+    static Value isEQ(Value v1, Value v2);
+    static Value isFEQ(Value v1, Value v2);
+    static Value isGT(Value v1, Value v2);
+    static Value isGE(Value v1, Value v2);
+    static Value isLT(Value v1, Value v2);
+    static Value isLE(Value v1, Value v2);
+    static Value LAND2val(Value v1, Value v2); //logical AND
+    static Value LOR2val(Value v1, Value v2); //logical OR
+    static Value AND2val(Value v1, Value v2); //bitwise AND
+    static Value OR2val(Value v1, Value v2); //bitwise OR
+    static Value NOTval(Value v); //bitwise NOT
+    static Value LNOTval(Value v); //logical AND
+    static Value LSHIFT2val(Value v1, Value v2); //left shift
+    static Value RSHIFT2val(Value v1, Value v2); //right shift
+    static Value XOR2val(Value v1, Value v2); //XOR
+    static Value NEGval(Value v); //NEG
+    std::vector<Value> getStack();
+    void setStack(std::vector<Value> v);
+    void attachMem(std::vector<Value> *mem);
   private:
-    std::vector<value> stack;//stack memory
-    std::vector<value> *mempointer;//storage for saving variables data
-    value pop();//pops a data from the stack
+    std::vector<Value> stack;//stack memory
+    std::vector<Value> *mempointer;//storage for saving variables data
+    Value pop();//pops a data from the stack
     int rec = 0;
     int recsize;
     int exit_code;

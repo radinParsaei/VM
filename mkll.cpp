@@ -61,7 +61,7 @@ int main(int argc, char const *argv[]){
   cout << "declare void @TONUM_task()\n";
   cout << "declare void @ISNUM_task()\n";
   cout << "declare void @CANNUM_task()\n";
-  vector<value> vals;
+  vector<Value> vals;
   Record r;
   bool wait = false;
   ostringstream strings;
@@ -79,7 +79,7 @@ int main(int argc, char const *argv[]){
         if(r.type != TYPE_NUM)
           stream << (char)r.value;
         else {
-          vals.push_back(stream.str());
+          vals.push_back(stream.str().c_str());
           add = false;
           vals.push_back(r.value);
           if(r.value == PUT){
@@ -88,7 +88,7 @@ int main(int argc, char const *argv[]){
           break;
         }
       }
-      if(add)vals.push_back(stream.str());
+      if(add)vals.push_back(stream.str().c_str());
     } else {
       vals.push_back(r.value);
       if(r.value == PUT){
@@ -97,10 +97,10 @@ int main(int argc, char const *argv[]){
     }
     if(!wait){
       for(int c = 0; c < vals.size(); c++){
-        value v = vals[c];
+        Value v = vals[c];
         if(rec){
-          if(VM::getValType(vals[c]) == TYPE_NUM){
-            if(std::get<BigNumber>(vals[c]) == END){
+          if(vals[c].getType() == TYPE_NUM){
+            if(vals[c].getNumber() == END){
               rec--;
               if(rec == 0){
                 cout << "call void @PUT_taski(double " << recsize << ".0)\n";
@@ -110,44 +110,44 @@ int main(int argc, char const *argv[]){
               }
             }
             recsize++;
-            if(VM::val2str(vals[c]).find(".") == -1)
-              cout << "call void @PUT_taski(double " << VM::val2str(vals[c]) << ".0)\n";
+            if(Utils::find(vals[c].toString(), ".") == -1)
+              cout << "call void @PUT_taski(double " << vals[c].toString() << ".0)\n";
             else
-              cout << "call void @PUT_taski(double " << VM::val2str(vals[c]) << ")\n";
-            if(std::get<BigNumber>(vals[c]) == PUT){
+              cout << "call void @PUT_taski(double " << vals[c].toString() << ")\n";
+            if(vals[c].getNumber() == PUT){
               c++;
               recsize++;
-              if(VM::getValType(vals[c]) == TYPE_NUM){
-                if(VM::val2str(vals[c]).find(".") == -1)
-                  cout << "call void @PUT_taski(double " << VM::val2str(vals[c]) << ".0)\n";
+              if(vals[c].getType() == TYPE_NUM){
+                if(Utils::find(vals[c].toString(), ".") == -1)
+                  cout << "call void @PUT_taski(double " << vals[c].toString() << ".0)\n";
                 else
-                  cout << "call void @PUT_taski(double " << VM::val2str(vals[c]) << ")\n";
+                  cout << "call void @PUT_taski(double " << vals[c].toString() << ")\n";
               } else {
                 strc++;
-                strings << "@.str" << strc << " = private unnamed_addr constant [" << VM::val2str(vals[c]).size() + 1 << " x i8] c\"" << VM::val2str(vals[c]) << "\\00\"\n";
-                cout << "call void @PUT_tasks(i8* getelementptr inbounds ([" << VM::val2str(vals[c]).size() + 1 << " x i8], [" << VM::val2str(vals[c]).size() + 1 << " x i8]* @.str" << strc << ", i32 0, i32 0))\n";
+                strings << "@.str" << strc << " = private unnamed_addr constant [" << strlen(vals[c].toString()) + 1 << " x i8] c\"" << vals[c].toString() << "\\00\"\n";
+                cout << "call void @PUT_tasks(i8* getelementptr inbounds ([" << strlen(vals[c].toString()) + 1 << " x i8], [" << strlen(vals[c].toString()) + 1 << " x i8]* @.str" << strc << ", i32 0, i32 0))\n";
               }
-            } else if(std::get<BigNumber>(vals[c]) == REC){
+            } else if(vals[c].getNumber() == REC){
               rec++;
             }
           } else {
             strc++;
-            strings << "@.str" << strc << " = private unnamed_addr constant [" << VM::val2str(vals[c]).size() + 1 << " x i8] c\"" << VM::val2str(vals[c]) << "\\00\"\n";
-            cout << "call void @PUT_tasks(i8* getelementptr inbounds ([" << VM::val2str(vals[c]).size() + 1 << " x i8], [" << VM::val2str(vals[c]).size() + 1 << " x i8]* @.str" << strc << ", i32 0, i32 0))\n";
+            strings << "@.str" << strc << " = private unnamed_addr constant [" << strlen(vals[c].toString()) + 1 << " x i8] c\"" << vals[c].toString() << "\\00\"\n";
+            cout << "call void @PUT_tasks(i8* getelementptr inbounds ([" << strlen(vals[c].toString()) + 1 << " x i8], [" << strlen(vals[c].toString()) + 1 << " x i8]* @.str" << strc << ", i32 0, i32 0))\n";
           }
-        } else if (VM::getValType(v) == TYPE_NUM) {
-            switch ((int)get<BigNumber>(v)) {
+        } else if (v.getType() == TYPE_NUM) {
+            switch (v.getLong()) {
               case PUT:
                 c++;
-                if(VM::getValType(vals[c]) == TYPE_NUM){
-                  if(VM::val2str(vals[c]).find(".") == -1)
-                    cout << "call void @PUT_taski(double " << VM::val2str(vals[c]) << ".0)\n";
+                if(vals[c].getType() == TYPE_NUM){
+                  if(Utils::find(vals[c].toString(), ".") == -1)
+                    cout << "call void @PUT_taski(double " << vals[c].toString() << ".0)\n";
                   else
-                    cout << "call void @PUT_taski(double " << VM::val2str(vals[c]) << ")\n";
+                    cout << "call void @PUT_taski(double " << vals[c].toString() << ")\n";
                 } else {
                   strc++;
-                  strings << "@.str" << strc << " = private unnamed_addr constant [" << VM::val2str(vals[c]).size() + 1 << " x i8] c\"" << VM::val2str(vals[c]) << "\\00\"\n";
-                  cout << "call void @PUT_tasks(i8* getelementptr inbounds ([" << VM::val2str(vals[c]).size() + 1 << " x i8], [" << VM::val2str(vals[c]).size() + 1 << " x i8]* @.str" << strc << ", i32 0, i32 0))\n";
+                  strings << "@.str" << strc << " = private unnamed_addr constant [" << strlen(vals[c].toString()) + 1 << " x i8] c\"" << vals[c].toString() << "\\00\"\n";
+                  cout << "call void @PUT_tasks(i8* getelementptr inbounds ([" << strlen(vals[c].toString()) + 1 << " x i8], [" << strlen(vals[c].toString()) + 1 << " x i8]* @.str" << strc << ", i32 0, i32 0))\n";
                 }
                 break;
               case EXIT:

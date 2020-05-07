@@ -1,13 +1,13 @@
 #include "VM_functions.h"
 
-value pop(){
-  value v = stack[stack.size() - 1];
+Value pop(){
+  Value v = stack[stack.size() - 1];
   stack.pop_back();
   return v;
 }
 
 extern "C" void TOTXT_task(){
-  stack.push_back(VM::val2str(pop()));
+  stack.push_back(pop().toString());
 }
 
 extern "C" void TONUM_task(){
@@ -16,12 +16,13 @@ extern "C" void TONUM_task(){
 
 extern "C" void CANNUM_task(){
   if(stack.size() == 0) return;
-  value v = stack[stack.size() - 1];
-  if(!VM::getValType(v)){
+  Value v = stack[stack.size() - 1];
+  if(!v.getType()){
     stack.push_back(1);
   } else {
-    for(char c : std::get<std::string>(v)){
-      if(!isdigit(c)){
+    int64_t i = 0;
+    for(; v.getString()[i] != 0; i++){
+      if(!isdigit(v.getString()[i])){
         stack.push_back(0);
         return;
       }
@@ -32,7 +33,7 @@ extern "C" void CANNUM_task(){
 
 extern "C" void ISNUM_task(){
   if(stack.size() == 0) return;
-  stack.push_back(!VM::getValType(stack[stack.size() - 1]));
+  stack.push_back(!stack[stack.size() - 1].getType());
 }
 
 extern "C" void MEMPUT_task(){
@@ -40,11 +41,11 @@ extern "C" void MEMPUT_task(){
 }
 
 extern "C" void MEMINS_task(){
-  mem->insert(mem->begin() + std::get<BigNumber>(pop()), pop());
+  mem->insert(mem->begin() + pop().getLong(), pop());
 }
 
 extern "C" void MEMDEL_task(){
-  mem->erase(mem->begin() + std::get<BigNumber>(pop()));
+  mem->erase(mem->begin() + pop().getLong());
 }
 
 extern "C" void MEMSIZE_task(){
@@ -52,18 +53,18 @@ extern "C" void MEMSIZE_task(){
 }
 
 extern "C" void MEMSET_task(){
-  int n = std::get<BigNumber>(pop());
+  int n = pop().getLong();
   if(mem->size() < (n + 1))mem->resize(n + 1);
   mem->at(n) = pop();
 }
 
 extern "C" void MEMGET_task(){
-  stack.push_back(mem->at(std::get<BigNumber>(pop())));
+  stack.push_back(mem->at(pop().getLong()));
 }
 
 extern "C" void THREAD_task(){
-  std::vector<value> prog;
-  int ps = std::get<BigNumber>(pop());
+  std::vector<Value> prog;
+  int ps = pop().getLong();
   for(; ps > 0; ps--){
     prog.insert(prog.begin(), pop());
   }
@@ -79,10 +80,10 @@ extern "C" void DLCALL_task(){
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
   HINSTANCE hinstLib;
   dlfunc fn;
-  std::string s = std::get<std::string>(pop());
+  std::string s = pop().getString();
   hinstLib = LoadLibraryA(s.c_str());
   if(hinstLib != NULL){
-    fn = (dlfunc) GetProcAddress(hinstLib, (LPCSTR)std::get<std::string>(pop()).c_str());
+    fn = (dlfunc) GetProcAddress(hinstLib, (LPCSTR)pop().getString().c_str());
     if (NULL != fn){
       stack = fn(stack);
     } else {
@@ -96,14 +97,14 @@ extern "C" void DLCALL_task(){
 #else
   void* lib;
   dlfunc fn;
-  lib = dlopen(VM::val2str(pop()).c_str(), RTLD_LAZY);
+  lib = dlopen(pop().toString(), RTLD_LAZY);
   if(!lib){
     std::cerr << "CANNOT OPEN LIBRARY\n";
     std::cerr << dlerror();
     return;
   }
   dlerror();//clear errors
-  fn = ((dlfunc)dlsym(lib, VM::val2str(pop()).c_str()));
+  fn = ((dlfunc)dlsym(lib, pop().toString()));
   stack = fn(stack);
   dlclose(lib);
 #endif
@@ -112,8 +113,8 @@ extern "C" void DLCALL_task(){
 extern "C" void RUN_task(){
   VM vm;
   vm.attachMem(mem);
-  std::vector<value> prog;
-  int ps = std::get<BigNumber>(pop());
+  std::vector<Value> prog;
+  int ps = pop().getLong();
   for(int i = 0; i < ps; i++){
     prog.insert(prog.begin(), pop());
   }
@@ -130,7 +131,7 @@ extern "C" void POP_task(){
 extern "C" void LOGSTCK_task(){
   std::cout << "[";
   for(int i = 0; i < stack.size(); i++){
-    std::cout << VM::val2str(stack[i]) << ((i + 1) == stack.size()? "":", ");
+    std::cout << stack[i].toString() << ((i + 1) == stack.size()? "":", ");
   }
   std::cout << "]";
 }
@@ -140,15 +141,15 @@ extern "C" void PRINTLN_task(){
 }
 
 extern "C" void PRINT_task(){
-  std::cout << VM::val2str(pop());
+  std::cout << pop().toString();
 }
 
 extern "C" void REPEAT_task(){
   VM vm;
   vm.attachMem(mem);
-  int count = VM::toNUM(pop());
-  std::vector<value> prog;
-  int ps = std::get<BigNumber>(pop());
+  int count = VM::toNUM(pop()).toLong();
+  std::vector<Value> prog;
+  int ps = pop().getLong();
   for(int i = 0; i < ps; i++){
     prog.insert(prog.begin(), pop());
   }
@@ -162,12 +163,12 @@ extern "C" void REPEAT_task(){
 
 extern "C" void WTRUN_task(){
   if(stack.size() < 2)return;
-  if(!VM::getValType(stack[stack.size() - 1])){
-    bool tos = std::get<BigNumber>(stack[stack.size() - 1]);
+  if(!stack[stack.size() - 1].getType()){
+    bool tos = stack[stack.size() - 1].getLong();
     if(tos){
       stack.pop_back();
-      std::vector<value> prog;
-      int ps = std::get<BigNumber>(pop());
+      std::vector<Value> prog;
+      int ps = pop().getLong();
       for(; ps > 0; ps--){
         prog.insert(prog.begin(), pop());
       }
@@ -178,7 +179,7 @@ extern "C" void WTRUN_task(){
         vm.autoKill = true;
         vm.run(prog);
         stack = vm.getStack();
-        tos = std::get<BigNumber>(stack[stack.size() - 1]);
+        tos = stack[stack.size() - 1].getLong();
         if(tos)stack.pop_back();
       }
     }
@@ -188,12 +189,12 @@ extern "C" void WTRUN_task(){
 
 extern "C" void IFTRUN_task(){
   if(stack.size() < 2)return;
-  if(!VM::getValType(stack[stack.size() - 1])){
-    bool tos = std::get<BigNumber>(stack[stack.size() - 1]);
+  if(!stack[stack.size() - 1].getType()){
+    bool tos = stack[stack.size() - 1].getLong();
     if(tos){
       stack.pop_back();
-      std::vector<value> prog;
-      int ps = std::get<BigNumber>(pop());
+      std::vector<Value> prog;
+      int ps = pop().getLong();
       for(; ps > 0; ps--){
         prog.insert(prog.begin(), pop());
       }
@@ -209,12 +210,12 @@ extern "C" void IFTRUN_task(){
 
 extern "C" void IFFRUN_task(){
   if(stack.size() < 2)return;
-  if(!VM::getValType(stack[stack.size() - 1])){
-    bool tos = std::get<BigNumber>(stack[stack.size() - 1]);
+  if(!stack[stack.size() - 1].getType()){
+    bool tos = stack[stack.size() - 1].getLong();
     if(!tos){
       stack.pop_back();
-      std::vector<value> prog;
-      int ps = std::get<BigNumber>(pop());
+      std::vector<Value> prog;
+      int ps = pop().getLong();
       for(; ps > 0; ps--){
         prog.insert(prog.begin(), pop());
       }
@@ -230,12 +231,12 @@ extern "C" void IFFRUN_task(){
 
 extern "C" void WFRUN_task(){
   if(stack.size() < 2)return;
-  if(!VM::getValType(stack[stack.size() - 1])){
-    bool tos = std::get<BigNumber>(stack[stack.size() - 1]);
+  if(!stack[stack.size() - 1].getType()){
+    bool tos = stack[stack.size() - 1].getLong();
     if(!tos){
       stack.pop_back();
-      std::vector<value> prog;
-      int ps = std::get<BigNumber>(pop());
+      std::vector<Value> prog;
+      int ps = pop().getLong();
       for(; ps > 0; ps--){
         prog.insert(prog.begin(), pop());
       }
@@ -246,7 +247,7 @@ extern "C" void WFRUN_task(){
         vm.autoKill = true;
         vm.run(prog);
         stack = vm.getStack();
-        tos = std::get<BigNumber>(stack[stack.size() - 1]);
+        tos = stack[stack.size() - 1].getLong();
         if(!tos)stack.pop_back();
       }
     }
@@ -254,7 +255,7 @@ extern "C" void WFRUN_task(){
 }
 
 extern "C" void EXIT_task(){
-  exit(VM::toNUM(pop()));
+  exit(VM::toNUM(pop()).toLong());
 }
 
 extern "C" void ADD_task(){
@@ -346,5 +347,5 @@ extern "C" void PUT_taski(double data){
 }
 
 extern "C" void PUT_tasks(const char* data){
-  stack.push_back(std::string(data));
+  stack.push_back(data);
 }
