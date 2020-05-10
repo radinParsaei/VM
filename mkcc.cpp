@@ -15,13 +15,12 @@ int main(int argc, char const *argv[]){
     cerr << "can't open file" << '\n';
     return 1;
   }
-  cout << "#include \"VM_functions.h\"\n";
+  cout << "#include \"VM.h\"\n";
   vector<Value> vals;
   Record r;
   bool wait = false;
-  int rec = 0;
-  int recsize = 0;
   cout << "int main(int argc, char** argv){\n";
+  cout << "VM vm;\nstd::vector<Value>* mem = new std::vector<Value>();\nvm.attachMem(mem);\n";
   while(f.read((char*)&r, sizeof(Record))){
     wait = false;
     if(r.type == TYPE_TEXT){
@@ -51,179 +50,14 @@ int main(int argc, char const *argv[]){
     if(!wait){
       for(int c = 0; c < vals.size(); c++){
         Value v = vals[c];
-        if(rec){
-          if(vals[c].getType() == TYPE_NUM){
-            if(vals[c].getNumber() == END){
-              rec--;
-              if(rec == 0){
-                cout << "PUT_taski(" << recsize << ");\n";
-                recsize = 0;
-                c--;
-                continue;
-              }
-            }
-            recsize++;
-            cout << "PUT_taski(" << vals[c].toString() << ");\n";
-            if(vals[c].getNumber() == PUT){
-              c++;
-              recsize++;
-              if(vals[c].getType() == TYPE_NUM){
-                cout << "PUT_taski(" << vals[c].toString() << ");\n";
-              } else {
-                cout << "PUT_tasks(\"" << vals[c].toString() << "\");\n";
-              }
-            } else if(vals[c].getNumber() == REC){
-              rec++;
-            }
-          } else {
-            cout << "PUT_tasks(\"" << vals[c].toString() << "\");\n";
+        if (v.getType() == TYPE_NUM) {
+          cout << "vm.run1(" << v.toString();
+          if (v.getLong() == PUT) {
+            cout << ", " << (vals[++c].getType()? "\"":"") << vals[c].toString() << (vals[c].getType()? "\"":"");
           }
-        } else if (v.getType() == TYPE_NUM) {
-            switch (v.getNumber().toLong()) {
-              case PUT:
-                c++;
-                if(vals[c].getType() == TYPE_NUM){
-                  cout << "PUT_taski(" << vals[c].toString() << ");\n";
-                } else {
-                  cout << "PUT_tasks(\"" << vals[c].toString() << "\");\n";
-                }
-                break;
-              case EXIT:
-                cout << "EXIT_task();\n";
-              case PRINT:
-                cout << "PRINT_task();\n";
-                break;
-              case ADD:
-                cout << "ADD_task();\n";
-                break;
-              case SUB:
-                cout << "SUB_task();\n";
-                break;
-              case MUL:
-                cout << "MUL_task();\n";
-                break;
-              case DIV:
-                cout << "DIV_task();\n";
-                break;
-              case MOD:
-                cout << "MOD_task();\n";
-                break;
-              case DLCALL:
-                cout << "DLCALL_task();\n";
-                break;
-              case REC:
-                rec++;
-                break;
-              case RUN:
-                cout << "RUN_task();\n";
-                break;
-              case POP:
-                cout << "POP_task();\n";
-                break;
-              case LOGSTCK:
-                cout << "LOGSTCK_task();\n";
-                break;
-              case PRINTLN:
-                cout << "PRINTLN_task();\n";
-                break;
-              case REPEAT:
-                cout << "REPEAT_task();\n";
-                break;
-              case EQ:
-                cout << "EQ_task();\n";
-                break;
-              case FEQ:
-                cout << "FEQ_task();\n";
-                break;
-              case GT:
-                cout << "GT_task();\n";
-                break;
-              case GE:
-                cout << "GE_task();\n";
-                break;
-              case LT:
-                cout << "LT_task();\n";
-                break;
-              case LE:
-                cout << "LE_task();\n";
-                break;
-              case LAND:
-                cout << "LAND_task();\n";
-                break;
-              case LOR:
-                cout << "LOR_task();\n";
-                break;
-              case AND:
-                cout << "AND_task();\n";
-                break;
-              case OR:
-                cout << "OR_task();\n";
-                break;
-              case NOT:
-                cout << "NOT_task();\n";
-                break;
-              case LNOT:
-                cout << "LNOT_task();\n";
-                break;
-              case LSHIFT:
-                cout << "LSHIFT_task();\n";
-                break;
-              case RSHIFT:
-                cout << "RSHIFT_task();\n";
-                break;
-              case XOR:
-                cout << "XOR_task();\n";
-                break;
-              case NEG:
-                cout << "NEG_task();\n";
-                break;
-              case WTRUN:
-                cout << "WTRUN_task();\n";
-                break;
-              case WFRUN:
-                cout << "WFRUN_task();\n";
-                break;
-              case IFTRUN:
-                cout << "IFTRUN_task();\n";
-              case IFFRUN:
-                cout << "IFFRUN_task();\n";
-                break;
-              case THREAD:
-                cout << "THREAD_task();\n";
-                break;
-              case MEMSET:
-                cout << "MEMSET_task();\n";
-                break;
-              case MEMGET:
-                cout << "MEMGET_task();\n";
-                break;
-              case MEMSIZE:
-                cout << "MEMSIZE_task();\n";
-                break;
-              case MEMPUT:
-                cout << "MEMPUT_task();\n";
-                break;
-              case MEMINS:
-                cout << "MEMINS_task();\n";
-                break;
-              case MEMDEL:
-                cout << "MEMDEL_task();\n";
-                break;
-              case TOTXT:
-                cout << "TOTXT_task();\n";
-                break;
-              case TONUM:
-                cout << "TONUM_task();\n";
-                break;
-              case CANNUM:
-                cout << "CANNUM_task();\n";
-                break;
-              case ISNUM:
-                cout << "ISNUM_task();\n";
-                break;
-            }
-          }
+          cout << ");\n";
         }
+      }
       vals.clear();
     }
   }

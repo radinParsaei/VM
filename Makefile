@@ -3,7 +3,7 @@ DEFINES=-DUSE_UTILS -DSTD_INCLUDED
 CFLAGS=-std=c++17 $(DEFINES) $(INCLUDES) number.o BigNumber.o
 LDFLAGS=-ldl -pthread
 
-all: VM assembler disassembler mkcc mkll repl
+all: VM assembler disassembler mkcc repl
 .PHONY: all
 
 VM: number.o BigNumber.o VM.o main.o
@@ -15,10 +15,7 @@ assembler: number.o BigNumber.o VM.o assembler_functions.o assembler.cpp
 disassembler: number.o BigNumber.o VM.o assembler_functions.o disassembler.cpp
 	$(CXX) $(CFLAGS) disassembler.cpp assembler_functions.o VM.o -o disassembler $(LDFLAGS)
 
-mkll: number.o BigNumber.o VM.o mkll.cpp VM_functions.o
-	$(CXX) $(CFLAGS) mkll.cpp VM.o -o mkll $(LDFLAGS)
-
-mkcc: number.o BigNumber.o VM.o mkcc.cpp VM_functions.o
+mkcc: number.o BigNumber.o VM.o mkcc.cpp
 	$(CXX) $(CFLAGS) mkcc.cpp VM.o -o mkcc $(LDFLAGS)
 
 repl: number.o BigNumber.o repl.cpp assembler_functions.o VM.o
@@ -30,9 +27,6 @@ number.o: BigNumber/src/BigNumber/number.c BigNumber/src/BigNumber/number.h
 BigNumber.o: BigNumber/src/BigNumber/BigNumber.cpp BigNumber/src/BigNumber/BigNumber.h
 	$(CXX) -c BigNumber/src/BigNumber/BigNumber.cpp $(DEFINES)
 
-VM_functions.o: VM_functions.cpp VM_functions.h
-	$(CXX) $(CFLAGS) -c VM_functions.cpp $(LDFLAGS)
-
 main.o: main.cpp number.o BigNumber.o
 	$(CXX) $(CFLAGS) -c main.cpp $(LDFLAGS)
 
@@ -43,5 +37,5 @@ assembler_functions.o: number.o BigNumber.o assembler_functions.h assembler_func
 	$(CXX) $(CFLAGS) -c assembler_functions.cpp $(LDFLAGS)
 
 clean:
-	$(RM) *.o VM assembler disassembler mkll repl mkcc
+	$(RM) *.o VM assembler disassembler repl mkcc
 .PHONY: clean
