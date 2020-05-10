@@ -24,9 +24,12 @@ int main(int argc, char const **argv) {
   vector<Value> prog;
   string line;
   while(getline(fin, line)){
-    for(Value val : assemble(Utils::stringDuplicate(line.c_str()))){
+    const char* lineConstPtr = line.c_str();
+    char* linePtr = Utils::stringDuplicate(lineConstPtr);
+    for(Value val : assemble(linePtr)){
       prog.push_back(val);
     }
+    free(linePtr);
   }
   fin.close();
   cout << "----------SAVING TO " + filename + "----------" << endl;
