@@ -188,7 +188,7 @@ vector<Record> mkRec(vector<Value> vals){
     if(v.getType() == TYPE_NUM){
       Record r;
       r.type = TYPE_NUM;
-      r.value = stof(v.getNumber().toString());
+      r.value = v.getDouble();
       records.push_back(r);
     } else {
       Record r;

@@ -91,7 +91,6 @@ class VM {
     VM();
     void run(std::vector<Value> prog, bool forceRun = true, int pc = 0);
     bool run1(int prog, Value arg = 0);
-    static BigNumber toNUM(Value v);
     static Value add2val(Value v1, Value v2);
     static Value sub2val(Value v1, Value v2);
     static Value mul2val(Value v1, Value v2);

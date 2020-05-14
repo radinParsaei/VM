@@ -1,7 +1,9 @@
 #include "VM.h"
 
 VM::VM(){
-  BigNumber::begin();
+#ifdef DUSE_GMP_LIB
+  mpf_set_default_prec(1024);
+#endif
   running = true;
   recsize = 0;
 }
@@ -180,7 +182,9 @@ bool VM::disassemble(int prog, Value val, std::string end){
 void VM::printStack(){
   std::cout << "[";
   for(int i = 0; i < stack.size(); i++){
-    std::cout << stack[i].toString() << ((i + 1) == stack.size()? "":", ");
+    char* ptr;
+    std::cout << (ptr = stack[i].toString()) << ((i + 1) == stack.size()? "":", ");
+    free(ptr);
   }
   std::cout << "]";
 }
@@ -205,9 +209,18 @@ Value VM::pop(){
 
 Value VM::add2val(Value v1, Value v2){
   if(v1.getType() == TYPE_TEXT || v2.getType() == TYPE_TEXT){
-    return Utils::stringDuplicate(Utils::append(v1.toString(), v2.toString()));
+    const char* str1 = v1.toString();
+    const char* str2 = v2.toString();
+    Value res = Utils::append(str1, str2);
+    free((char*)str1);
+    free((char*)str2);
+    return res;
   } else {
+#ifdef USE_GMP_LIB
+    return mpf_class(v1.getNumber() + v2.getNumber());
+#else
     return v1.getNumber() + v2.getNumber();
+#endif
   }
 }
 
@@ -215,7 +228,11 @@ Value VM::sub2val(Value v1, Value v2){
   if(v1.getType() == TYPE_TEXT || v2.getType() == TYPE_TEXT){
     return Utils::replace(v1.toString(), v2.toString(), "");
   } else {
+#ifdef USE_GMP_LIB
+    return mpf_class(v1.getNumber() - v2.getNumber());
+#else
     return v1.getNumber() - v2.getNumber();
+#endif
   }
 }
 
@@ -225,7 +242,11 @@ Value VM::mul2val(Value v1, Value v2){
     int i = v1.getType() == TYPE_NUM? v1.getLong() : v2.getLong();
     return Utils::repeat(s, i);
   } else if(!(v1.getType() && v2.getType())){
+#ifdef USE_GMP_LIB
+    return mpf_class(v1.getNumber() * v2.getNumber());
+#else
     return v1.getNumber() * v2.getNumber();
+#endif
   } else {
     std::cerr << "STR * STR ????\n";
     return 0;
@@ -234,7 +255,11 @@ Value VM::mul2val(Value v1, Value v2){
 
 Value VM::div2val(Value v1, Value v2){
   if(!(v1.getType() && v2.getType())){
+#ifdef USE_GMP_LIB
+    return mpf_class(v1.getNumber() / v2.getNumber());
+#else
     return v1.getNumber() / v2.getNumber();
+#endif
   } else {
     std::cerr << "STR in / ????\n";
     return 0;
@@ -251,17 +276,21 @@ Value VM::mod2val(Value v1, Value v2){
 }
 
 Value VM::isEQ(Value v1, Value v2){
-  if(v1.toString() == v2.toString()){
-    return 1;
-  }
-  return 0;
+  char* str1 = v1.toString();
+  char* str2 = v2.toString();
+  bool res = Utils::isEQ(str1, str2);
+  free(str1);
+  free(str2);
+  return res;
 }
 
 Value VM::isFEQ(Value v1, Value v2){
-  if(v1.getType() == v2.getType() && v1.toString() == v2.toString()){
-    return 1;
-  }
-  return 0;
+  char* str1 = v1.toString();
+  char* str2 = v2.toString();
+  bool res = v1.getType() == v2.getType() && Utils::isEQ(str1, str2);
+  free(str1);
+  free(str2);
+  return res;
 }
 
 Value VM::isGT(Value v1, Value v2){
@@ -370,15 +399,14 @@ Value VM::XOR2val(Value v1, Value v2){
 
 Value VM::NEGval(Value v){
   if(!v.getType()){
-    return BigNumber(-1) * v.getNumber();
+#ifdef USE_GMP_LIB
+    return mpf_class(NUMBER(-1) * v.getNumber());
+#else
+    return NUMBER(-1) * v.getNumber();
+#endif
   } else {
     return Utils::reverse(v.getString());
   }
-}
-
-BigNumber VM::toNUM(Value v){
-  if(v.getType() == TYPE_NUM)return v.getNumber();
-  else return BigNumber(v.getString());
 }
 
 bool VM::run1(int prog, Value arg){
@@ -421,7 +449,7 @@ bool VM::run1(int prog, Value arg){
   switch (prog) {
     case EXIT:
       running = false;
-      exit_code = toNUM(pop()).toLong();
+      exit_code = pop().getLong();
       if(autoKill)exit(exit_code);
       break;
     case PUT:
@@ -502,7 +530,7 @@ bool VM::run1(int prog, Value arg){
       std::cout << std::endl;
       break;
     case REPEAT: {
-      int count = toNUM(pop()).toLong();
+      int count = pop().getLong();
       std::vector<Value> prog;
       int ps = pop().getLong();
       for(; ps > 0; ps--){
@@ -671,7 +699,11 @@ bool VM::run1(int prog, Value arg){
       stack.push_back(pop().toString());
       break;
     case TONUM:
-      stack.push_back(toNUM(pop()));
+#ifdef USE_GMP_LIB
+      stack.push_back(NUMBER(pop().toString()));
+#else
+      stack.push_back(pop().getNumber());
+#endif
       break;
     case ISNUM:
       if(stack.size() == 0) break;
