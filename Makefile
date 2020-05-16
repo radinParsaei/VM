@@ -1,5 +1,5 @@
 INCLUDES=-IBigNumber/src/BigNumber -IValue
-DEFINES=-DUSE_UTILS -DSTD_INCLUDED
+DEFINES=-DUSE_UTILS -DSTD_INCLUDED -DUSE_READLINE
 CFLAGS=-std=c++17 $(DEFINES) $(INCLUDES) number.o BigNumber.o
 LDFLAGS=-ldl -pthread -lreadline
 
