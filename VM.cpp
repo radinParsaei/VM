@@ -20,161 +20,57 @@ void VM::setStack(std::vector<Value> v){
   stack = v;
 }
 
-bool VM::disassemble(int prog, Value val, std::string end){
+const char* VM::disassemble(int prog, Value val){
   switch (prog) {
-    case EXIT:
-      std::cout << "EXIT" << end;
-      break;
-    case PUT:
-      std::cout << "PUT" << "\t";
-      if(val.getType() == TYPE_NUM){
-        std::cout << "NUM" << val.getNumber();
-      } else {
-        std::cout << "TXT" << val.getString();
-      }
-      std::cout << end;
-      return 1;
-    case ADD:
-      std::cout << "ADD" << end;
-      break;
-    case SUB:
-      std::cout << "SUB" << end;
-      break;
-    case MUL:
-      std::cout << "MUL" << end;
-      break;
-    case DIV:
-      std::cout << "DIV" << end;
-      break;
-    case MOD:
-      std::cout << "MOD" << end;
-      break;
-    case DLCALL:
-      std::cout << "DLCALL" << end;
-      break;
-    case RUN:
-      std::cout << "RUN" << end;
-      break;
-    case REC:
-      std::cout << "REC" << end;
-      break;
-    case END:
-      std::cout << "END" << end;
-      break;
-    case PRINT:
-      std::cout << "PRINT" << end;
-      break;
-    case POP:
-      std::cout << "POP" << end;
-      break;
-    case LOGSTCK:
-      std::cout << "LOGSTCK" << end;
-      break;
-    case PRINTLN:
-      std::cout << "PRINTLN" << end;
-      break;
-    case REPEAT:
-      std::cout << "REPEAT" << end;
-      break;
-    case EQ:
-      std::cout << "EQ" << end;
-      break;
-    case FEQ:
-      std::cout << "FEQ" << end;
-      break;
-    case GT:
-      std::cout << "GT" << end;
-      break;
-    case GE:
-      std::cout << "GE" << end;
-      break;
-    case LT:
-      std::cout << "LT" << end;
-      break;
-    case LE:
-      std::cout << "LE" << end;
-      break;
-    case LAND:
-      std::cout << "LAND" << end;
-      break;
-    case LOR:
-      std::cout << "LOR" << end;
-      break;
-    case AND:
-      std::cout << "AND" << end;
-      break;
-    case OR:
-      std::cout << "OR" << end;
-      break;
-    case NOT:
-      std::cout << "NOT" << end;
-      break;
-    case LNOT:
-      std::cout << "LNOT" << end;
-      break;
-    case LSHIFT:
-      std::cout << "LSHIFT" << end;
-      break;
-    case RSHIFT:
-      std::cout << "RSHIFT" << end;
-      break;
-    case XOR:
-      std::cout << "XOR" << end;
-      break;
-    case NEG:
-      std::cout << "NEG" << end;
-      break;
-    case BREAK:
-      std::cout << "BREAK" << end;
-      break;
-    case WTRUN:
-      std::cout << "WTRUN" << end;
-      break;
-    case WFRUN:
-      std::cout << "WFRUN" << end;
-      break;
-    case IFFRUN:
-      std::cout << "IFFRUN" << end;
-      break;
-    case IFTRUN:
-      std::cout << "IFTRUN" << end;
-      break;
-    case THREAD:
-      std::cout << "THREAD" << end;
-      break;
-    case MEMGET:
-      std::cout << "MEMGET" << end;
-      break;
-    case MEMSET:
-      std::cout << "MEMSET" << end;
-      break;
-    case MEMPUT:
-      std::cout << "MEMPUT" << end;
-      break;
-    case MEMSIZE:
-      std::cout << "MEMSIZE" << end;
-      break;
-    case MEMDEL:
-      std::cout << "MEMDEL" << end;
-      break;
-    case MEMINS:
-      std::cout << "MEMINS" << end;
-      break;
-    case TOTXT:
-      std::cout << "TOTXT" << end;
-      break;
-    case TONUM:
-      std::cout << "TONUM" << end;
-      break;
-    case ISNUM:
-      std::cout << "ISNUM" << end;
-      break;
-    case CANNUM:
-      std::cout << "CANNUM" << end;
-      break;
-    default:
-      std::cout << "???" << end;
-      break;
+    case EXIT:    return "EXIT";
+    case PUT:     return Utils::append((val.getType()? "PUT\tTXT" : "PUT\tNUM"), val.toString());
+    case ADD:     return "ADD";
+    case SUB:     return "SUB";
+    case MUL:     return "MUL";
+    case DIV:     return "DIV";
+    case MOD:     return "MOD";
+    case DLCALL:  return "DLCALL";
+    case RUN:     return "RUN";
+    case REC:     return "REC";
+    case END:     return "END";
+    case PRINT:   return "PRINT";
+    case POP:     return "POP";
+    case LOGSTCK: return "LOGSTCK";
+    case PRINTLN: return "PRINTLN";
+    case REPEAT:  return "REPEAT";
+    case EQ:      return "EQ";
+    case FEQ:     return "FEQ";
+    case GT:      return "GT";
+    case GE:      return "GE";
+    case LT:      return "LT";
+    case LE:      return "LE";
+    case LAND:    return "LAND";
+    case LOR:     return "LOR";
+    case AND:     return "AND";
+    case OR:      return "OR";
+    case NOT:     return "NOT";
+    case LNOT:    return "LNOT";
+    case LSHIFT:  return "LSHIFT";
+    case RSHIFT:  return "RSHIFT";
+    case XOR:     return "XOR";
+    case NEG:     return "NEG";
+    case BREAK:   return "BREAK";
+    case WTRUN:   return "WTRUN";
+    case WFRUN:   return "WFRUN";
+    case IFFRUN:  return "IFFRUN";
+    case IFTRUN:  return "IFTRUN";
+    case THREAD:  return "THREAD";
+    case MEMGET:  return "MEMGET";
+    case MEMSET:  return "MEMSET";
+    case MEMPUT:  return "MEMPUT";
+    case MEMSIZE: return "MEMSIZE";
+    case MEMDEL:  return "MEMDEL";
+    case MEMINS:  return "MEMINS";
+    case TOTXT:   return "TOTXT";
+    case TONUM:   return "TONUM";
+    case ISNUM:   return "ISNUM";
+    case CANNUM:  return "CANNUM";
+    default:      return "???";
     return 0;
   }
 }
@@ -408,6 +304,190 @@ Value VM::NEGval(Value v){
     return Utils::reverse(v.getString());
   }
 }
+
+std::vector<Value> VM::assemble(char* line){
+  std::vector<Value> prog;
+  char* pline;
+  line = Utils::rtrim(line);
+  if(Utils::find(line, "PUT") == 0){
+    line = Utils::substring(line, Utils::stringLength(line) - 3, 3);
+    prog.push_back(PUT);
+    line = Utils::rtrim(line);
+    if(Utils::find(line, "NUM") == 0){
+      line = Utils::rtrim(Utils::substring(line, Utils::stringLength(line) - 3, 3));
+      int i = 0;
+      while ((isdigit(line[i]) || line[i] == '.') || line[i] == '-')i++;
+      prog.push_back(NUMBER(Utils::substring(line, i)));
+    } else {
+      pline = line;
+      line = Utils::substring(line, Utils::stringLength(line) - 3, 3);
+      free(pline);
+      pline = line;
+      line = Utils::replace(line, "\\n", "\n");
+      free(pline);
+      pline = line;
+      line = Utils::replace(line, "\\\n", "\\n");
+      free(pline);
+      pline = line;
+      line = Utils::replace(line, "\\t", "\t");
+      free(pline);
+      pline = line;
+      line = Utils::replace(line, "\\\t", "\\t");
+      free(pline);
+      pline = line;
+      line = Utils::replace(line, "\\r", "\r");
+      free(pline);
+      pline = line;
+      line = Utils::replace(line, "\\\r", "\\r");
+      free(pline);
+      pline = line;
+      line = Utils::replace(line, "\\a", "\a");
+      free(pline);
+      pline = line;
+      line = Utils::replace(line, "\\\a", "\\a");
+      free(pline);
+      pline = line;
+      line = Utils::replace(line, "\\b", "\b");
+      free(pline);
+      pline = line;
+      line = Utils::replace(line, "\\\b", "\\b");
+      free(pline);
+      pline = line;
+      line = Utils::replace(line, "\\f", "\f");
+      free(pline);
+      pline = line;
+      line = Utils::replace(line, "\\\f", "\\f");
+      free(pline);
+      pline = line;
+      line = Utils::replace(line, "\\\'", "\'");
+      free(pline);
+      pline = line;
+      line = Utils::replace(line, "\\\"", "\"");
+      free(pline);
+      pline = line;
+      line = Utils::replace(line, "\\\\", "\\");
+      free(pline);
+      prog.push_back(line);
+    }
+  } else if(Utils::find(line, "ADD") == 0){
+    prog.push_back(ADD);
+  } else if(Utils::find(line, "SUB") == 0){
+    prog.push_back(SUB);
+  } else if(Utils::find(line, "MUL") == 0){
+    prog.push_back(MUL);
+  } else if(Utils::find(line, "PRINTLN") == 0){
+    prog.push_back(PRINTLN);
+  } else if(Utils::find(line, "DIV") == 0){
+    prog.push_back(DIV);
+  } else if(Utils::find(line, "MOD") == 0){
+    prog.push_back(MOD);
+  } else if(Utils::find(line, "PRINT") == 0){
+    prog.push_back(PRINT);
+  } else if(Utils::find(line, "DLCALL") == 0){
+    prog.push_back(DLCALL);
+  } else if(Utils::find(line, "REC") == 0){
+    prog.push_back(REC);
+  } else if(Utils::find(line, "END") == 0){
+    prog.push_back(END);
+  } else if(Utils::find(line, "RUN") == 0){
+    prog.push_back(RUN);
+  } else if(Utils::find(line, "POP") == 0){
+    prog.push_back(POP);
+  } else if(Utils::find(line, "LOGSTCK") == 0){
+    prog.push_back(LOGSTCK);
+  } else if(Utils::find(line, "REPEAT") == 0){
+    prog.push_back(REPEAT);
+  } else if(Utils::find(line, "EQ") == 0){
+    prog.push_back(EQ);
+  } else if(Utils::find(line, "FEQ") == 0){
+    prog.push_back(FEQ);
+  } else if(Utils::find(line, "GT") == 0){
+    prog.push_back(GT);
+  } else if(Utils::find(line, "GE") == 0){
+    prog.push_back(GE);
+  } else if(Utils::find(line, "LT") == 0){
+    prog.push_back(LT);
+  } else if(Utils::find(line, "LE") == 0){
+    prog.push_back(LE);
+  } else if(Utils::find(line, "LAND") == 0){
+    prog.push_back(LAND);
+  } else if(Utils::find(line, "AND") == 0){
+    prog.push_back(AND);
+  } else if(Utils::find(line, "LOR") == 0){
+    prog.push_back(LOR);
+  } else if(Utils::find(line, "OR") == 0){
+    prog.push_back(OR);
+  } else if(Utils::find(line, "NOT") == 0){
+    prog.push_back(NOT);
+  } else if(Utils::find(line, "LNOT") == 0){
+    prog.push_back(LNOT);
+  } else if(Utils::find(line, "LSHIFT") == 0){
+    prog.push_back(LSHIFT);
+  } else if(Utils::find(line, "RSHIFT") == 0){
+    prog.push_back(RSHIFT);
+  } else if(Utils::find(line, "XOR") == 0){
+    prog.push_back(XOR);
+  } else if(Utils::find(line, "NEG") == 0){
+    prog.push_back(NEG);
+  } else if(Utils::find(line, "BREAK") == 0){
+    prog.push_back(BREAK);
+  } else if(Utils::find(line, "WTRUN") == 0){
+    prog.push_back(WTRUN);
+  } else if(Utils::find(line, "WFRUN") == 0){
+    prog.push_back(WFRUN);
+  } else if(Utils::find(line, "IFFRUN") == 0){
+    prog.push_back(IFFRUN);
+  } else if(Utils::find(line, "IFTRUN") == 0){
+    prog.push_back(IFTRUN);
+  } else if(Utils::find(line, "THREAD") == 0){
+    prog.push_back(THREAD);
+  } else if(Utils::find(line, "MEMGET") == 0){
+    prog.push_back(MEMGET);
+  } else if(Utils::find(line, "MEMSET") == 0){
+    prog.push_back(MEMSET);
+  } else if(Utils::find(line, "MEMSIZE") == 0){
+    prog.push_back(MEMSIZE);
+  } else if(Utils::find(line, "MEMPUT") == 0){
+    prog.push_back(MEMPUT);
+  } else if(Utils::find(line, "MEMINS") == 0){
+    prog.push_back(MEMINS);
+  } else if(Utils::find(line, "MEMDEL") == 0){
+    prog.push_back(MEMDEL);
+  } else if(Utils::find(line, "TOTXT") == 0){
+    prog.push_back(TOTXT);
+  } else if(Utils::find(line, "TONUM") == 0){
+    prog.push_back(TONUM);
+  } else if(Utils::find(line, "CANNUM") == 0){
+    prog.push_back(CANNUM);
+  } else if(Utils::find(line, "ISNUM") == 0){
+    prog.push_back(ISNUM);
+  } else if(Utils::find(line, "EXIT") == 0){
+    prog.push_back(EXIT);
+  }
+  return prog;
+}
+
+std::vector<VM::Record> VM::mkRec(std::vector<Value> vals){
+  std::vector<VM::Record> records;
+  for(Value v : vals){
+    if(v.getType() == TYPE_NUM){
+      Record r;
+      r.type = TYPE_NUM;
+      r.value = v.getDouble();
+      records.push_back(r);
+    } else {
+      Record r;
+      const char* str = v.getString();
+      r.type = TYPE_TEXT;
+      for (size_t i = 0; i < Utils::stringLength(str); i++) {
+        r.value = str[i];
+        records.push_back(r);
+      }
+    }
+  }
+  return records;
+}
+
 
 bool VM::run1(int prog, Value arg){
   if(rec){

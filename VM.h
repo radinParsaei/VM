@@ -55,8 +55,6 @@
 
 #include <iostream>
 #include <vector>
-#include <string.h>
-#include <sstream>
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
 #include <windows.h>
 #else
@@ -84,8 +82,11 @@ typedef std::vector<Value> (*dlfunc)(std::vector<Value> args);
 
 class VM {
   public:
+    struct Record{
+      double value = 0;
+      bool type = TYPE_NUM;
+    };
     void printStack();
-    static bool disassemble(int prog, Value val, std::string end = "\t");
     bool running;
     bool autoKill;
     VM();
@@ -115,6 +116,9 @@ class VM {
     std::vector<Value> getStack();
     void setStack(std::vector<Value> v);
     void attachMem(std::vector<Value> *mem);
+    static std::vector<Value> assemble(char* line);
+    static std::vector<Record> mkRec(std::vector<Value> vals);
+    static const char* disassemble(int prog, Value val);
   private:
     std::vector<Value> stack;//stack memory
     std::vector<Value> *mempointer;//storage for saving variables data

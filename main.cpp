@@ -1,8 +1,5 @@
 #include "VM.h"
 #include <fstream>
-#include <sstream>
-#include <vector>
-#include "assembler_functions.h"
 
 using namespace std;
 
@@ -21,15 +18,15 @@ int main(int argc, char const *argv[]){
     return 1;
   }
   vector<Value> vals;
-  Record r;
+  VM::Record r;
   bool wait = false;
-  while(f.read((char*)&r, sizeof(Record))){
+  while(f.read((char*)&r, sizeof(VM::Record))){
     wait = false;
     if(r.type == TYPE_TEXT){
       bool add = true;
       ostringstream stream;
       stream << (char)r.value;
-      while(f.read((char*)&r, sizeof(Record))){
+      while(f.read((char*)&r, sizeof(VM::Record))){
         if(r.type != TYPE_NUM)
           stream << (char)r.value;
         else {

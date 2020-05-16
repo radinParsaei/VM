@@ -1,10 +1,5 @@
-#include <string.h>
-#include <iostream>
-#include <vector>
-#include <variant>
 #include <fstream>
 #include "VM.h"
-#include "assembler_functions.h"
 
 using namespace std;
 
@@ -26,15 +21,15 @@ int main(int argc, char const **argv) {
   while(getline(fin, line)){
     const char* lineConstPtr = line.c_str();
     char* linePtr = Utils::stringDuplicate(lineConstPtr);
-    for(Value val : assemble(linePtr)){
+    for(Value val : VM::assemble(linePtr)){
       prog.push_back(val);
     }
     free(linePtr);
   }
   fin.close();
   cout << "----------SAVING TO " + filename + "----------" << endl;
-  for (Record r : mkRec(prog)) {
-    ofile.write(reinterpret_cast<char *>(&r), sizeof(Record));
+  for (VM::Record r : VM::mkRec(prog)) {
+    ofile.write(reinterpret_cast<char *>(&r), sizeof(VM::Record));
   }
   ofile.close();
   return 0;

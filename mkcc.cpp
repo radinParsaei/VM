@@ -1,7 +1,6 @@
 #include "VM.h"
 #include <fstream>
 #include <sstream>
-#include "assembler_functions.h"
 
 using namespace std;
 
@@ -17,17 +16,17 @@ int main(int argc, char const *argv[]){
   }
   cout << "#include \"VM.h\"\n";
   vector<Value> vals;
-  Record r;
+  VM::Record r;
   bool wait = false;
   cout << "int main(int argc, char** argv){\n";
   cout << "VM vm;\nstd::vector<Value>* mem = new std::vector<Value>();\nvm.attachMem(mem);\n";
-  while(f.read((char*)&r, sizeof(Record))){
+  while(f.read((char*)&r, sizeof(VM::Record))){
     wait = false;
     if(r.type == TYPE_TEXT){
       bool add = true;
       ostringstream stream;
       stream << (char)r.value;
-      while(f.read((char*)&r, sizeof(Record))){
+      while(f.read((char*)&r, sizeof(VM::Record))){
         if(r.type != TYPE_NUM)
           stream << (char)r.value;
         else {
@@ -53,7 +52,8 @@ int main(int argc, char const *argv[]){
         if (v.getType() == TYPE_NUM) {
           cout << "vm.run1(" << v.toString();
           if (v.getLong() == PUT) {
-            cout << ", " << (vals[++c].getType()? "\"":"") << vals[c].toString() << (vals[c].getType()? "\"":"");
+            c++;
+            cout << ", " << (vals[c].getType()? "\"":"") << vals[c].toString() << (vals[c].getType()? "\"":"");
           }
           cout << ");\n";
         }
