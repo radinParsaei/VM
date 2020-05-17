@@ -1,7 +1,8 @@
 INCLUDES=-IBigNumber/src/BigNumber -IValue
 DEFINES=-DUSE_UTILS -DSTD_INCLUDED -DUSE_READLINE
-CFLAGS=-std=c++17 $(DEFINES) $(INCLUDES) number.o BigNumber.o
-LDFLAGS=-ldl -pthread -lreadline
+CFLAGS=-std=c++14 $(DEFINES) $(INCLUDES)
+OBJS = number.o BigNumber.o
+LDFLAGS=
 
 ifeq ($(OS),Windows_NT)
 	CFLAGS += -fdata-sections -ffunction-sections
@@ -21,20 +22,19 @@ all: VM assembler disassembler mkcc repl
 .PHONY: all
 
 VM: number.o BigNumber.o VM.o main.o
-	echo $(LDFLAGS)
-	$(CXX) $(CFLAGS) -ffunction-sections -fdata-sections VM.o main.o -o VM $(LDFLAGS)
+	$(CXX) $(CFLAGS) VM.o main.o $(OBJS) -o VM -ldl -pthread $(LDFLAGS)
 
-assembler: number.o BigNumber.o VM.o assembler.cpp
-	$(CXX) $(CFLAGS) assembler.cpp VM.o -o assembler $(LDFLAGS)
+assembler: number.o BigNumber.o VM.o assembler.o
+	$(CXX) $(CFLAGS) assembler.o VM.o $(OBJS) -o assembler $(LDFLAGS)
 
-disassembler: number.o BigNumber.o VM.o disassembler.cpp
-	$(CXX) $(CFLAGS) disassembler.cpp VM.o -o disassembler $(LDFLAGS)
+disassembler: number.o BigNumber.o VM.o disassembler.o
+	$(CXX) $(CFLAGS) disassembler.o VM.o $(OBJS) -o disassembler $(LDFLAGS)
 
-mkcc: number.o BigNumber.o VM.o mkcc.cpp
-	$(CXX) $(CFLAGS) mkcc.cpp VM.o -o mkcc $(LDFLAGS)
+mkcc: number.o BigNumber.o VM.o mkcc.o
+	$(CXX) $(CFLAGS) mkcc.o VM.o $(OBJS) -o mkcc $(LDFLAGS)
 
-repl: number.o BigNumber.o repl.cpp VM.o
-	$(CXX) $(CFLAGS) repl.cpp VM.o -o repl $(LDFLAGS)
+repl: number.o BigNumber.o repl.o VM.o
+	$(CXX) $(CFLAGS) repl.o VM.o $(OBJS) -o repl -lreadline -ldl -pthread $(LDFLAGS)
 
 number.o: BigNumber/src/BigNumber/number.c BigNumber/src/BigNumber/number.h
 	$(CC) -c BigNumber/src/BigNumber/number.c
@@ -42,11 +42,8 @@ number.o: BigNumber/src/BigNumber/number.c BigNumber/src/BigNumber/number.h
 BigNumber.o: BigNumber/src/BigNumber/BigNumber.cpp BigNumber/src/BigNumber/BigNumber.h
 	$(CXX) -c BigNumber/src/BigNumber/BigNumber.cpp $(DEFINES)
 
-main.o: main.cpp number.o BigNumber.o
-	$(CXX) $(CFLAGS) -c main.cpp $(LDFLAGS)
-
-VM.o: VM.h VM.cpp VM_confs.h number.o BigNumber.o
-	$(CXX) $(CFLAGS) -c VM.cpp number.o BigNumber.o $(LDFLAGS)
+%.o: %.cpp
+	$(CXX) $(CFLAGS) -c $<
 
 clean:
 	$(RM) *.o VM assembler disassembler repl mkcc
