@@ -62,6 +62,8 @@ char* opcodes[] = {
 char* PUT_params[] = { "NUM", "TXT", NULL };
 
 char* completion_generator(const char* text, int state) {
+  if (Utils::find(rl_line_buffer, "PUT") != -1 && (Utils::find(rl_line_buffer, "TXT") != -1 || Utils::find(rl_line_buffer, "NUM") != -1)) return NULL;
+  else if (Utils::find(rl_line_buffer, "PUT") == -1 && Utils::find(rl_line_buffer, " ") != -1) return NULL;
   static uint8_t i, len;
   char* name;
   if (!state) {
@@ -76,7 +78,7 @@ char* completion_generator(const char* text, int state) {
     }
   } else {
     while ((name = opcodes[i++])) {
-      if (strncmp(name, Utils::toUpper(text), len) == 0) {
+      if (strncmp(Utils::toUpper(text), name, len) == 0) {
         return Utils::stringDuplicate(name);
       }
     }
