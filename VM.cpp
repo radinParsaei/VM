@@ -78,9 +78,7 @@ const char* VM::disassemble(int prog, Value val){
 void VM::printStack(){
   std::cout << "[";
   for(int i = 0; i < stack.size(); i++){
-    char* ptr;
-    std::cout << (ptr = stack[i].toString()) << ((i + 1) == stack.size()? "":", ");
-    free(ptr);
+    std::cout << (stack[i].toString()) << ((i + 1) == stack.size()? "":", ");
   }
   std::cout << "]";
 }
