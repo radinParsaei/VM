@@ -5,7 +5,6 @@ using namespace std;
 #ifdef USE_READLINE
 #include <readline/readline.h>
 #include <readline/history.h>
-#endif
 
 char* opcodes[] = {
   "EXIT",
@@ -90,14 +89,15 @@ char** completion(const char* text, int start, int end) {
   rl_attempted_completion_over = 1;
   return rl_completion_matches(text, completion_generator);
 }
+#endif
 
 int main(int argc, char const **argv) {
-  rl_attempted_completion_function = completion;
   vector<Value> prog;
   VM *vm = new VM();
   vector<Value> mem;
   vm->attachMem(&mem);
 #ifdef USE_READLINE
+  rl_attempted_completion_function = completion;
   while (true) {
     char* line = readline("> ");
     if (!line) exit(0);

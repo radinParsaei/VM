@@ -1,11 +1,8 @@
 *.o
-t
-*.ll
-a.out
 mkll
 disassembler
 assembler
 VM
-tmp
 repl
 mkcc
+*.exe
