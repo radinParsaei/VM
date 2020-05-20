@@ -8,6 +8,19 @@ VM::VM(){
   recsize = 0;
 }
 
+VM::~VM() {
+#if THREADING == PROTOTHREADING
+  while (threads.size() != 0) {
+    for (int i = 0; i < threads.size(); i++) {
+      threads[i].runNext();
+      if (threads[i].isFinished()) {
+        threads.erase(threads.begin() + i);
+      }
+    }
+  }
+#endif
+}
+
 void VM::attachMem(std::vector<Value> *mem){
   mempointer = mem;
 }
@@ -488,6 +501,14 @@ std::vector<VM::Record> VM::mkRec(std::vector<Value> vals){
 
 
 bool VM::run1(int prog, Value arg){
+#if THREADING == PROTOTHREADING
+  for (int i = 0; i < threads.size(); i++) {
+    threads[i].runNext();
+    if (threads[i].isFinished()) {
+      threads.erase(threads.begin() + i);
+    }
+  }
+#endif
   if(rec){
     if(prog == END){
       rec--;
@@ -744,12 +765,16 @@ bool VM::run1(int prog, Value arg){
       for(; ps > 0; ps--){
         prog.insert(prog.begin(), pop());
       }
+#if THREADING == PROTOTHREADING
+      threads.push_back(Thread(prog, mempointer));
+#else
       std::thread t([=]{
         VM *vm = new VM();
         vm->attachMem(mempointer);
         vm->run(prog);
       });
       t.detach();
+#endif
       break;
     }
     case MEMSET: {

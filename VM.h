@@ -80,6 +80,7 @@ typedef std::vector<Value> (__stdcall *dlfunc)(std::vector<Value>);
 typedef std::vector<Value> (*dlfunc)(std::vector<Value> args);
 #endif
 
+class Thread;
 class VM {
   public:
     struct Record{
@@ -90,6 +91,7 @@ class VM {
     bool running;
     bool autoKill;
     VM();
+    ~VM();
     void run(std::vector<Value> prog, bool forceRun = true, int pc = 0);
     bool run1(int prog, Value arg = 0);
     static Value add2val(Value v1, Value v2);
@@ -122,6 +124,9 @@ class VM {
   private:
     std::vector<Value> stack;//stack memory
     std::vector<Value> *mempointer;//storage for saving variables data
+#if THREADING == PROTOTHREADING
+    std::vector<Thread> threads;
+#endif
     Value pop();//pops a data from the stack
     int rec = 0;
     int recsize;
@@ -129,4 +134,34 @@ class VM {
     bool isBreaked = false;
 };
 
+#if THREADING == PROTOTHREADING
+class Thread {
+private:
+  size_t pc = 0;
+  size_t s;
+  Value* program;
+  VM vm;
+public:
+  Thread(std::vector<Value> program, std::vector<Value>* mem) {
+    s = program.size();
+    this->program = new Value[program.size()];
+    for (size_t i = 0; i < program.size(); i++) {
+      this->program[i] = program[i];
+    }
+    vm.attachMem(mem);
+  }
+  Thread(Value* program, size_t s, std::vector<Value>* mem) {
+    this->program = program;
+    this->s = s;
+    vm.attachMem(mem);
+  }
+  void runNext() {
+    pc += vm.run1(program[pc].getLong(), (pc < s - 1? program[pc + 1] : 0));
+    pc++;
+  }
+  bool isFinished() {
+    return pc >= s;
+  }
+};
+#endif
 #endif
