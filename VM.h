@@ -53,18 +53,22 @@
 #define ISNUM   46
 #define CANNUM  47
 
+#include "VM_confs.h"
 #include <iostream>
 #include <vector>
+#ifndef DYNAMIC_LIBS_NOT_AVAILABLE
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
 #include <windows.h>
 #else
 #include <dlfcn.h>
 #endif
+#endif
+#if THREADING != PROTOTHREADING
 #include <thread>
-#include <BigNumber.h>
-#include <value.h>
+#endif
+#include "BigNumber.h"
+#include "value.h"
 
-#include "VM_confs.h"
 
 #ifdef VM_STACKLOG
 #warning VM_STACKLOG enabled

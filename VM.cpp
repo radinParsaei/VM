@@ -585,6 +585,7 @@ bool VM::run1(int prog, Value arg){
       run(prog);
       break;
     }
+#ifndef DYNAMIC_LIBS_NOT_AVAILABLE
     case DLCALL: {
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
       HINSTANCE hinstLib;
@@ -619,6 +620,7 @@ bool VM::run1(int prog, Value arg){
 #endif
       break;
     }
+#endif
     case POP:
       stack.pop_back();
       break;
