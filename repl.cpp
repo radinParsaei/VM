@@ -100,7 +100,10 @@ int main(int argc, char const **argv) {
   rl_attempted_completion_function = completion;
   while (true) {
     char* line = readline("> ");
-    if (!line) exit(0);
+    if (!line) {
+      delete vm;
+      exit(0);
+    }
     add_history(line);
     for(Value val : VM::assemble(line)){
 #else
@@ -114,5 +117,7 @@ int main(int argc, char const **argv) {
     vm->run(prog);
     prog.clear();
   }
+  cout << vm << endl;
+  delete vm;
   return 0;
 }

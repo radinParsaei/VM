@@ -52,5 +52,6 @@ int main(int argc, char const *argv[]){
     }
   }
   f.close();
+  delete vm;
 	return 0;
 }
