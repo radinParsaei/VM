@@ -79,9 +79,9 @@
 #endif
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
-typedef std::vector<Value> (__stdcall *dlfunc)(std::vector<Value>);
+typedef void (__stdcall *dlfunc)(std::vector<Value>*);
 #else
-typedef std::vector<Value> (*dlfunc)(std::vector<Value> args);
+typedef void (*dlfunc)(std::vector<Value>* args);
 #endif
 
 class Thread;
