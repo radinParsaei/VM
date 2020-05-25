@@ -804,11 +804,7 @@ bool VM::run1(int prog, Value arg){
       stack.push_back(pop().toString());
       break;
     case TONUM:
-#ifdef USE_GMP_LIB
-      stack.push_back(NUMBER(pop().toString()));
-#else
-      stack.push_back(pop().getNumber());
-#endif
+      stack[stack.size() - 1].toNum();
       break;
     case ISNUM:
       if(stack.size() == 0) break;

@@ -9,16 +9,16 @@ OBJS = number.o BigNumber.o
 LDFLAGS=
 
 ifeq ($(OS),Windows_NT)
-	CFLAGS += -fdata-sections -ffunction-sections
-	LDFLAGS += -Wl,--gc-sections
+	override CFLAGS += -fdata-sections -ffunction-sections
+	override LDFLAGS += -Wl,--gc-sections
 else
     UNAME := $(shell uname -s)
     ifeq ($(UNAME),Linux)
-			CFLAGS += -fdata-sections -ffunction-sections
-      LDFLAGS += -Wl,--gc-sections
+			override CFLAGS += -fdata-sections -ffunction-sections
+      override LDFLAGS += -Wl,--gc-sections
     endif
     ifeq ($(UNAME),Darwin)
-			LDFLAGS += -dead_strip -dead_strip_dylibs
+			override LDFLAGS += -dead_strip -dead_strip_dylibs
     endif
 endif
 
