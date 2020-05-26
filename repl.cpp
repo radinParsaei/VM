@@ -117,7 +117,6 @@ int main(int argc, char const **argv) {
     vm->run(prog);
     prog.clear();
   }
-  cout << vm << endl;
   delete vm;
   return 0;
 }
