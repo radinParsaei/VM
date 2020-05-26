@@ -8,13 +8,6 @@
 using namespace std;
 
 LIB_FUNCTION(test) {
-  cout << stack->at(0).toString() << endl;
-  stack->at(0) = 20;
-}
-
-int main() {
-  vector<Value> a;
-  a.push_back(10);
-  test(&a);
-  cout << a[0].toString() << endl;
+  cout << "test(): Hello World" << endl;
+  return stack;
 }

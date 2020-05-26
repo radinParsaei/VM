@@ -20,20 +20,20 @@ all: compile
 
 compile: check_VM_ROOT check_LIBNAME $(LIBNAME).vmso
 
-%.vmso: %.o $(VM_ROOT)/number.o $(VM_ROOT)/BigNumber.o $(VM_ROOT)/VM.o
-	$(CXX) -shared -fPIC -o $@ $(CFLAGS) $< $(VM_ROOT)/number.o $(VM_ROOT)/BigNumber.o $(VM_ROOT)/VM.o $(LDFLAGS)
+%.vmso: %.o number.o BigNumber.o VM.o
+	$(CXX) -shared -fPIC -o $@ $(CFLAGS) $< number.o BigNumber.o VM.o $(LDFLAGS)
 
-$(VM_ROOT)/number.o:
-	(cd $(VM_ROOT) && $(MAKE) number.o)
+number.o:
+	$(CC) -fPIC -c $(VM_ROOT)/BigNumber/src/BigNumber/number.c
 
-$(VM_ROOT)/BigNumber.o:
-	(cd $(VM_ROOT) && $(MAKE) BigNumber.o)
+BigNumber.o:
+	$(CXX) $(CFLAGS) -fPIC -c $(VM_ROOT)/BigNumber/src/BigNumber/BigNumber.cpp
 
-$(VM_ROOT)/VM.o:
-	(cd $(VM_ROOT) && $(MAKE) VM.o)
+VM.o:
+	$(CXX) $(CFLAGS) -fPIC -c $(VM_ROOT)/VM.cpp
 
 %.o: %.cpp
-	$(CXX) $(CFLAGS) -c $<
+	$(CXX) $(CFLAGS) -c $< -fPIC
 
 ifeq ($(VM_ROOT),)
 check_VM_ROOT:

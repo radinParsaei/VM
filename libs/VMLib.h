@@ -1,5 +1,5 @@
 #include <VM.h>
-#define LIB_FUNCTION(FN_NAME) extern "C" void FN_NAME(std::vector<Value>* stack)
+#define LIB_FUNCTION(FN_NAME) extern "C" std::vector<Value> FN_NAME(std::vector<Value> stack)
 #ifndef LIB_NAME
 #error please define LIB_NAME
 #endif
@@ -25,7 +25,8 @@ const char* GET_LIB_INFO(int8_t i) {
 }
 
 LIB_FUNCTION(GET_INFO) {
-  const char* a = GET_LIB_INFO(stack->at(stack->size() - 1).getLong());
-  stack->pop_back();
-  stack->push_back(a);
+  const char* a = GET_LIB_INFO(stack[stack.size() - 1].getLong());
+  stack.pop_back();
+  stack.push_back(a);
+  return stack;
 }

@@ -6,3 +6,4 @@ VM
 repl
 mkcc
 *.exe
+*.vmso
