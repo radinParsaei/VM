@@ -1,9 +1,4 @@
-#define LIB_NAME "test"
-#define LIB_AUTHOR "radinParsaei"
-#define LIB_VERSION "1.0_test"
-#define LIB_LICENSE "PUBLIC_DOMAIN"
-
-#include "VMLib.h"
+#include <test.h>
 
 using namespace std;
 

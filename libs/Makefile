@@ -1,4 +1,4 @@
-CFLAGS=-DUSE_UTILS -DSTD_INCLUDED -std=c++14 -I$(VM_ROOT) -I$(VM_ROOT)/libs -I$(VM_ROOT)/BigNumber/src -I$(VM_ROOT)/Value $(FLAGS)
+override CFLAGS:=$(CFLAGS) -DUSE_UTILS -DSTD_INCLUDED -std=c++14 -I. -I$(VM_ROOT) -I$(VM_ROOT)/libs -I$(VM_ROOT)/BigNumber/src -I$(VM_ROOT)/Value $(FLAGS)
 LDFLAGS?=
 
 ifeq ($(OS),Windows_NT)
@@ -22,6 +22,9 @@ compile: check_VM_ROOT check_LIBNAME $(LIBNAME).vmso
 
 %.vmso: %.o number.o BigNumber.o VM.o
 	$(CXX) -shared -fPIC -o $@ $(CFLAGS) $< number.o BigNumber.o VM.o $(LDFLAGS)
+
+%.a: %.o number.o BigNumber.o VM.o
+	$(CXX) -shared -fPIC -i $@ $(CFLAGS) $< number.o BigNumber.o VM.o $(LDFLAGS)
 
 number.o:
 	$(CC) -fPIC -c $(VM_ROOT)/BigNumber/src/BigNumber/number.c
@@ -55,4 +58,4 @@ clean:
 	$(RM) *.o *.vmso
 .PHONY: clean
 
-.PRECIOUS: %.o
+.PRECIOUS: %.o static/%.o
