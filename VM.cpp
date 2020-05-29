@@ -595,7 +595,7 @@ bool VM::run1(int prog, Value arg){
       if(hinstLib != NULL){
         fn = (dlfunc) GetProcAddress(hinstLib, (LPCSTR)pop().getString());
         if (NULL != fn){
-          stack = fn(stack);
+          fn(this);
         } else {
           std::cerr << "SYMBOL NOT FOUND" << GetLastError();
         }
@@ -615,7 +615,7 @@ bool VM::run1(int prog, Value arg){
       }
       dlerror();//clear errors
       fn = ((dlfunc)dlsym(lib, pop().toString()));
-      stack = fn(stack);
+      fn(this);
       dlclose(lib);
 #endif
       break;

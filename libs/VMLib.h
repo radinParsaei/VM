@@ -8,16 +8,21 @@
 #ifdef STATIC_BUILD_MODE
 #define APPEND2(data1 ,data2) data1 ## _ ## data2
 #define APPEND1(data1 ,data2) APPEND2(data1 ,data2)
-#define LIB_FUNCTION(FN_NAME) extern "C" std::vector<Value> APPEND1(APPEND1(LIB_NAME, LIB_VERSION), FN_NAME) (std::vector<Value> stack)
-#define LIB_FUNCTION_INLINE(FN_NAME) extern "C" inline std::vector<Value> APPEND1(APPEND1(LIB_NAME, LIB_VERSION), FN_NAME) (std::vector<Value> stack)
+#define LIB_FUNCTION(FN_NAME) extern "C" void APPEND1(APPEND1(LIB_NAME, LIB_VERSION), FN_NAME) (VM* vm)
+#define LIB_FUNCTION_INLINE(FN_NAME) extern "C" inline void APPEND1(APPEND1(LIB_NAME, LIB_VERSION), FN_NAME) (VM* vm)
 #else
-#define LIB_FUNCTION(FN_NAME) extern "C" std::vector<Value> FN_NAME(std::vector<Value> stack)
-#define LIB_FUNCTION_INLINE(FN_NAME) extern "C" inline std::vector<Value> FN_NAME(std::vector<Value> stack)
+#define LIB_FUNCTION(FN_NAME) extern "C" void FN_NAME(VM* vm)
+#define LIB_FUNCTION_INLINE(FN_NAME) extern "C" inline void FN_NAME(VM* vm)
 #endif
 #define str1(DATA) #DATA
 #define str(DATA) str1(DATA)
 
+#ifdef STATIC_BUILD_MODE
 LIB_FUNCTION_INLINE(GET_INFO) {
+#else
+LIB_FUNCTION(GET_INFO) {
+#endif
+  std::vector<Value> stack = vm->getStack();
   int8_t i = stack[stack.size() - 1].getLong();
   stack.pop_back();
   switch (i) {
@@ -45,5 +50,5 @@ LIB_FUNCTION_INLINE(GET_INFO) {
     default:
       stack.push_back("UNKNOWN");
   }
-  return stack;
+  vm->setStack(stack);
 }

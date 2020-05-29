@@ -78,11 +78,6 @@
 #warning VM_DISASSEMBLE enabled
 #endif
 
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
-typedef std::vector<Value> (__stdcall *dlfunc)(std::vector<Value>);
-#else
-typedef std::vector<Value> (*dlfunc)(std::vector<Value> args);
-#endif
 
 class Thread;
 class VM {
@@ -168,4 +163,10 @@ public:
   }
 };
 #endif
+#endif
+
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
+typedef void (__stdcall *dlfunc)(VM*);
+#else
+typedef void (*dlfunc)(VM*);
 #endif
