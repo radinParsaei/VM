@@ -6,20 +6,62 @@ using namespace std;
 
 int main(int argc, char const *argv[]){
   if(argc < 2){
-    cerr << "please enter a binary file name\n";
+    cerr << "usage: " << argv[0] << " <binary file> [<libraries config file>] [<includes>]" << endl;
     return 1;
   }
   ifstream f(argv[1], ios::binary);
   if(!f){
-    cerr << "can't open file" << '\n';
+    cerr << "can\'t open file" << '\n';
     return 1;
   }
   cout << "#include \"VM.h\"\n";
+  if (argc > 3) {
+    ifstream f(argv[3]);
+    if(!f){
+      cerr << "can\'t open file" << '\n';
+      return 1;
+    }
+    string line;
+    while (getline(f, line)) {
+      if (line.find("\"") == 0 || line.find("<") == 0) {
+        cout << "#include " << line << endl;
+      } else if (line.find("#") == 0) {
+        cout << line << endl;
+      } else {
+        cout << "#include \"" << line << "\"\n";
+      }
+    }
+  }
   vector<Value> vals;
   VM::Record r;
   bool wait = false;
+  if (argc > 2) {
+    cout << "void _dlcall(VM vm) {\n";
+    ifstream fconf(argv[2]);
+    if (!fconf) {
+      cerr << "can\'t open file" << '\n';
+      return 1;
+    }
+    string line;
+    while (getline(fconf, line)) {
+      cout << "\tif (Utils::isEQ(vm.getStack()[vm.getStack().size() - 1].toString(), \"" << Utils::trim(line.substr(0, line.find("|")).c_str()) << "\")) {\n";
+      string fnName = line.substr(line.find("|") + 1);
+      fnName = fnName.substr(0, fnName.find("|"));
+      string libVer = line.substr(line.find("|") + 1 + fnName.size());
+      libVer = libVer.substr(1);
+      while (getline(fconf, line)) {
+        if (Utils::find(line.c_str(), " ") != 0 && Utils::find(line.c_str(), "\t") != 0) break;
+        cout << "\t\tif (Utils::isEQ(vm.getStack()[vm.getStack().size() - 2].toString(), \"" << Utils::trim(fnName.c_str()) << "\")) {\n";
+        cout << "\t\t\t" << Utils::trim(fnName.c_str()) << '_' << Utils::trim(libVer.c_str()) << '_' << Utils::trim(line.c_str()) << "(&vm);\n";
+        cout << "\t\t\tvm.getStack().pop_back(); vm.getStack().pop_back(); return;\n\t\t}\n";
+      }
+      cout << "\t}\n";
+    }
+    cout << "\tvm.run1(DLCALL);\n";
+    cout << "}\n";
+  }
   cout << "int main(int argc, char** argv){\n";
-  cout << "VM vm;\nstd::vector<Value>* mem = new std::vector<Value>();\nvm.attachMem(mem);\n";
+  cout << "\tVM vm;\n\tstd::vector<Value>* mem = new std::vector<Value>();\n\tvm.attachMem(mem);\n";
   while(f.read((char*)&r, sizeof(VM::Record))){
     wait = false;
     if(r.type == TYPE_TEXT){
@@ -50,18 +92,22 @@ int main(int argc, char const *argv[]){
       for(int c = 0; c < vals.size(); c++){
         Value v = vals[c];
         if (v.getType() == TYPE_NUM) {
-          cout << "vm.run1(" << v.toString();
-          if (v.getLong() == PUT) {
-            c++;
-            cout << ", " << (vals[c].getType()? "\"":"") << vals[c].toString() << (vals[c].getType()? "\"":"");
+          if (v.getLong() == DLCALL && (argc > 2)) {
+            cout << "\t_dlcall(vm);" << endl;
+          } else {
+            cout << "\tvm.run1(" << v.toString();
+            if (v.getLong() == PUT) {
+              c++;
+              cout << ", " << (vals[c].getType()? "\"":"") << vals[c].toString() << (vals[c].getType()? "\"":"");
+            }
+            cout << ");\n";
           }
-          cout << ");\n";
         }
       }
       vals.clear();
     }
   }
-  cout << "return 0;\n";
+  cout << "\treturn 0;\n";
   cout << "}\n";
   f.close();
 	return 0;
