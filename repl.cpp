@@ -104,7 +104,7 @@ int main(int argc, char const **argv) {
       delete vm;
       exit(0);
     }
-    add_history(line);
+    if (!Utils::isEQ(line, "")) add_history(line);
     for(Value val : VM::assemble(line)){
 #else
   string line;
