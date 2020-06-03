@@ -186,8 +186,6 @@ Value VM::isEQ(Value v1, Value v2){
   char* str1 = v1.toString();
   char* str2 = v2.toString();
   bool res = Utils::isEQ(str1, str2);
-  free(str1);
-  free(str2);
   return res;
 }
 
@@ -323,61 +321,61 @@ std::vector<Value> VM::assemble(char* line){
   if(Utils::find(line, "PUT") == 0){
     line = Utils::substring(line, Utils::stringLength(line) - 3, 3);
     prog.push_back(PUT);
+    pline = line;
     line = Utils::rtrim(line);
+    free(pline);
     if(Utils::find(line, "NUM") == 0){
-      line = Utils::rtrim(Utils::substring(line, Utils::stringLength(line) - 3, 3));
+      line = Utils::rtrim(pline = Utils::substring(line, Utils::stringLength(line) - 3, 3));
+      free(pline);
       int i = 0;
       while ((isdigit(line[i]) || line[i] == '.') || line[i] == '-')i++;
       prog.push_back(NUMBER(Utils::substring(line, i)));
+      free(line);
     } else {
-      pline = line;
       line = Utils::substring(line, Utils::stringLength(line) - 3, 3);
-      free(pline);
-      pline = line;
       line = Utils::replace(line, "\\n", "\n");
-      free(pline);
       pline = line;
       line = Utils::replace(line, "\\\n", "\\n");
-      free(pline);
+      delete[] pline;
       pline = line;
       line = Utils::replace(line, "\\t", "\t");
-      free(pline);
+      delete[] pline;
       pline = line;
       line = Utils::replace(line, "\\\t", "\\t");
-      free(pline);
+      delete[] pline;
       pline = line;
       line = Utils::replace(line, "\\r", "\r");
-      free(pline);
+      delete[] pline;
       pline = line;
       line = Utils::replace(line, "\\\r", "\\r");
-      free(pline);
+      delete[] pline;
       pline = line;
       line = Utils::replace(line, "\\a", "\a");
-      free(pline);
+      delete[] pline;
       pline = line;
       line = Utils::replace(line, "\\\a", "\\a");
-      free(pline);
+      delete[] pline;
       pline = line;
       line = Utils::replace(line, "\\b", "\b");
-      free(pline);
+      delete[] pline;
       pline = line;
       line = Utils::replace(line, "\\\b", "\\b");
-      free(pline);
+      delete[] pline;
       pline = line;
       line = Utils::replace(line, "\\f", "\f");
-      free(pline);
+      delete[] pline;
       pline = line;
       line = Utils::replace(line, "\\\f", "\\f");
-      free(pline);
+      delete[] pline;
       pline = line;
       line = Utils::replace(line, "\\\'", "\'");
-      free(pline);
+      delete[] pline;
       pline = line;
       line = Utils::replace(line, "\\\"", "\"");
-      free(pline);
+      delete[] pline;
       pline = line;
       line = Utils::replace(line, "\\\\", "\\");
-      free(pline);
+      delete[] pline;
       prog.push_back(line);
     }
   } else if(Utils::find(line, "ADD") == 0){
