@@ -96,16 +96,18 @@ void VM::printStack(){
   std::cout << "]";
 }
 
-void VM::run(std::vector<Value> prog, bool forceRun, int pc) {
+bool VM::run(std::vector<Value> prog, bool forceRun, int pc) {
+  isBreaked = false;
   if(forceRun)running = true;
   for (; pc < prog.size(); pc++) {//fetch
     if(running)pc += run1(prog[pc].getLong(), (prog.size() - 1) == pc? 0:prog[pc + 1]);
     else break;
     if(isBreaked){
       isBreaked = false;
-      break;
+      return true;
     }
 	}
+  return false;
 }
 
 Value VM::pop(){
@@ -165,7 +167,12 @@ Value VM::div2val(Value v1, Value v2){
 #ifdef USE_GMP_LIB
     return mpf_class(v1.getNumber() / v2.getNumber());
 #else
-    return v1.getNumber() / v2.getNumber();
+    BigNumber a = v1.toString();
+    BigNumber b = v2.toString();
+    BigNumber r;
+    r.begin(10);
+    r = a / b;
+    return r;
 #endif
   } else {
     std::cerr << "STR in / ????\n";
@@ -636,7 +643,9 @@ bool VM::run1(int prog, Value arg){
         prog.insert(prog.begin(), pop());
       }
       for(; count > 0; count--){
-        run(prog);
+        if (run(prog)) {
+          break;
+        }
       }
       break;
     }
@@ -740,7 +749,7 @@ bool VM::run1(int prog, Value arg){
           for(; ps > 0; ps--){
             prog.insert(prog.begin(), pop());
           }
-          run(prog);
+          isBreaked = run(prog);
         }
       }
       break;
@@ -755,7 +764,7 @@ bool VM::run1(int prog, Value arg){
           for(; ps > 0; ps--){
             prog.insert(prog.begin(), pop());
           }
-          run(prog);
+          isBreaked = run(prog);
         }
       }
       break;
