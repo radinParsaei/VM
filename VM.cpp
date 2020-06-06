@@ -1,8 +1,10 @@
 #include "VM.h"
 
 VM::VM(){
-#ifdef DUSE_GMP_LIB
+#ifdef USE_GMP_LIB
   mpf_set_default_prec(1024);
+#else
+  BigNumber::begin(10);
 #endif
   running = true;
   recsize = 0;
