@@ -93,13 +93,6 @@ class VM {
     ~VM();
     bool run(std::vector<Value> prog, bool forceRun = true, int pc = 0);
     bool run1(int prog, Value arg = 0);
-    static Value add2val(Value v1, Value v2);
-    static Value sub2val(Value v1, Value v2);
-    static Value mul2val(Value v1, Value v2);
-    static Value div2val(Value v1, Value v2);
-    static Value mod2val(Value v1, Value v2);
-    static Value isEQ(Value v1, Value v2);
-    static Value isFEQ(Value v1, Value v2);
     static Value isGT(Value v1, Value v2);
     static Value isGE(Value v1, Value v2);
     static Value isLT(Value v1, Value v2);
@@ -117,9 +110,9 @@ class VM {
     std::vector<Value> getStack();
     void setStack(std::vector<Value> v);
     void attachMem(std::vector<Value> *mem);
-    static std::vector<Value> assemble(char* line);
+    static std::vector<Value> assemble(Value line);
     static std::vector<Record> mkRec(std::vector<Value> vals);
-    static const char* disassemble(int prog, Value val);
+    static Value disassemble(int prog, Value val);
   private:
     std::vector<Value> stack;//stack memory
     std::vector<Value> *mempointer;//storage for saving variables data

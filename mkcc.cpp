@@ -44,15 +44,15 @@ int main(int argc, char const *argv[]){
     }
     string line;
     while (getline(fconf, line)) {
-      cout << "\tif (Utils::isEQ(vm.getStack()[vm.getStack().size() - 1].toString(), \"" << Utils::trim(line.substr(0, line.find("|")).c_str()) << "\")) {\n";
+      cout << "\tif (vm.getStack()[vm.getStack().size() - 1].toString() == \"" << Value(line.substr(0, line.find("|"))).trim() << "\") {\n";
       string fnName = line.substr(line.find("|") + 1);
       fnName = fnName.substr(0, fnName.find("|"));
       string libVer = line.substr(line.find("|") + 1 + fnName.size());
       libVer = libVer.substr(1);
       while (getline(fconf, line)) {
-        if (Utils::find(line.c_str(), " ") != 0 && Utils::find(line.c_str(), "\t") != 0) break;
-        cout << "\t\tif (Utils::isEQ(vm.getStack()[vm.getStack().size() - 2].toString(), \"" << Utils::trim(fnName.c_str()) << "\")) {\n";
-        cout << "\t\t\t" << Utils::trim(fnName.c_str()) << '_' << Utils::trim(libVer.c_str()) << '_' << Utils::trim(line.c_str()) << "(&vm);\n";
+        if (Value(line).find(" ") != 0 && Value(line).find("\t") != 0) break;
+        cout << "\t\tif (vm.getStack()[vm.getStack().size() - 2].toString() == \"" << Value(fnName).trim() << "\") {\n";
+        cout << "\t\t\t" << Value(line).trim() << '_' << Value(libVer.c_str()).trim() << '_' << Value(line.c_str()).trim() << "(&vm);\n";
         cout << "\t\t\tvm.getStack().pop_back(); vm.getStack().pop_back(); return;\n\t\t}\n";
       }
       cout << "\t}\n";
