@@ -2,7 +2,7 @@ INCLUDES=-IBigNumber/src/BigNumber -IValue
 ifeq ($(OS),Windows_NT)
 DEFINES=-DUSE_UTILS -DSTD_INCLUDED
 else
-DEFINES=-DSTD_INCLUDED
+DEFINES=-DSTD_INCLUDED -DUSE_READLINE
 endif
 CFLAGS=-std=c++14 $(DEFINES) $(INCLUDES) $(FLAGS)
 OBJS = number.o BigNumber.o
