@@ -447,7 +447,7 @@ bool VM::run1(int prog, Value arg){
       stack.push_back(pop() + pop());
       break;
     case SUB:
-      stack.push_back(pop() + pop());
+      stack.push_back(pop() - pop());
       break;
     case MUL:
       stack.push_back(pop() * pop());
