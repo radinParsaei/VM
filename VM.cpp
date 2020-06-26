@@ -533,7 +533,7 @@ bool VM::run1(int prog, Value arg){
       break;
     }
     case EQ:
-      stack.push_back(pop() == pop());
+      stack.push_back(pop().equals(pop()));
       break;
     case FEQ:
       stack.push_back(pop().strictEquals(pop()));
