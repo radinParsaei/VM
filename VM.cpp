@@ -446,15 +446,21 @@ bool VM::run1(int prog, Value arg){
     case ADD:
       stack.push_back(pop() + pop());
       break;
-    case SUB:
-      stack.push_back(pop() - pop());
+    case SUB: {
+      Value a = pop();
+      Value b = pop();
+      stack.push_back(a / b);
       break;
+    }
     case MUL:
       stack.push_back(pop() * pop());
       break;
-    case DIV:
-      stack.push_back(pop() / pop());
+    case DIV: {
+      Value a = pop();
+      Value b = pop();
+      stack.push_back(a / b);
       break;
+    }
     case MOD:
       stack.push_back(pop() % pop());
       break;
