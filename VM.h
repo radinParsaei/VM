@@ -66,7 +66,6 @@
 #if THREADING != PROTOTHREADING
 #include <thread>
 #endif
-#include "BigNumber.h"
 #include "value.h"
 
 
