@@ -1,0 +1,10 @@
+import VM
+vm = VM.VM()
+vm.run(VM.PUT, 100)
+vm.run(VM.MEMPUT)
+vm.run(VM.PUT, 0)
+vm.run(VM.MEMGET)
+vm.run(VM.PRINT)
+vm.run(VM.PRINTLN)
+vm.run(VM.MEMSIZE)
+vm.run(VM.PRINT)
