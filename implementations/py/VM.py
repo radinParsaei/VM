@@ -1,5 +1,4 @@
 from ctypes import cdll
-import os
 
 EXIT = 0
 PUT = 1
