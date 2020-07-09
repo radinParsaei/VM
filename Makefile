@@ -4,9 +4,9 @@ DEFINES=-DUSE_UTILS -DSTD_INCLUDED
 else
 DEFINES=-DSTD_INCLUDED -DUSE_READLINE
 endif
-CFLAGS=-std=c++14 $(DEFINES) $(INCLUDES) $(FLAGS)
+CFLAGS=-std=c++14 $(DEFINES) $(INCLUDES) $(EXT_CFLAGS)
 OBJS = number.o BigNumber.o
-LDFLAGS=
+LDFLAGS=$(EXT_LDFLAGS)
 
 ifeq ($(OS),Windows_NT)
 	override CFLAGS += -fdata-sections -ffunction-sections
@@ -51,14 +51,27 @@ repl: number.o BigNumber.o repl.o VM.o
 endif
 
 number.o: BigNumber/src/BigNumber/number.c BigNumber/src/BigNumber/number.h
-	$(CC) -c BigNumber/src/BigNumber/number.c
+	$(CC) -c BigNumber/src/BigNumber/number.c $(EXT_CFLAGS)
 
 BigNumber.o: BigNumber/src/BigNumber/BigNumber.cpp BigNumber/src/BigNumber/BigNumber.h
-	$(CXX) -c BigNumber/src/BigNumber/BigNumber.cpp $(DEFINES)
+	$(CXX) -c BigNumber/src/BigNumber/BigNumber.cpp $(DEFINES) $(EXT_CFLAGS)
 
 %.o: %.cpp
 	$(CXX) $(CFLAGS) -c $<
 
 clean:
-	$(RM) *.o VM assembler disassembler repl mkcc
+	$(RM) -r *.o VM assembler disassembler repl mkcc x86_64/ arm64/
 .PHONY: clean
+apple-universal2:
+	$(MAKE) EXT_CFLAGS="$(EXT_CFLAGS) -target x86_64-apple-macos10.12" EXT_LDFLAGS=$(EXT_LDFLAGS)
+	-mkdir x86_64
+	mv {*.o,VM,assembler,disassembler,repl,mkcc} x86_64
+	$(MAKE) EXT_CFLAGS="$(EXT_CFLAGS) -target arm64-apple-macos11" EXT_LDFLAGS=$(EXT_LDFLAGS)
+	-mkdir arm64
+	mv {*.o,VM,assembler,disassembler,repl,mkcc} arm64
+	lipo -create -output VM arm64/VM x86_64/VM
+	lipo -create -output assembler arm64/assembler x86_64/assembler
+	lipo -create -output disassembler arm64/disassembler x86_64/disassembler
+	lipo -create -output mkcc arm64/mkcc x86_64/mkcc
+	lipo -create -output repl arm64/repl x86_64/repl
+.PHONY: apple-universal2
