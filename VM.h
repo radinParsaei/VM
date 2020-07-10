@@ -88,6 +88,7 @@ class VM {
     void printStack();
     bool running;
     bool autoKill;
+    void (*internalLibraryFunction)(Value, VM*);
     VM();
     ~VM();
     bool run(std::vector<Value> prog, bool forceRun = true, int pc = 0);
@@ -106,6 +107,7 @@ class VM {
     static Value RSHIFT2val(Value v1, Value v2); //right shift
     static Value XOR2val(Value v1, Value v2); //XOR
     static Value NEGval(Value v); //NEG
+    void setInternalLibraryFunction(void (*internalLibraryFunction) (Value, VM*));
     std::vector<Value> getStack();
     void setStack(std::vector<Value> v);
     void attachMem(std::vector<Value> *mem);

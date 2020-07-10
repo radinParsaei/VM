@@ -1,6 +1,6 @@
 #include "VM.h"
 
-VM::VM(){
+VM::VM() {
 #ifdef USE_GMP_LIB
   mpf_set_default_prec(1024);
 #else
@@ -23,19 +23,23 @@ VM::~VM() {
 #endif
 }
 
-void VM::attachMem(std::vector<Value> *mem){
+void VM::attachMem(std::vector<Value> *mem) {
   mempointer = mem;
 }
 
-std::vector<Value> VM::getStack(){
+void VM::setInternalLibraryFunction(void (*internalLibraryFunction) (Value, VM*)) {
+  this->internalLibraryFunction = internalLibraryFunction;
+}
+
+std::vector<Value> VM::getStack() {
   return stack;
 }
 
-void VM::setStack(std::vector<Value> v){
+void VM::setStack(std::vector<Value> v) {
   stack = v;
 }
 
-Value VM::disassemble(int prog, Value val){
+Value VM::disassemble(int prog, Value val) {
   switch (prog) {
     case EXIT:    return "EXIT";
     case PUT:     return std::string(val.getType()? "PUT\tTXT" : "PUT\tNUM") + val.toString();
@@ -90,9 +94,9 @@ Value VM::disassemble(int prog, Value val){
   }
 }
 
-void VM::printStack(){
+void VM::printStack() {
   std::cout << "[";
-  for(int i = 0; i < stack.size(); i++){
+  for(int i = 0; i < stack.size(); i++) {
     std::cout << (stack[i].toString()) << ((i + 1) == stack.size()? "":", ");
   }
   std::cout << "]";
@@ -104,7 +108,7 @@ bool VM::run(std::vector<Value> prog, bool forceRun, int pc) {
   for (; pc < prog.size(); pc++) {//fetch
     if(running)pc += run1(prog[pc].getLong(), (prog.size() - 1) == pc? 0:prog[pc + 1]);
     else break;
-    if(isBreaked){
+    if(isBreaked) {
       isBreaked = false;
       return true;
     }
@@ -112,118 +116,118 @@ bool VM::run(std::vector<Value> prog, bool forceRun, int pc) {
   return false;
 }
 
-Value VM::pop(){
+Value VM::pop() {
   Value v = stack[stack.size() - 1];
   stack.pop_back();
   return v;
 }
 
-Value VM::isGT(Value v1, Value v2){
-  if(!(v1.getType() && v2.getType())){
+Value VM::isGT(Value v1, Value v2) {
+  if(!(v1.getType() && v2.getType())) {
     return v1.getNumber() > v2.getNumber();
   }
   std::cerr << "STR in > ????";
   return 0;
 }
 
-Value VM::isGE(Value v1, Value v2){
-  if(!(v1.getType() && v2.getType())){
+Value VM::isGE(Value v1, Value v2) {
+  if(!(v1.getType() && v2.getType())) {
     return v1.getNumber() >= v2.getNumber();
   }
   std::cerr << "STR in >= ????";
   return 0;
 }
 
-Value VM::isLT(Value v1, Value v2){
-  if(!(v1.getType() && v2.getType())){
+Value VM::isLT(Value v1, Value v2) {
+  if(!(v1.getType() && v2.getType())) {
     return v1.getNumber() < v2.getNumber();
   }
   std::cerr << "STR in < ????";
   return 0;
 }
 
-Value VM::isLE(Value v1, Value v2){
-  if(!(v1.getType() && v2.getType())){
+Value VM::isLE(Value v1, Value v2) {
+  if(!(v1.getType() && v2.getType())) {
     return v1.getNumber() <= v2.getNumber();
   }
   std::cerr << "STR in <= ????";
   return 0;
 }
 
-Value VM::LAND2val(Value v1, Value v2){
-  if(!(v1.getType() && v2.getType())){
+Value VM::LAND2val(Value v1, Value v2) {
+  if(!(v1.getType() && v2.getType())) {
     return v1.getLong() && v2.getLong();
   } else {
     std::cerr << "STR in LOGICAL AND????" << std::endl;
   }
 }
 
-Value VM::LOR2val(Value v1, Value v2){
-  if(!(v1.getType() && v2.getType())){
+Value VM::LOR2val(Value v1, Value v2) {
+  if(!(v1.getType() && v2.getType())) {
     return v1.getLong() || v2.getLong();
   } else {
     std::cerr << "STR in LOGICAL OR????" << std::endl;
   }
 }
 
-Value VM::AND2val(Value v1, Value v2){
-  if(!(v1.getType() && v2.getType())){
+Value VM::AND2val(Value v1, Value v2) {
+  if(!(v1.getType() && v2.getType())) {
     return (v1.getLong()) & (v2.getLong());
   } else {
     std::cerr << "STR in BITWISE AND????" << std::endl;
   }
 }
 
-Value VM::OR2val(Value v1, Value v2){
-  if(!(v1.getType() && v2.getType())){
+Value VM::OR2val(Value v1, Value v2) {
+  if(!(v1.getType() && v2.getType())) {
     return (v1.getLong()) | (v2.getLong());
   } else {
     std::cerr << "STR in BITWISE OR????" << std::endl;
   }
 }
 
-Value VM::NOTval(Value v){
-  if(!v.getType()){
+Value VM::NOTval(Value v) {
+  if(!v.getType()) {
     return ~(v.getLong());
   } else {
     std::cerr << "STR in BITWISE NOT????" << std::endl;
   }
 }
 
-Value VM::LNOTval(Value v){
-  if(!v.getType()){
+Value VM::LNOTval(Value v) {
+  if(!v.getType()) {
     return !v.getLong();
   } else {
     std::cerr << "STR in LOGICAL NOT????" << std::endl;
   }
 }
 
-Value VM::LSHIFT2val(Value v1, Value v2){
-  if(!(v1.getType() && v2.getType())){
+Value VM::LSHIFT2val(Value v1, Value v2) {
+  if(!(v1.getType() && v2.getType())) {
     return v1.getLong() << v2.getLong();
   } else {
     std::cerr << "STR in LEFT SHIFT????" << std::endl;
   }
 }
 
-Value VM::RSHIFT2val(Value v1, Value v2){
-  if(!(v1.getType() && v2.getType())){
+Value VM::RSHIFT2val(Value v1, Value v2) {
+  if(!(v1.getType() && v2.getType())) {
     return (v1.getLong()) >> (v2.getLong());
   } else {
     std::cerr << "STR in RIGHT SHIFT????" << std::endl;
   }
 }
 
-Value VM::XOR2val(Value v1, Value v2){
-  if(!(v1.getType() && v2.getType())){
+Value VM::XOR2val(Value v1, Value v2) {
+  if(!(v1.getType() && v2.getType())) {
     return v1.getLong() ^ v2.getLong();
   } else {
     std::cerr << "STR in XOR????" << std::endl;
   }
 }
 
-Value VM::NEGval(Value v){
-  if(!v.getType()){
+Value VM::NEGval(Value v) {
+  if(!v.getType()) {
 #ifdef USE_GMP_LIB
     return mpf_class(NUMBER(-1) * v.getNumber());
 #else
@@ -234,7 +238,7 @@ Value VM::NEGval(Value v){
   }
 }
 
-std::vector<Value> VM::assemble(Value line){
+std::vector<Value> VM::assemble(Value line) {
   std::vector<Value> prog;
   line.trimLeft();
   if(line.startsWith("PUT") == 1) {
@@ -366,10 +370,10 @@ std::vector<Value> VM::assemble(Value line){
   return prog;
 }
 
-std::vector<VM::Record> VM::mkRec(std::vector<Value> vals){
+std::vector<VM::Record> VM::mkRec(std::vector<Value> vals) {
   std::vector<VM::Record> records;
-  for(Value v : vals){
-    if(v.getType() == TYPE_NUM){
+  for(Value v : vals) {
+    if(v.getType() == TYPE_NUM) {
       Record r;
       r.type = TYPE_NUM;
       r.value = v.getDouble();
@@ -388,7 +392,7 @@ std::vector<VM::Record> VM::mkRec(std::vector<Value> vals){
 }
 
 
-bool VM::run1(int prog, Value arg){
+bool VM::run1(int prog, Value arg) {
 #if THREADING == PROTOTHREADING
   for (int i = 0; i < threads.size(); i++) {
     threads[i].runNext();
@@ -397,10 +401,10 @@ bool VM::run1(int prog, Value arg){
     }
   }
 #endif
-  if(rec){
-    if(prog == END){
+  if(rec) {
+    if(prog == END) {
       rec--;
-      if(rec == 0){
+      if(rec == 0) {
         stack.push_back(recsize);
         recsize = 0;
       } else {
@@ -410,11 +414,11 @@ bool VM::run1(int prog, Value arg){
     } else {
       stack.push_back(prog);
       recsize++;
-      if(prog == PUT){
+      if(prog == PUT) {
         stack.push_back(arg);
         recsize++;
         return 1;
-      } else if(prog == REC){
+      } else if(prog == REC) {
         rec++;
       }
     }
@@ -473,7 +477,7 @@ bool VM::run1(int prog, Value arg){
     case RUN: {
       std::vector<Value> prog;
       int ps = pop().getLong();
-      for(; ps > 0; ps--){
+      for(; ps > 0; ps--) {
         prog.insert(prog.begin(), pop());
       }
       run(prog);
@@ -481,14 +485,17 @@ bool VM::run1(int prog, Value arg){
     }
 #ifndef DYNAMIC_LIBS_NOT_AVAILABLE
     case DLCALL: {
+      Value v1 = pop();
+      if (v1 == "." && internalLibraryFunction) internalLibraryFunction(pop(), this);
+      break;
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
       HINSTANCE hinstLib;
       dlfunc fn;
-      std::string s = pop().getString();
+      std::string s = v1.getString();
       hinstLib = LoadLibraryA(s.c_str());
-      if(hinstLib != NULL){
+      if(hinstLib != NULL) {
         fn = (dlfunc) GetProcAddress(hinstLib, (LPCSTR)pop().getString());
-        if (NULL != fn){
+        if (NULL != fn) {
           fn(this);
         } else {
           std::cerr << "SYMBOL NOT FOUND" << GetLastError();
@@ -501,8 +508,8 @@ bool VM::run1(int prog, Value arg){
 #else
       void* lib;
       dlfunc fn;
-      lib = dlopen(pop().toString().c_str(), RTLD_LAZY);
-      if(!lib){
+      lib = dlopen(v1.toString().c_str(), RTLD_LAZY);
+      if(!lib) {
         std::cerr << "CANNOT OPEN LIBRARY\n";
         std::cerr << dlerror();
         break;
@@ -514,6 +521,10 @@ bool VM::run1(int prog, Value arg){
 #endif
       break;
     }
+#else
+    case DLCALL:
+      if (pop() == "." && internalLibraryFunction) internalLibraryFunction(pop(), this);
+      break;
 #endif
     case POP:
       stack.pop_back();
@@ -528,10 +539,10 @@ bool VM::run1(int prog, Value arg){
       int count = pop().getLong();
       std::vector<Value> prog;
       int ps = pop().getLong();
-      for(; ps > 0; ps--){
+      for(; ps > 0; ps--) {
         prog.insert(prog.begin(), pop());
       }
-      for(; count > 0; count--){
+      for(; count > 0; count--) {
         if (run(prog)) {
           break;
         }
@@ -591,16 +602,16 @@ bool VM::run1(int prog, Value arg){
       break;
     case WTRUN:
       if(stack.size() < 2)break;
-      if(!stack[stack.size() - 1].getType()){
+      if(!stack[stack.size() - 1].getType()) {
         bool tos = stack[stack.size() - 1].getLong();
-        if(tos){
+        if(tos) {
           stack.pop_back();
           std::vector<Value> prog;
           int ps = pop().getLong();
-          for(; ps > 0; ps--){
+          for(; ps > 0; ps--) {
             prog.insert(prog.begin(), pop());
           }
-          while(tos){
+          while(tos) {
             run(prog);
             tos = stack[stack.size() - 1].getLong();
             if(tos)stack.pop_back();
@@ -610,16 +621,16 @@ bool VM::run1(int prog, Value arg){
       break;
     case WFRUN:
       if(stack.size() < 2)break;
-      if(!stack[stack.size() - 1].getType()){
+      if(!stack[stack.size() - 1].getType()) {
         bool tos = stack[stack.size() - 1].getLong();
-        if(!tos){
+        if(!tos) {
           stack.pop_back();
           std::vector<Value> prog;
           int ps = pop().getLong();
-          for(; ps > 0; ps--){
+          for(; ps > 0; ps--) {
             prog.insert(prog.begin(), pop());
           }
-          while(!tos){
+          while(!tos) {
             run(prog);
             tos = stack[stack.size() - 1].getLong();
             if(!tos)stack.pop_back();
@@ -629,13 +640,13 @@ bool VM::run1(int prog, Value arg){
       break;
     case IFTRUN:
       if(stack.size() < 2)break;
-      if(!stack[stack.size() - 1].getType()){
+      if(!stack[stack.size() - 1].getType()) {
         bool tos = stack[stack.size() - 1].getLong();
-        if(tos){
+        if(tos) {
           stack.pop_back();
           std::vector<Value> prog;
           int ps = pop().getLong();
-          for(; ps > 0; ps--){
+          for(; ps > 0; ps--) {
             prog.insert(prog.begin(), pop());
           }
           isBreaked = run(prog);
@@ -644,13 +655,13 @@ bool VM::run1(int prog, Value arg){
       break;
     case IFFRUN:
       if(stack.size() < 2)break;
-      if(!stack[stack.size() - 1].getType()){
+      if(!stack[stack.size() - 1].getType()) {
         bool tos = stack[stack.size() - 1].getLong();
-        if(!tos){
+        if(!tos) {
           stack.pop_back();
           std::vector<Value> prog;
           int ps = pop().getLong();
-          for(; ps > 0; ps--){
+          for(; ps > 0; ps--) {
             prog.insert(prog.begin(), pop());
           }
           isBreaked = run(prog);
@@ -660,7 +671,7 @@ bool VM::run1(int prog, Value arg){
     case THREAD: {
       std::vector<Value> prog;
       int ps = pop().getLong();
-      for(; ps > 0; ps--){
+      for(; ps > 0; ps--) {
         prog.insert(prog.begin(), pop());
       }
 #if THREADING == PROTOTHREADING
@@ -709,12 +720,12 @@ bool VM::run1(int prog, Value arg){
     case CANNUM:
       if(stack.size() == 0) break;
       Value v = stack[stack.size() - 1];
-      if(!v.getType()){
+      if(!v.getType()) {
         stack.push_back(1);
       } else {
         int64_t i = 0;
-        for(; v.getString()[i] != 0; i++){
-          if(!isdigit(v.getString()[i])){
+        for(; v.getString()[i] != 0; i++) {
+          if(!isdigit(v.getString()[i])) {
             stack.push_back(0);
             return res;
           }
