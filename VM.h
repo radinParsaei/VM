@@ -66,6 +66,7 @@
 #if THREADING != PROTOTHREADING
 #include <thread>
 #endif
+#define NUMBER_COMPARISON_OPERATORS
 #include "value.h"
 
 
@@ -93,20 +94,6 @@ class VM {
     ~VM();
     bool run(std::vector<Value> prog, bool forceRun = true, int pc = 0);
     bool run1(int prog, Value arg = 0);
-    static Value isGT(Value v1, Value v2);
-    static Value isGE(Value v1, Value v2);
-    static Value isLT(Value v1, Value v2);
-    static Value isLE(Value v1, Value v2);
-    static Value LAND2val(Value v1, Value v2); //logical AND
-    static Value LOR2val(Value v1, Value v2); //logical OR
-    static Value AND2val(Value v1, Value v2); //bitwise AND
-    static Value OR2val(Value v1, Value v2); //bitwise OR
-    static Value NOTval(Value v); //bitwise NOT
-    static Value LNOTval(Value v); //logical AND
-    static Value LSHIFT2val(Value v1, Value v2); //left shift
-    static Value RSHIFT2val(Value v1, Value v2); //right shift
-    static Value XOR2val(Value v1, Value v2); //XOR
-    static Value NEGval(Value v); //NEG
     void setInternalLibraryFunction(void (*internalLibraryFunction) (Value, VM*));
     std::vector<Value> getStack();
     void setStack(std::vector<Value> v);

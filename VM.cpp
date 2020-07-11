@@ -122,122 +122,6 @@ Value VM::pop() {
   return v;
 }
 
-Value VM::isGT(Value v1, Value v2) {
-  if(!(v1.getType() && v2.getType())) {
-    return v1.getNumber() > v2.getNumber();
-  }
-  std::cerr << "STR in > ????";
-  return 0;
-}
-
-Value VM::isGE(Value v1, Value v2) {
-  if(!(v1.getType() && v2.getType())) {
-    return v1.getNumber() >= v2.getNumber();
-  }
-  std::cerr << "STR in >= ????";
-  return 0;
-}
-
-Value VM::isLT(Value v1, Value v2) {
-  if(!(v1.getType() && v2.getType())) {
-    return v1.getNumber() < v2.getNumber();
-  }
-  std::cerr << "STR in < ????";
-  return 0;
-}
-
-Value VM::isLE(Value v1, Value v2) {
-  if(!(v1.getType() && v2.getType())) {
-    return v1.getNumber() <= v2.getNumber();
-  }
-  std::cerr << "STR in <= ????";
-  return 0;
-}
-
-Value VM::LAND2val(Value v1, Value v2) {
-  if(!(v1.getType() && v2.getType())) {
-    return v1.getLong() && v2.getLong();
-  } else {
-    std::cerr << "STR in LOGICAL AND????" << std::endl;
-  }
-}
-
-Value VM::LOR2val(Value v1, Value v2) {
-  if(!(v1.getType() && v2.getType())) {
-    return v1.getLong() || v2.getLong();
-  } else {
-    std::cerr << "STR in LOGICAL OR????" << std::endl;
-  }
-}
-
-Value VM::AND2val(Value v1, Value v2) {
-  if(!(v1.getType() && v2.getType())) {
-    return (v1.getLong()) & (v2.getLong());
-  } else {
-    std::cerr << "STR in BITWISE AND????" << std::endl;
-  }
-}
-
-Value VM::OR2val(Value v1, Value v2) {
-  if(!(v1.getType() && v2.getType())) {
-    return (v1.getLong()) | (v2.getLong());
-  } else {
-    std::cerr << "STR in BITWISE OR????" << std::endl;
-  }
-}
-
-Value VM::NOTval(Value v) {
-  if(!v.getType()) {
-    return ~(v.getLong());
-  } else {
-    std::cerr << "STR in BITWISE NOT????" << std::endl;
-  }
-}
-
-Value VM::LNOTval(Value v) {
-  if(!v.getType()) {
-    return !v.getLong();
-  } else {
-    std::cerr << "STR in LOGICAL NOT????" << std::endl;
-  }
-}
-
-Value VM::LSHIFT2val(Value v1, Value v2) {
-  if(!(v1.getType() && v2.getType())) {
-    return v1.getLong() << v2.getLong();
-  } else {
-    std::cerr << "STR in LEFT SHIFT????" << std::endl;
-  }
-}
-
-Value VM::RSHIFT2val(Value v1, Value v2) {
-  if(!(v1.getType() && v2.getType())) {
-    return (v1.getLong()) >> (v2.getLong());
-  } else {
-    std::cerr << "STR in RIGHT SHIFT????" << std::endl;
-  }
-}
-
-Value VM::XOR2val(Value v1, Value v2) {
-  if(!(v1.getType() && v2.getType())) {
-    return v1.getLong() ^ v2.getLong();
-  } else {
-    std::cerr << "STR in XOR????" << std::endl;
-  }
-}
-
-Value VM::NEGval(Value v) {
-  if(!v.getType()) {
-#ifdef USE_GMP_LIB
-    return mpf_class(NUMBER(-1) * v.getNumber());
-#else
-    return NUMBER(-1) * v.getNumber();
-#endif
-  } else {
-    return v.reverse();
-  }
-}
-
 std::vector<Value> VM::assemble(Value line) {
   std::vector<Value> prog;
   line.trimLeft();
@@ -556,47 +440,53 @@ bool VM::run1(int prog, Value arg) {
       stack.push_back(pop().strictEquals(pop()));
       break;
     case GT:
-      stack.push_back(isGT(pop(), pop()));
+      stack.push_back(pop() > pop());
       break;
     case GE:
-      stack.push_back(isGE(pop(), pop()));
+      stack.push_back(pop() >= pop());
       break;
     case LT:
-      stack.push_back(isLT(pop(), pop()));
+      stack.push_back(pop() < pop());
       break;
     case LE:
-      stack.push_back(isLE(pop(), pop()));
+      stack.push_back(pop() <= pop());
       break;
     case LAND:
-      stack.push_back(LAND2val(pop(), pop()));
+      stack.push_back(pop() && pop());
       break;
     case LOR:
-      stack.push_back(LOR2val(pop(), pop()));
+      stack.push_back(pop() || pop());
       break;
     case AND:
-      stack.push_back(AND2val(pop(), pop()));
+      stack.push_back(pop() & pop());
       break;
     case OR:
-      stack.push_back(OR2val(pop(), pop()));
+      stack.push_back(pop() | pop());
       break;
     case NOT:
-      stack.push_back(NOTval(pop()));
+      stack.push_back(~pop());
       break;
     case LNOT:
-      stack.push_back(LNOTval(pop()));
+      stack.push_back(!pop());
       break;
     case LSHIFT:
-      stack.push_back(LSHIFT2val(pop(), pop()));
+      stack.push_back(pop() << pop());
       break;
     case RSHIFT:
-      stack.push_back(RSHIFT2val(pop(), pop()));
+      stack.push_back(pop() >> pop());
       break;
     case XOR:
-      stack.push_back(XOR2val(pop(), pop()));
+      stack.push_back(pop() ^ pop());
       break;
-    case NEG:
-      stack.push_back(NEGval(pop()));
+    case NEG: {
+      Value a = pop();
+      if (a.getType() == VALUE_TYPE_NUMBER) {
+        stack.push_back(-a);
+      } else {
+        stack.push_back(a.reverse());
+      }
       break;
+    }
     case BREAK:
       isBreaked = true;
       break;
