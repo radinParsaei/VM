@@ -125,14 +125,14 @@ Value VM::pop() {
 std::vector<Value> VM::assemble(Value line) {
   std::vector<Value> prog;
   line.trimLeft();
-  if(line.startsWith("PUT") == 1) {
+  if(line.startsWith("PUT").getBool()) {
     line.substring(3);
     line.trimLeft();
     prog.push_back(PUT);
-    if(line.startsWith("NUM") == 1) {
+    if(line.startsWith("NUM").getBool()) {
       line.substring(3);
       int i = 0;
-      while (!(isdigit(line[i].toString()[0]) || line[i] == '.') || line[i] == '-') i++;
+      while (!(isdigit(line[i].toString()[0]) || line[i] == '.' || line[i] == '-')) i++;
       line.substring(i);
       line.trim();
       line.toNum();
@@ -156,99 +156,99 @@ std::vector<Value> VM::assemble(Value line) {
       line.replace("\\\\", "\\");
       prog.push_back(line);
     }
-  } else if(line.startsWith("ADD") == 1) {
+  } else if(line.startsWith("ADD").getBool()) {
     prog.push_back(ADD);
-  } else if(line.startsWith("SUB") == 1) {
+  } else if(line.startsWith("SUB").getBool()) {
     prog.push_back(SUB);
-  } else if(line.startsWith("MUL") == 1) {
+  } else if(line.startsWith("MUL").getBool()) {
     prog.push_back(MUL);
-  } else if(line.startsWith("PRINTLN") == 1) {
+  } else if(line.startsWith("PRINTLN").getBool()) {
     prog.push_back(PRINTLN);
-  } else if(line.startsWith("DIV") == 1) {
+  } else if(line.startsWith("DIV").getBool()) {
     prog.push_back(DIV);
-  } else if(line.startsWith("MOD") == 1) {
+  } else if(line.startsWith("MOD").getBool()) {
     prog.push_back(MOD);
-  } else if(line.startsWith("PRINT") == 1) {
+  } else if(line.startsWith("PRINT").getBool()) {
     prog.push_back(PRINT);
-  } else if(line.startsWith("DLCALL") == 1) {
+  } else if(line.startsWith("DLCALL").getBool()) {
     prog.push_back(DLCALL);
-  } else if(line.startsWith("REC") == 1) {
+  } else if(line.startsWith("REC").getBool()) {
     prog.push_back(REC);
-  } else if(line.startsWith("END") == 1) {
+  } else if(line.startsWith("END").getBool()) {
     prog.push_back(END);
-  } else if(line.startsWith("RUN") == 1) {
+  } else if(line.startsWith("RUN").getBool()) {
     prog.push_back(RUN);
-  } else if(line.startsWith("POP") == 1) {
+  } else if(line.startsWith("POP").getBool()) {
     prog.push_back(POP);
-  } else if(line.startsWith("LOGSTCK") == 1) {
+  } else if(line.startsWith("LOGSTCK").getBool()) {
     prog.push_back(LOGSTCK);
-  } else if(line.startsWith("REPEAT") == 1) {
+  } else if(line.startsWith("REPEAT").getBool()) {
     prog.push_back(REPEAT);
-  } else if(line.startsWith("EQ") == 1) {
+  } else if(line.startsWith("EQ").getBool()) {
     prog.push_back(EQ);
-  } else if(line.startsWith("FEQ") == 1) {
+  } else if(line.startsWith("FEQ").getBool()) {
     prog.push_back(FEQ);
-  } else if(line.startsWith("GT") == 1) {
+  } else if(line.startsWith("GT").getBool()) {
     prog.push_back(GT);
-  } else if(line.startsWith("GE") == 1) {
+  } else if(line.startsWith("GE").getBool()) {
     prog.push_back(GE);
-  } else if(line.startsWith("LT") == 1) {
+  } else if(line.startsWith("LT").getBool()) {
     prog.push_back(LT);
-  } else if(line.startsWith("LE") == 1) {
+  } else if(line.startsWith("LE").getBool()) {
     prog.push_back(LE);
-  } else if(line.startsWith("LAND") == 1) {
+  } else if(line.startsWith("LAND").getBool()) {
     prog.push_back(LAND);
-  } else if(line.startsWith("AND") == 1) {
+  } else if(line.startsWith("AND").getBool()) {
     prog.push_back(AND);
-  } else if(line.startsWith("LOR") == 1) {
+  } else if(line.startsWith("LOR").getBool()) {
     prog.push_back(LOR);
-  } else if(line.startsWith("OR") == 1) {
+  } else if(line.startsWith("OR").getBool()) {
     prog.push_back(OR);
-  } else if(line.startsWith("NOT") == 1) {
+  } else if(line.startsWith("NOT").getBool()) {
     prog.push_back(NOT);
-  } else if(line.startsWith("LNOT") == 1) {
+  } else if(line.startsWith("LNOT").getBool()) {
     prog.push_back(LNOT);
-  } else if(line.startsWith("LSHIFT") == 1) {
+  } else if(line.startsWith("LSHIFT").getBool()) {
     prog.push_back(LSHIFT);
-  } else if(line.startsWith("RSHIFT") == 1) {
+  } else if(line.startsWith("RSHIFT").getBool()) {
     prog.push_back(RSHIFT);
-  } else if(line.startsWith("XOR") == 1) {
+  } else if(line.startsWith("XOR").getBool()) {
     prog.push_back(XOR);
-  } else if(line.startsWith("NEG") == 1) {
+  } else if(line.startsWith("NEG").getBool()) {
     prog.push_back(NEG);
-  } else if(line.startsWith("BREAK") == 1) {
+  } else if(line.startsWith("BREAK").getBool()) {
     prog.push_back(BREAK);
-  } else if(line.startsWith("WTRUN") == 1) {
+  } else if(line.startsWith("WTRUN").getBool()) {
     prog.push_back(WTRUN);
-  } else if(line.startsWith("WFRUN") == 1) {
+  } else if(line.startsWith("WFRUN").getBool()) {
     prog.push_back(WFRUN);
-  } else if(line.startsWith("IFFRUN") == 1) {
+  } else if(line.startsWith("IFFRUN").getBool()) {
     prog.push_back(IFFRUN);
-  } else if(line.startsWith("IFTRUN") == 1) {
+  } else if(line.startsWith("IFTRUN").getBool()) {
     prog.push_back(IFTRUN);
-  } else if(line.startsWith("THREAD") == 1) {
+  } else if(line.startsWith("THREAD").getBool()) {
     prog.push_back(THREAD);
-  } else if(line.startsWith("MEMGET") == 1) {
+  } else if(line.startsWith("MEMGET").getBool()) {
     prog.push_back(MEMGET);
-  } else if(line.startsWith("MEMSET") == 1) {
+  } else if(line.startsWith("MEMSET").getBool()) {
     prog.push_back(MEMSET);
-  } else if(line.startsWith("MEMSIZE") == 1) {
+  } else if(line.startsWith("MEMSIZE").getBool()) {
     prog.push_back(MEMSIZE);
-  } else if(line.startsWith("MEMPUT") == 1) {
+  } else if(line.startsWith("MEMPUT").getBool()) {
     prog.push_back(MEMPUT);
-  } else if(line.startsWith("MEMINS") == 1) {
+  } else if(line.startsWith("MEMINS").getBool()) {
     prog.push_back(MEMINS);
-  } else if(line.startsWith("MEMDEL") == 1) {
+  } else if(line.startsWith("MEMDEL").getBool()) {
     prog.push_back(MEMDEL);
-  } else if(line.startsWith("TOTXT") == 1) {
+  } else if(line.startsWith("TOTXT").getBool()) {
     prog.push_back(TOTXT);
-  } else if(line.startsWith("TONUM") == 1) {
+  } else if(line.startsWith("TONUM").getBool()) {
     prog.push_back(TONUM);
-  } else if(line.startsWith("CANNUM") == 1) {
+  } else if(line.startsWith("CANNUM").getBool()) {
     prog.push_back(CANNUM);
-  } else if(line.startsWith("ISNUM") == 1) {
+  } else if(line.startsWith("ISNUM").getBool()) {
     prog.push_back(ISNUM);
-  } else if(line.startsWith("EXIT") == 1) {
+  } else if(line.startsWith("EXIT").getBool()) {
     prog.push_back(EXIT);
   }
   return prog;
@@ -257,15 +257,19 @@ std::vector<Value> VM::assemble(Value line) {
 std::vector<VM::Record> VM::mkRec(std::vector<Value> vals) {
   std::vector<VM::Record> records;
   for(Value v : vals) {
-    if(v.getType() == TYPE_NUM) {
+    if(v.getType() == VALUE_TYPE_NUMBER) {
       Record r;
-      r.type = TYPE_NUM;
+      r.type = VALUE_TYPE_NUMBER;
       r.value = v.getDouble();
       records.push_back(r);
     } else {
       Record r;
       std::string str = v.getString();
-      r.type = TYPE_TEXT;
+      r.type = VALUE_TYPE_TEXT;
+      if (str == "") {
+        r.value = -1;
+        records.push_back(r);
+      }
       for (char i : str) {
         r.value = i;
         records.push_back(r);
@@ -274,7 +278,6 @@ std::vector<VM::Record> VM::mkRec(std::vector<Value> vals) {
   }
   return records;
 }
-
 
 bool VM::run1(int prog, Value arg) {
 #if THREADING == PROTOTHREADING
@@ -490,10 +493,9 @@ bool VM::run1(int prog, Value arg) {
     case BREAK:
       isBreaked = true;
       break;
-    case WTRUN:
-      if(stack.size() < 2)break;
-      if(!stack[stack.size() - 1].getType()) {
-        bool tos = stack[stack.size() - 1].getLong();
+    case WTRUN: {
+        if(stack.size() < 2)break;
+        bool tos = stack[stack.size() - 1].getBool();
         if(tos) {
           stack.pop_back();
           std::vector<Value> prog;
@@ -503,16 +505,15 @@ bool VM::run1(int prog, Value arg) {
           }
           while(tos) {
             run(prog);
-            tos = stack[stack.size() - 1].getLong();
+            tos = stack[stack.size() - 1].getBool();
             if(tos)stack.pop_back();
           }
         }
+        break;
       }
-      break;
-    case WFRUN:
-      if(stack.size() < 2)break;
-      if(!stack[stack.size() - 1].getType()) {
-        bool tos = stack[stack.size() - 1].getLong();
+    case WFRUN: {
+        if(stack.size() < 2)break;
+        bool tos = stack[stack.size() - 1].getBool();
         if(!tos) {
           stack.pop_back();
           std::vector<Value> prog;
@@ -522,16 +523,15 @@ bool VM::run1(int prog, Value arg) {
           }
           while(!tos) {
             run(prog);
-            tos = stack[stack.size() - 1].getLong();
+            tos = stack[stack.size() - 1].getBool();
             if(!tos)stack.pop_back();
           }
         }
+        break;
       }
-      break;
-    case IFTRUN:
-      if(stack.size() < 2)break;
-      if(!stack[stack.size() - 1].getType()) {
-        bool tos = stack[stack.size() - 1].getLong();
+    case IFTRUN: {
+        if(stack.size() < 2)break;
+        bool tos = stack[stack.size() - 1].getBool();
         if(tos) {
           stack.pop_back();
           std::vector<Value> prog;
@@ -541,12 +541,11 @@ bool VM::run1(int prog, Value arg) {
           }
           isBreaked = run(prog);
         }
+        break;
       }
-      break;
-    case IFFRUN:
-      if(stack.size() < 2)break;
-      if(!stack[stack.size() - 1].getType()) {
-        bool tos = stack[stack.size() - 1].getLong();
+    case IFFRUN: {
+        if(stack.size() < 2)break;
+        bool tos = stack[stack.size() - 1].getBool();
         if(!tos) {
           stack.pop_back();
           std::vector<Value> prog;
@@ -556,8 +555,8 @@ bool VM::run1(int prog, Value arg) {
           }
           isBreaked = run(prog);
         }
+        break;
       }
-      break;
     case THREAD: {
       std::vector<Value> prog;
       int ps = pop().getLong();

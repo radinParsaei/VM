@@ -22,15 +22,15 @@ int main(int argc, char const *argv[]){
   bool wait = false;
   while(f.read((char*)&r, sizeof(VM::Record))){
     wait = false;
-    if(r.type == TYPE_TEXT){
+    if(r.type == VALUE_TYPE_TEXT){
       bool add = true;
       ostringstream stream;
-      stream << (char)r.value;
+      if (r.value != -1) stream << (char)r.value;
       while(f.read((char*)&r, sizeof(VM::Record))){
-        if(r.type != TYPE_NUM)
-          stream << (char)r.value;
-        else {
-          vals.push_back(stream.str().c_str());
+        if(r.type != VALUE_TYPE_NUMBER) {
+          if (r.value != -1) stream << (char)r.value;
+          } else {
+          vals.push_back(stream.str());
           add = false;
           vals.push_back(r.value);
           if(r.value == PUT){
@@ -39,7 +39,7 @@ int main(int argc, char const *argv[]){
           break;
         }
       }
-      if(add)vals.push_back(stream.str().c_str());
+      if(add)vals.push_back(stream.str());
     } else {
       vals.push_back(r.value);
       if(r.value == PUT){

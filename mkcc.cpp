@@ -64,12 +64,12 @@ int main(int argc, char const *argv[]){
   cout << "\tVM vm;\n\tstd::vector<Value>* mem = new std::vector<Value>();\n\tvm.attachMem(mem);\n";
   while(f.read((char*)&r, sizeof(VM::Record))){
     wait = false;
-    if(r.type == TYPE_TEXT){
+    if(r.type == VALUE_TYPE_TEXT){
       bool add = true;
       ostringstream stream;
       stream << (char)r.value;
       while(f.read((char*)&r, sizeof(VM::Record))){
-        if(r.type != TYPE_NUM)
+        if(r.type != VALUE_TYPE_NUMBER)
           stream << (char)r.value;
         else {
           vals.push_back(stream.str().c_str());
@@ -91,7 +91,7 @@ int main(int argc, char const *argv[]){
     if(!wait){
       for(int c = 0; c < vals.size(); c++){
         Value v = vals[c];
-        if (v.getType() == TYPE_NUM) {
+        if (v.getType() == VALUE_TYPE_NUMBER) {
           if (v.getLong() == DLCALL && (argc > 2)) {
             cout << "\t_dlcall(vm);" << endl;
           } else {

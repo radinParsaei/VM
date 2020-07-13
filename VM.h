@@ -1,9 +1,6 @@
 #ifndef VM_H
 #define VM_H
 
-#define TYPE_NUM  0
-#define TYPE_TEXT 1
-
 #define EXIT    0
 #define PUT     1
 #define ADD     2
@@ -67,6 +64,7 @@
 #include <thread>
 #endif
 #define NUMBER_COMPARISON_OPERATORS
+#define VALUE_MULTI_TYPE_SUPPORT
 #include "value.h"
 
 
@@ -84,7 +82,7 @@ class VM {
   public:
     struct Record{
       double value = 0;
-      bool type = TYPE_NUM;
+      bool type = VALUE_TYPE_NUMBER;
     };
     void printStack();
     bool running;
