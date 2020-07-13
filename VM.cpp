@@ -124,12 +124,13 @@ Value VM::pop() {
 
 std::vector<Value> VM::assemble(Value line) {
   std::vector<Value> prog;
+  line.toUpper();
   line.trimLeft();
   if(line.startsWith("PUT").getBool()) {
     line.substring(3);
     line.trimLeft();
     prog.push_back(PUT);
-    if(line.startsWith("NUM").getBool()) {
+    if (line.startsWith("NUM").getBool()) {
       line.substring(3);
       int i = 0;
       while (!(isdigit(line[i].toString()[0]) || line[i] == '.' || line[i] == '-')) i++;
@@ -137,7 +138,7 @@ std::vector<Value> VM::assemble(Value line) {
       line.trim();
       line.toNum();
       prog.push_back(line);
-    } else {
+    } else if (line.startsWith("TXT").getBool()) {
       line.substring(3);
       line.replace("\\n", "\n");
       line.replace("\\\n", "\\n");
@@ -155,6 +156,13 @@ std::vector<Value> VM::assemble(Value line) {
       line.replace("\\\"", "\"");
       line.replace("\\\\", "\\");
       prog.push_back(line);
+    } else if (line.startsWith("BOOL").getBool()) {
+      line.substring(4);
+      line.replace("1", "true");
+      line.replace("0", "false");
+      prog.push_back(line.toLower() == "true");
+    } else {
+      prog.push_back(null);
     }
   } else if(line.startsWith("ADD").getBool()) {
     prog.push_back(ADD);
