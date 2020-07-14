@@ -25,7 +25,21 @@ int main(int argc, char const *argv[]){
     if(r.type == VALUE_TYPE_TEXT){
       bool add = true;
       ostringstream stream;
-      if (r.value != -1) stream << (char)r.value;
+      if (r.value >= 0) {
+        stream << (char)r.value;
+      } else if (r.value == -2) {
+        vals.push_back(null);
+        bool add = true;
+        continue;
+      } else if (r.value == -3) {
+        vals.push_back(False);
+        bool add = true;
+        continue;
+      } else if (r.value == -4) {
+        vals.push_back(True);
+        bool add = true;
+        continue;
+      }
       while(f.read((char*)&r, sizeof(VM::Record))){
         if(r.type != VALUE_TYPE_NUMBER) {
           if (r.value != -1) stream << (char)r.value;

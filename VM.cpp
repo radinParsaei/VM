@@ -42,7 +42,7 @@ void VM::setStack(std::vector<Value> v) {
 Value VM::disassemble(int prog, Value val) {
   switch (prog) {
     case EXIT:    return "EXIT";
-    case PUT:     return std::string(val.getType()? "PUT\tTXT" : "PUT\tNUM") + val.toString();
+    case PUT:     return std::string(val.getType() == VALUE_TYPE_NUMBER? "PUT\tNUM" : (val.getType() == True || val.getType() == False)? "PUT\tBOOL" : (val.getType() == VALUE_TYPE_TEXT? "PUT\tTXT" : "PUT\t")) + val.toString();
     case ADD:     return "ADD";
     case SUB:     return "SUB";
     case MUL:     return "MUL";
@@ -124,7 +124,6 @@ Value VM::pop() {
 
 std::vector<Value> VM::assemble(Value line) {
   std::vector<Value> prog;
-  line.toUpper();
   line.trimLeft();
   if(line.startsWith("PUT").getBool()) {
     line.substring(3);
@@ -158,6 +157,7 @@ std::vector<Value> VM::assemble(Value line) {
       prog.push_back(line);
     } else if (line.startsWith("BOOL").getBool()) {
       line.substring(4);
+      line.trim();
       line.replace("1", "true");
       line.replace("0", "false");
       prog.push_back(line.toLower() == "true");
@@ -272,8 +272,23 @@ std::vector<VM::Record> VM::mkRec(std::vector<Value> vals) {
       records.push_back(r);
     } else {
       Record r;
-      std::string str = v.getString();
       r.type = VALUE_TYPE_TEXT;
+      if (v.getType() != VALUE_TYPE_TEXT) {
+        if (v.getType() == null) {
+          r.value = -2;
+          records.push_back(r);
+          continue;
+        } else if (v.getType() == False) {
+          r.value = -3;
+          records.push_back(r);
+          continue;
+        } else {
+          r.value = -4;
+          records.push_back(r);
+          continue;
+        }
+      }
+      std::string str = v.getString();
       if (str == "") {
         r.value = -1;
         records.push_back(r);
