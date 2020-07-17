@@ -80,10 +80,6 @@
 class Thread;
 class VM {
   public:
-    struct Record{
-      double value = 0;
-      bool type = VALUE_TYPE_NUMBER;
-    };
     void printStack();
     bool running;
     bool autoKill;
@@ -97,7 +93,6 @@ class VM {
     void setStack(std::vector<Value> v);
     void attachMem(std::vector<Value> *mem);
     static std::vector<Value> assemble(Value line);
-    static std::vector<Record> mkRec(std::vector<Value> vals);
     static Value disassemble(int prog, Value val);
   private:
     std::vector<Value> stack;//stack memory

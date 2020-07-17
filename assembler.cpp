@@ -1,7 +1,9 @@
 #include <fstream>
 #include "VM.h"
+#include "VM_binaries.h"
 
 using namespace std;
+using namespace VM_BINARIES;
 
 int main(int argc, char const **argv) {
   if(argc < 2){
@@ -13,7 +15,7 @@ int main(int argc, char const **argv) {
     filename = argv[2];
   }
   ofstream ofile;
-  ofile.open(filename, ios::binary);
+  ofile.open(filename);
   ifstream fin;
   fin.open(argv[1]);
   vector<Value> prog;
@@ -25,9 +27,7 @@ int main(int argc, char const **argv) {
   }
   fin.close();
   cout << "----------SAVING TO " + filename + "----------" << endl;
-  for (VM::Record r : VM::mkRec(prog)) {
-    ofile.write(reinterpret_cast<char *>(&r), sizeof(VM::Record));
-  }
+  ofile << mkBin(prog);
   ofile.close();
   return 0;
 }

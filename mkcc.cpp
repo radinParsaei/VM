@@ -1,8 +1,10 @@
 #include "VM.h"
 #include <fstream>
 #include <sstream>
+#include "VM_binaries.h"
 
 using namespace std;
+using namespace VM_BINARIES;
 
 int main(int argc, char const *argv[]){
   if(argc < 2){
@@ -32,9 +34,6 @@ int main(int argc, char const *argv[]){
       }
     }
   }
-  vector<Value> vals;
-  VM::Record r;
-  bool wait = false;
   if (argc > 2) {
     cout << "void _dlcall(VM vm) {\n";
     ifstream fconf(argv[2]);
@@ -62,49 +61,20 @@ int main(int argc, char const *argv[]){
   }
   cout << "int main(int argc, char** argv){\n";
   cout << "\tVM vm;\n\tstd::vector<Value>* mem = new std::vector<Value>();\n\tvm.attachMem(mem);\n";
-  while(f.read((char*)&r, sizeof(VM::Record))){
-    wait = false;
-    if(r.type == VALUE_TYPE_TEXT){
-      bool add = true;
-      ostringstream stream;
-      stream << (char)r.value;
-      while(f.read((char*)&r, sizeof(VM::Record))){
-        if(r.type != VALUE_TYPE_NUMBER)
-          stream << (char)r.value;
-        else {
-          vals.push_back(stream.str().c_str());
-          add = false;
-          vals.push_back(r.value);
-          if(r.value == PUT){
-            wait = true;
-          }
-          break;
+  vector<Value> vals = parseBin(string((istreambuf_iterator<char>(f)), istreambuf_iterator<char>()));
+  for (int c = 0; c < vals.size(); c++) {
+    Value v = vals[c];
+    if (v.getType() == VALUE_TYPE_NUMBER) {
+      if (v.getLong() == DLCALL && (argc > 2)) {
+        cout << "\t_dlcall(vm);" << endl;
+      } else {
+        cout << "\tvm.run1(" << v.toString();
+        if (v.getLong() == PUT) {
+          c++;
+          cout << ", " << (vals[c].getType()? "\"":"") << vals[c].toString() << (vals[c].getType()? "\"":"");
         }
+        cout << ");\n";
       }
-      if(add)vals.push_back(stream.str().c_str());
-    } else {
-      vals.push_back(r.value);
-      if(r.value == PUT){
-        wait = true;
-      }
-    }
-    if(!wait){
-      for(int c = 0; c < vals.size(); c++){
-        Value v = vals[c];
-        if (v.getType() == VALUE_TYPE_NUMBER) {
-          if (v.getLong() == DLCALL && (argc > 2)) {
-            cout << "\t_dlcall(vm);" << endl;
-          } else {
-            cout << "\tvm.run1(" << v.toString();
-            if (v.getLong() == PUT) {
-              c++;
-              cout << ", " << (vals[c].getType()? "\"":"") << vals[c].toString() << (vals[c].getType()? "\"":"");
-            }
-            cout << ");\n";
-          }
-        }
-      }
-      vals.clear();
     }
   }
   cout << "\treturn 0;\n";

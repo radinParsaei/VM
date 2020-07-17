@@ -262,46 +262,6 @@ std::vector<Value> VM::assemble(Value line) {
   return prog;
 }
 
-std::vector<VM::Record> VM::mkRec(std::vector<Value> vals) {
-  std::vector<VM::Record> records;
-  for(Value v : vals) {
-    if(v.getType() == VALUE_TYPE_NUMBER) {
-      Record r;
-      r.type = VALUE_TYPE_NUMBER;
-      r.value = v.getDouble();
-      records.push_back(r);
-    } else {
-      Record r;
-      r.type = VALUE_TYPE_TEXT;
-      if (v.getType() != VALUE_TYPE_TEXT) {
-        if (v.getType() == null) {
-          r.value = -2;
-          records.push_back(r);
-          continue;
-        } else if (v.getType() == False) {
-          r.value = -3;
-          records.push_back(r);
-          continue;
-        } else {
-          r.value = -4;
-          records.push_back(r);
-          continue;
-        }
-      }
-      std::string str = v.getString();
-      if (str == "") {
-        r.value = -1;
-        records.push_back(r);
-      }
-      for (char i : str) {
-        r.value = i;
-        records.push_back(r);
-      }
-    }
-  }
-  return records;
-}
-
 bool VM::run1(int prog, Value arg) {
 #if THREADING == PROTOTHREADING
   for (int i = 0; i < threads.size(); i++) {
