@@ -1,54 +1,58 @@
 #ifndef VM_H
 #define VM_H
 
+//VM controllers and stack controllers (0-15 registered for this category)
 #define EXIT    0
 #define PUT     1
-#define ADD     2
-#define SUB     3
-#define MUL     4
-#define DIV     5
-#define MOD     6
-#define PRINT   7
-#define DLCALL  8
-#define REC     9
-#define END     10
-#define RUN     11
-#define POP     12
-#define LOGSTCK 13
-#define PRINTLN 14
-#define REPEAT  15
-#define EQ      16
-#define FEQ     17
-#define GT      18
-#define GE      19
-#define LT      20
-#define LE      21
-#define LAND    22
-#define LOR     23
-#define AND     24
-#define OR      25
-#define NOT     26
-#define LNOT    27
-#define LSHIFT  28
-#define RSHIFT  29
-#define XOR     30
-#define NEG     31    //negative
-#define BREAK   32
-#define WTRUN   33    //while(top of stack) RUN
-#define WFRUN   34    //while(!top of stack) RUN
-#define IFTRUN  35    //if(top of stack) RUN
-#define IFFRUN  36    //if(!top of stack) RUN
-#define THREAD  37
-#define MEMSET  38
-#define MEMGET  39
-#define MEMSIZE 40
-#define MEMPUT  41
-#define MEMINS  42
-#define MEMDEL  43
-#define TONUM   44
-#define TOTXT   45
-#define ISNUM   46
-#define CANNUM  47
+#define POP     2
+//operations (15-50 registered for this category)
+#define ADD     15
+#define SUB     16
+#define MUL     17
+#define DIV     18
+#define MOD     19
+#define EQ      20
+#define FEQ     21
+#define GT      22
+#define GE      23
+#define LT      24
+#define LE      25
+#define LAND    26
+#define LOR     27
+#define AND     28
+#define OR      29
+#define NOT     30
+#define LNOT    31
+#define LSHIFT  32
+#define RSHIFT  33
+#define XOR     34
+#define NEG     35    //negative
+//memory-related opcodes (50-65 registered for this category)
+#define MEMSET  50
+#define MEMGET  51
+#define MEMSIZE 52
+#define MEMPUT  53
+#define MEMINS  54
+#define MEMDEL  55
+//type conversion opcodes (65-75 registered for this category)
+#define TONUM   65
+#define TOTXT   66
+#define ISNUM   67
+#define CANNUM  68
+//run cycle controllers (75-100 registered for this category)
+#define REC     75
+#define END     76
+#define RUN     77
+#define REPEAT  78
+#define BREAK   79
+#define IFTRUN  80    //if(top of stack) RUN
+#define IFFRUN  81    //if(!top of stack) RUN
+#define WTRUN   82    //while(top of stack) RUN
+#define WFRUN   83    //while(!top of stack) RUN
+#define THREAD  84
+//library calls and input/output, etc (100- registered for this category)
+#define DLCALL  100
+#define PRINT   101
 
 #include "VM_confs.h"
 #include <iostream>

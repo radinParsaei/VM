@@ -54,8 +54,6 @@ Value VM::disassemble(int prog, Value val) {
     case END:     return "END";
     case PRINT:   return "PRINT";
     case POP:     return "POP";
-    case LOGSTCK: return "LOGSTCK";
-    case PRINTLN: return "PRINTLN";
     case REPEAT:  return "REPEAT";
     case EQ:      return "EQ";
     case FEQ:     return "FEQ";
@@ -170,8 +168,6 @@ std::vector<Value> VM::assemble(Value line) {
     prog.push_back(SUB);
   } else if(line.startsWith("MUL").getBool()) {
     prog.push_back(MUL);
-  } else if(line.startsWith("PRINTLN").getBool()) {
-    prog.push_back(PRINTLN);
   } else if(line.startsWith("DIV").getBool()) {
     prog.push_back(DIV);
   } else if(line.startsWith("MOD").getBool()) {
@@ -188,8 +184,6 @@ std::vector<Value> VM::assemble(Value line) {
     prog.push_back(RUN);
   } else if(line.startsWith("POP").getBool()) {
     prog.push_back(POP);
-  } else if(line.startsWith("LOGSTCK").getBool()) {
-    prog.push_back(LOGSTCK);
   } else if(line.startsWith("REPEAT").getBool()) {
     prog.push_back(REPEAT);
   } else if(line.startsWith("EQ").getBool()) {
@@ -398,12 +392,6 @@ bool VM::run1(int prog, Value arg) {
 #endif
     case POP:
       stack.pop_back();
-      break;
-    case LOGSTCK:
-      printStack();
-      break;
-    case PRINTLN:
-      std::cout << std::endl;
       break;
     case REPEAT: {
       int count = pop().getLong();
