@@ -130,7 +130,7 @@ namespace VM_BINARIES {
   #ifdef USE_GMP_LIB
                 mode |= j.get_si() << 3;
   #else
-                mode |= j.getLong() << 3;
+                mode |= j.toLong() << 3;
   #endif
                 j = 0;
               }
@@ -139,11 +139,11 @@ namespace VM_BINARIES {
                 if (j >= 255) {
                   res += (char)255;
                 } else {
-    #ifdef USE_GMP_LIB
+#ifdef USE_GMP_LIB
                   res += (char)j.get_si();
-    #else
+#else
                   res += (char)j.toLong();
-    #endif
+#endif
                 }
               }
               res += (char)0;
