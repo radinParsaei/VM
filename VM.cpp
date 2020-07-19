@@ -87,6 +87,7 @@ Value VM::disassemble(int prog, Value val) {
     case TONUM:   return "TONUM";
     case ISNUM:   return "ISNUM";
     case CANNUM:  return "CANNUM";
+    case TOBOOL:  return "TOBOOL";
     default:      return "???";
     return 0;
   }
@@ -252,6 +253,8 @@ std::vector<Value> VM::assemble(Value line) {
     prog.push_back(ISNUM);
   } else if(line.startsWith("EXIT").getBool()) {
     prog.push_back(EXIT);
+  } else if(line.startsWith("TOBOOL").getBool()) {
+    prog.push_back(TOBOOL);
   }
   return prog;
 }
@@ -601,7 +604,7 @@ bool VM::run1(int prog, Value arg) {
       if(stack.size() == 0) break;
       stack.push_back(!stack[stack.size() - 1].getType());
       break;
-    case CANNUM:
+    case CANNUM: {
       if(stack.size() == 0) break;
       Value v = stack[stack.size() - 1];
       if(!v.getType()) {
@@ -617,6 +620,17 @@ bool VM::run1(int prog, Value arg) {
         stack.push_back(1);
       }
       break;
+    }
+    case TOBOOL: {
+      Value a = stack[stack.size() - 1];
+      if (a == True || a == False) break;
+      stack.pop_back();
+      if (a == 0 || a == null) {
+        stack.push_back(False);
+      } else {
+        stack.push_back(True);
+      }
+    }
   }
   return res;
 }

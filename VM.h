@@ -39,6 +39,7 @@
 #define TOTXT   66
 #define ISNUM   67
 #define CANNUM  68
+#define TOBOOL  69
 //run cycle controllers (75-100 registered for this category)
 #define REC     75
 #define END     76
