@@ -317,7 +317,7 @@ bool VM::run1(int prog, Value arg) {
     case SUB: {
       Value a = pop();
       Value b = pop();
-      stack.push_back(a / b);
+      stack.push_back(a - b);
       break;
     }
     case MUL:
@@ -329,9 +329,12 @@ bool VM::run1(int prog, Value arg) {
       stack.push_back(a / b);
       break;
     }
-    case MOD:
-      stack.push_back(pop() % pop());
+    case MOD: {
+      Value a = pop();
+      Value b = pop();
+      stack.push_back(a % b);
       break;
+    }
     case PRINT:
       std::cout << pop().toString();
       break;
@@ -413,18 +416,30 @@ bool VM::run1(int prog, Value arg) {
     case FEQ:
       stack.push_back(pop().strictEquals(pop()));
       break;
-    case GT:
-      stack.push_back(pop() > pop());
+    case GT: {
+      Value a = pop();
+      Value b = pop();
+      stack.push_back(a > b);
       break;
-    case GE:
-      stack.push_back(pop() >= pop());
+    }
+    case GE: {
+      Value a = pop();
+      Value b = pop();
+      stack.push_back(a >= b);
       break;
-    case LT:
-      stack.push_back(pop() < pop());
+    }
+    case LT: {
+      Value a = pop();
+      Value b = pop();
+      stack.push_back(a < b);
       break;
-    case LE:
-      stack.push_back(pop() <= pop());
+    }
+    case LE: {
+      Value a = pop();
+      Value b = pop();
+      stack.push_back(a <= b);
       break;
+    }
     case LAND:
       stack.push_back(pop() && pop());
       break;
@@ -443,12 +458,18 @@ bool VM::run1(int prog, Value arg) {
     case LNOT:
       stack.push_back(!pop());
       break;
-    case LSHIFT:
-      stack.push_back(pop() << pop());
+    case LSHIFT: {
+      Value a = pop();
+      Value b = pop();
+      stack.push_back(a << b);
       break;
-    case RSHIFT:
-      stack.push_back(pop() >> pop());
+    }
+    case RSHIFT: {
+      Value a = pop();
+      Value b = pop();
+      stack.push_back(a >> b);
       break;
+    }
     case XOR:
       stack.push_back(pop() ^ pop());
       break;
@@ -561,9 +582,12 @@ bool VM::run1(int prog, Value arg) {
     case MEMPUT:
       mempointer->push_back(pop());
       break;
-    case MEMINS:
-      mempointer->insert(mempointer->begin() + pop().getLong(), pop());
+    case MEMINS: {
+      Value a = pop();
+      Value b = pop();
+      mempointer->insert(mempointer->begin() + a.getLong(), b);
       break;
+    }
     case MEMDEL:
       mempointer->erase(mempointer->begin() + pop().getLong());
       break;
