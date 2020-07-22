@@ -7,3 +7,10 @@ repl
 mkcc
 *.exe
 *.vmso
+implementations/java/*.class
+implementations/java/*.dll
+implementations/java/*.dylib
+implementations/java/*.so
+implementations/py/*.dylib
+implementations/py/*.dll
+implementations/py/*.so
