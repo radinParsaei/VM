@@ -14,6 +14,9 @@ JNIEXPORT void JNICALL Java_VM_runWithString
 JNIEXPORT void JNICALL Java_VM_runWithDouble
   (JNIEnv *, jobject, jbyte, jdouble);
 
+JNIEXPORT void JNICALL Java_VM_runWithBoolean
+  (JNIEnv *, jobject, jbyte, jboolean);
+
 JNIEXPORT void JNICALL Java_VM_run
   (JNIEnv *, jobject, jbyte);
 

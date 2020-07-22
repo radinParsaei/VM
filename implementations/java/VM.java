@@ -7,6 +7,7 @@ public class VM {
 	}
 	private native void runWithString(byte opcode, String data);
 	private native void runWithDouble(byte opcode, double data);
+	private native void runWithBoolean(byte opcode, boolean data);
 	private native void init();
 	public native void run(byte opcode);
 	public void run(byte opcode, double data) {
@@ -14,6 +15,9 @@ public class VM {
 	}
 	public void run(byte opcode, String data) {
 		runWithString(opcode, data);
+	}
+	public void run(byte opcode, boolean data) {
+		runWithBoolean(opcode, data);
 	}
 	public static final byte EXIT = 0;
 	public static final byte PUT = 1;
