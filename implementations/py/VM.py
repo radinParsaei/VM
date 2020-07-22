@@ -59,8 +59,10 @@ class VM:
 
     def run(self, opcode, data = None):
         if data == None:
-            self.lib.run(opcode)
+            self.lib.runWithNull(opcode)
         elif type(data) == type(0):
             self.lib.runWithNumber(opcode, bytes(str(data), encoding="UTF-8"));
+        elif type(data) == type(True):
+            self.lib.runWithBoolean(opcode, data)
         else:
             self.lib.runWithString(opcode, bytes(str(data), encoding="UTF-8"));
