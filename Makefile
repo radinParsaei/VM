@@ -1,6 +1,6 @@
 INCLUDES=-IBigNumber/src/BigNumber -IValue
 ifeq ($(OS),Windows_NT)
-DEFINES=-DUSE_UTILS -DSTD_INCLUDED
+DEFINES=-DSTD_INCLUDED
 else
 DEFINES=-DSTD_INCLUDED -DUSE_READLINE
 endif
@@ -60,7 +60,7 @@ BigNumber.o: BigNumber/src/BigNumber/BigNumber.cpp BigNumber/src/BigNumber/BigNu
 	$(CXX) $(CFLAGS) -c $<
 
 clean:
-	$(RM) -r *.o VM assembler disassembler repl mkcc x86_64/ arm64/
+	$(RM) -r *.o VM assembler disassembler repl mkcc x86_64/ arm64/ *.html *.js *.wasm
 .PHONY: clean
 apple-universal2:
 	$(MAKE) EXT_CFLAGS="$(EXT_CFLAGS) -target x86_64-apple-macos10.12" EXT_LDFLAGS=$(EXT_LDFLAGS)
@@ -75,3 +75,18 @@ apple-universal2:
 	lipo -create -output mkcc arm64/mkcc x86_64/mkcc
 	lipo -create -output repl arm64/repl x86_64/repl
 .PHONY: apple-universal2
+repl_wasm: number.o BigNumber.o repl.o VM.o
+	$(CXX) $(CFLAGS) repl.o VM.o $(OBJS) -o repl.html $(LDFLAGS)
+VM_wasm: $(OBJS) VM.o main.o
+	test -e $(VM_BIN_FILE) || (echo $(VM_BIN_FILE) NOT exists && exit 1)
+	$(CXX) $(CFLAGS) VM.o main.o $(OBJS) -o VM.html $(LDFLAGS) --embed-file $(VM_BIN_FILE)
+.PHONY: VM_wasm
+ifeq ($(VM_BIN_FILE),)
+VM_BIN_FILE:=out.bin
+endif
+wasm:
+	$(MAKE) repl_wasm DEFINES=-DSTD_INCLUDED
+	$(MAKE) VM_wasm VM_BIN_FILE=$(VM_BIN_FILE)
+	echo "Module['arguments'] = ['$(VM_BIN_FILE)']" >> VM_wasm.js
+.PHONY: wasm
+

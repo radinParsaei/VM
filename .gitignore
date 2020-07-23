@@ -14,3 +14,6 @@ implementations/java/*.so
 implementations/py/*.dylib
 implementations/py/*.dll
 implementations/py/*.so
+*.wasm
+*.js
+*.html
