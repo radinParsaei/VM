@@ -4,7 +4,7 @@ VM vm;
 
 void setup() {
   Serial.begin(9600);
-  vm.run({PUT, "Hello World", PRINT, PRINTLN});
+  vm.run({PUT, "Hello World\n", PRINT });
 }
 
 void loop() {}

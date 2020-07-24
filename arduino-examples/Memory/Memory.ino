@@ -7,12 +7,12 @@ void setup() {
   std::vector<Value>* mem = new std::vector<Value>();
   vm.attachMem(mem);
   vm.run1(PUT, "Data");
-  vm.run1(LOGSTCK);
   vm.run1(MEMPUT);
   vm.run1(PUT, 0);
   vm.run1(MEMGET);
   vm.run1(PRINT);
-  vm.run1(PRINTLN);
+  vm.run1(PUT, "\n");
+  vm.run1(PRINT);
 }
 
 void loop() {}
