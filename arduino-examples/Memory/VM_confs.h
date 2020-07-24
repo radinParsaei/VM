@@ -4,3 +4,9 @@
 #include <Arduino.h>
 #include <ArduinoSTL.h>
 #include <vector>
+
+#ifdef ESP8266
+inline void exit(int) {
+  while(1);
+}
+#endif
