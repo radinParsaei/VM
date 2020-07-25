@@ -34,106 +34,106 @@ vm.run(PRINT);
 
 `cat VM.h | egrep '#define .+ [0-9]+' | cut -d' ' -f2` -> list all opcodes
 
-#opcodes list in pesudo code
-##EXIT:
+# opcodes list in pesudo code
+## EXIT:
 close VM with exit status: pop()
-##PUT:
+## PUT:
 put a value to VM stack
-##POP:
+## POP:
 pop one value from VM stack
-##ADD:
+## ADD:
 `push(pop() + pop())`
-##SUB:
+## SUB:
 `push(pop() - pop())`
-##MUL:
+## MUL:
 `push(pop() * pop())`
-##DIV:
+## DIV:
 `push(pop()/pop())`
-##MOD:
+## MOD:
 `push(pop()%pop())`
-##EQ:
+## EQ:
 `push(pop() == pop())` (`1 == "1"`), (`1 == True`)
-##FEQ:
+## FEQ:
 `push(pop() === pop())` (`1 !== "1"`) but (`1 === 1`), (`1 !== true`)
-##GT:
+## GT:
 `push(pop() > pop())`
-##GE:
+## GE:
 `push(pop() >= pop())`
-##LT:
+## LT:
 `push(pop() < pop())`
-##LE:
+## LE:
 `push(pop() <= pop())`
-##LAND:
+## LAND:
 `push(pop() && pop())` (equals to `and` in python)
-##LOR:
+## LOR:
 `push(pop() || pop())` (equals to `or` in python)
-##AND:
+## AND:
 `push(pop() & pop())` (bitwise)
-##OR:
+## OR:
 `push(pop() | pop())` (bitwise)
-##NOT:
+## NOT:
 `push(~pop())` (bitwise)
-##LNOT:
+## LNOT:
 `push(!pop())` (equals to `not` in python)
-##LSHIFT:
+## LSHIFT:
 `push(pop() << pop())`
-##RSHIFT:
+## RSHIFT:
 `push(pop() >> pop())`
-##XOR:
+## XOR:
 `push(pop() ^ pop())`
-##NEG:
+## NEG:
 `if pop() is number: push(-pop()) else: push(reverse(pop()))`
-##MEMSET:
+## MEMSET:
 `mem[pop()] = pop()`
-##MEMGET:
+## MEMGET:
 `push(mem[pop()])`
-##MEMSIZE:
+## MEMSIZE:
 `push(mem.size())`
-##MEMPUT:
+## MEMPUT:
 `mem.append(pop())`
-##MEMINS:
+## MEMINS:
 `mem.insert(pop(), pop()) -> [0, 2]; insert 1, 1 -> [0, 1, 2]`
-##MEMDEL:
+## MEMDEL:
 `del mem[pop()]`
-##TONUM:
+## TONUM:
 `push(pop().toNumber())`
-##TOTXT:
+## TOTXT:
 `push(pop().toString())`
-##ISNUM:
+## ISNUM:
 `push(get().type == Number)`
-##CANNUM:
+## CANNUM:
 `push(get().canNum())`
-##TOBOOL:
+## TOBOOL:
 `push(pop().toBool())`
-##REC:
+## REC:
 records programs
-##END:
+## END:
 end recording
-##RUN:
+## RUN:
 run recorded program
-##REPEAT:
+## REPEAT:
 RUN * `pop()`
-##BREAK:
+## BREAK:
 break running recorded program
-##IFTRUN:
+## IFTRUN:
 `if (pop()) RUN`
-##IFFRUN:
+## IFFRUN:
 `if (!pop()) RUN`
-##WTRUN:
+## WTRUN:
 ```while(get()) {
   pop()
   RUN
 }
 ```
-##WFRUN:
+## WFRUN:
 ```while(!get()) {
   pop()
   RUN
 }
 ```
-##THREAD:
+## THREAD:
 run program on a real or proto thread
-##DLCALL:
+## DLCALL:
 call libraries from files `*.vmso` or locally from "internalLibraryFunction"
 PRINT:
 `print(pop())`
