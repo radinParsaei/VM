@@ -17,3 +17,4 @@ implementations/py/*.so
 *.wasm
 *.js
 *.html
+.DS_Store
