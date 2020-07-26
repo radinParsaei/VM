@@ -2,7 +2,9 @@
 #define DYNAMIC_LIBS_NOT_AVAILABLE
 #define THREADING PROTOTHREADING
 #include <Arduino.h>
+#ifndef ESP8266
 #include <ArduinoSTL.h>
+#endif
 #include <vector>
 
 #ifdef ESP8266

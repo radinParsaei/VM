@@ -13,7 +13,7 @@ make EXT_CFLAGS='-DUSE_GMP_LIB' EXT_LDFLAGS='-lgmp -lgmpxx'
 ```
 to optimize generated VM use `-Os` and `-O3` in command-line arguments(EXT_CFLAGS)
 
-you can build VM for esp8266 with esp8266 Arduino board version 2.3 and EARLIER
+you can build VM for esp8266 with esp8266 Arduino board version 2.3 and EARLIER with ArduinoSTL (see https://github.com/mike-matera/ArduinoSTL/pull/58) or without ArduinoSTL with any version
 and for Arduino UNO, VM is tested with Arduino ide and platformio ide
 
 use `make apple-universal2` to build universal binaries for macOS 11, Big Sur, with Xcode 12
