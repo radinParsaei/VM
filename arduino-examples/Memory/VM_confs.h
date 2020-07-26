@@ -1,8 +1,10 @@
 #define STD_INCLUDED
 #define DYNAMIC_LIBS_NOT_AVAILABLE
+#ifndef ESP32
 #define THREADING PROTOTHREADING
+#endif
 #include <Arduino.h>
-#ifndef ESP8266
+#if !defined(ESP8266) && !defined(ESP32)
 #include <ArduinoSTL.h>
 #endif
 #include <vector>
