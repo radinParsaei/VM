@@ -17,7 +17,13 @@ you can build VM for esp8266 with esp8266 Arduino board version 2.3 and EARLIER 
 and for Arduino UNO, VM is tested with Arduino ide and platformio ide
 
 use `make apple-universal2` to build universal binaries for macOS 11, Big Sur, with Xcode 12
+
 use `emmake make wasm` to build repl and VM for wasm (VM need a VM binary file (default is out.bin) to add that file in wasm binary)
+
+in windows have two ways:
+1- use Cygwin
+2- use MinGW + https://github.com/meganz/mingw-std-threads (run utility_scripts)
+
 
 when VM is built output files are:
 VM the VM main, repl a simple repl built with gnu readline if can, assembler, disassembler, and mkcc
