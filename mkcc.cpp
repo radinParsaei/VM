@@ -71,7 +71,7 @@ int main(int argc, char const *argv[]){
         cout << "\tvm.run1(" << v.toString();
         if (v.getLong() == PUT) {
           c++;
-          cout << ", " << (vals[c].getType()? "\"":"") << vals[c].toString() << (vals[c].getType()? "\"":"");
+          cout << ", " << (vals[c].getType()? "\"":"") << vals[c].replace("\n", "\\n").replace("\t", "\\t").toString() << (vals[c].getType()? "\"":"");
         }
         cout << ");\n";
       }
