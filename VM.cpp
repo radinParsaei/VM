@@ -555,11 +555,16 @@ bool VM::run1(int prog, Value arg) {
     case THREAD: {
       std::vector<Value> prog;
       int ps = pop().getLong();
+#if THREADING == PROTOTHREADING
+      int psTmp = ps;
+#endif
       for(; ps > 0; ps--) {
         prog.insert(prog.begin(), pop());
       }
 #if THREADING == PROTOTHREADING
-      threads.push_back(Thread(prog, mempointer));
+      Value* p = new Value[psTmp];
+      std::copy(prog.begin(), prog.end(), p);
+      threads.push_back(Thread(p, psTmp, mempointer));
 #else
       std::thread t([=]{
         VM *vm = new VM();
