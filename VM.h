@@ -90,7 +90,10 @@ class VM {
     bool autoKill;
     void (*internalLibraryFunction)(Value, VM*);
     VM();
+#if THREADING == PROTOTHREADING
     ~VM();
+    void runAllProtoThreads();
+#endif
     bool run(std::vector<Value> prog, bool forceRun = true, int pc = 0);
     bool run1(int prog, Value arg = 0);
     void setInternalLibraryFunction(void (*internalLibraryFunction) (Value, VM*));

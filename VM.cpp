@@ -10,8 +10,8 @@ VM::VM() {
   recsize = 0;
 }
 
-VM::~VM() {
 #if THREADING == PROTOTHREADING
+void VM::runAllProtoThreads() {
   while (threads.size() != 0) {
     for (int i = 0; i < threads.size(); i++) {
       threads[i].runNext();
@@ -20,8 +20,14 @@ VM::~VM() {
       }
     }
   }
+}
+
+VM::~VM() {
+#ifdef RUN_PROTO_THREADS_AT_EXIT
+  runAllProtoThreads();
 #endif
 }
+#endif
 
 void VM::attachMem(std::vector<Value> *mem) {
   mempointer = mem;
