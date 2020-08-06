@@ -56,6 +56,9 @@ number.o: BigNumber/src/BigNumber/number.c BigNumber/src/BigNumber/number.h
 BigNumber.o: BigNumber/src/BigNumber/BigNumber.cpp BigNumber/src/BigNumber/BigNumber.h
 	$(CXX) -c BigNumber/src/BigNumber/BigNumber.cpp $(DEFINES) $(EXT_CFLAGS)
 
+VM.o: VM.cpp VM.h Value/value.h
+	$(CXX) $(CFLAGS) -c VM.cpp
+
 %.o: %.cpp
 	$(CXX) $(CFLAGS) -c $<
 
@@ -89,4 +92,3 @@ wasm:
 	$(MAKE) VM_wasm VM_BIN_FILE=$(VM_BIN_FILE)
 	echo "Module['arguments'] = ['$(VM_BIN_FILE)']" >> VM_wasm.js
 .PHONY: wasm
-
