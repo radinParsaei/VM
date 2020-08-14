@@ -649,6 +649,7 @@ bool VM::run1(int prog, Value arg) {
       } else {
         stack.push_back(True);
       }
+      break;
     }
     case SKIP:
       skip = pop().getLong() + 1;
