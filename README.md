@@ -143,3 +143,10 @@ run program on a real or proto thread
 call libraries from files `*.vmso` or locally from "internalLibraryFunction"
 PRINT:
 `print(pop())`
+## SKIP
+skips opcodes with the count of `pop()`
+## IFSKIP
+```if (pop()) {
+    skips opcodes with the count of `pop()`
+}
+```

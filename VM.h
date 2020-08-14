@@ -51,6 +51,8 @@
 #define WTRUN   82    //while(top of stack) RUN
 #define WFRUN   83    //while(!top of stack) RUN
 #define THREAD  84
+#define SKIP    85
+#define IFSKIP  86
 //library calls and input/output, etc (100- registered for this category)
 #define DLCALL  100
 #define PRINT   101
@@ -103,6 +105,7 @@ class VM {
     static std::vector<Value> assemble(Value line);
     static Value disassemble(int prog, Value val);
   private:
+    int skip = 1;
     std::vector<Value> stack;//stack memory
     std::vector<Value> *mempointer;//storage for saving variables data
 #if THREADING == PROTOTHREADING

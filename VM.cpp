@@ -94,6 +94,8 @@ Value VM::disassemble(int prog, Value val) {
     case ISNUM:   return "ISNUM";
     case CANNUM:  return "CANNUM";
     case TOBOOL:  return "TOBOOL";
+    case SKIP:    return "SKIP";
+    case IFSKIP:  return "IFSKIP";
     default:      return "???";
     return 0;
   }
@@ -261,11 +263,17 @@ std::vector<Value> VM::assemble(Value line) {
     prog.push_back(EXIT);
   } else if(line.startsWith("TOBOOL").getBool()) {
     prog.push_back(TOBOOL);
+  } else if(line.startsWith("SKIP").getBool()) {
+    prog.push_back(SKIP);
+  } else if(line.startsWith("IFSKIP").getBool()) {
+    prog.push_back(IFSKIP);
   }
   return prog;
 }
 
 bool VM::run1(int prog, Value arg) {
+  skip && skip--;
+  if (skip) return prog == PUT;
 #if THREADING == PROTOTHREADING
   for (int i = 0; i < threads.size(); i++) {
     threads[i].runNext();
@@ -642,6 +650,16 @@ bool VM::run1(int prog, Value arg) {
         stack.push_back(True);
       }
     }
+    case SKIP:
+      skip = pop().getLong() + 1;
+      break;
+    case IFSKIP:
+      if (pop().getBool()) {
+        skip = pop().getLong() + 1;
+      } else {
+        pop();
+      }
+      break;
   }
   return res;
 }
