@@ -53,6 +53,7 @@ public class VM {
 	public static final byte TOTXT = 66;
 	public static final byte ISNUM = 67;
 	public static final byte CANNUM = 68;
+	public static final byte TOBOOL = 69;
 	public static final byte REC = 75;
 	public static final byte END = 76;
 	public static final byte RUN = 77;
@@ -63,6 +64,8 @@ public class VM {
 	public static final byte WTRUN = 82;
 	public static final byte WFRUN = 83;
 	public static final byte THREAD = 84;
+	public static final byte SKIP = 85;
+	public static final byte IFSKIP = 86;
 	public static final byte DLCALL = 100;
 	public static final byte PRINT = 101;
 }
