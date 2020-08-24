@@ -16,6 +16,7 @@ int main(int argc, char const *argv[]){
     cerr << "can't open file" << '\n';
     return 1;
   }
+  mpf_set_default_prec(1024);
   vector<Value> vals = parseBin(string((istreambuf_iterator<char>(f)), istreambuf_iterator<char>()));
   for(int c = 0; c < vals.size(); c++){
     if (vals[c].getType() == VALUE_TYPE_NUMBER) {

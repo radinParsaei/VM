@@ -149,9 +149,7 @@ namespace VM_BINARIES {
               res += (char)0;
             } else {
               res += (char)6;
-              for (char k : i.toString()) {
-                res += k;
-              }
+              res += i.toString();
               res += (char)0;
             }
             continue;

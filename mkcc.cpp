@@ -1,6 +1,7 @@
 #include "VM.h"
 #include <fstream>
 #include <sstream>
+#include <limits.h>
 #include "VM_binaries.h"
 
 using namespace std;
@@ -16,6 +17,7 @@ int main(int argc, char const *argv[]){
     cerr << "can\'t open file" << '\n';
     return 1;
   }
+  mpf_set_default_prec(1024);
   cout << "#include \"VM.h\"\n";
   if (argc > 3) {
     ifstream f(argv[3]);
@@ -71,7 +73,21 @@ int main(int argc, char const *argv[]){
         cout << "\tvm.run1(" << v.toString();
         if (v.getLong() == PUT) {
           c++;
-          cout << ", " << (vals[c].getType()? "\"":"") << vals[c].replace("\n", "\\n").replace("\t", "\\t").toString() << (vals[c].getType()? "\"":"");
+          string tmp1 = "";
+          string tmp2 = "";
+          switch (vals[c].getType()) {
+            case VALUE_TYPE_TEXT:
+              tmp1 = "\"";
+              tmp1 = tmp2;
+              break;
+            case VALUE_TYPE_NUMBER:
+              if ((vals[c] > LONG_MAX || vals[c] < LONG_MIN).getBool()) {
+                tmp1 = "NUMBER(\"";
+                tmp2 = "\")";
+              }
+              break;
+          }
+          cout << ", " << tmp1 << Value(vals[c].toString()).replace("\n", "\\n").replace("\t", "\\t") << tmp2;
         }
         cout << ");\n";
       }

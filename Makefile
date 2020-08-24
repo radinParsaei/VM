@@ -59,7 +59,7 @@ BigNumber.o: BigNumber/src/BigNumber/BigNumber.cpp BigNumber/src/BigNumber/BigNu
 VM.o: VM.cpp VM.h Value/value.h
 	$(CXX) $(CFLAGS) -c VM.cpp
 
-%.o: %.cpp
+%.o: %.cpp VM_binaries.h
 	$(CXX) $(CFLAGS) -c $<
 
 clean:
