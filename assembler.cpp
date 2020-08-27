@@ -14,7 +14,9 @@ int main(int argc, char const **argv) {
   if(argc >= 3){
     filename = argv[2];
   }
+#ifdef USE_GMP_LIB
   mpf_set_default_prec(1024);
+#endif
   ofstream ofile;
   ofile.open(filename);
   ifstream fin;

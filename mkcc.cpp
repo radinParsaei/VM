@@ -17,7 +17,9 @@ int main(int argc, char const *argv[]){
     cerr << "can\'t open file" << '\n';
     return 1;
   }
+#ifdef USE_GMP_LIB
   mpf_set_default_prec(1024);
+#endif
   cout << "#include \"VM.h\"\n";
   if (argc > 3) {
     ifstream f(argv[3]);
