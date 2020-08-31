@@ -3,10 +3,12 @@ override LDFLAGS:=$(LDFLAGS) -shared -fPIC
 
 ifeq ($(USE_GMP_LIB),1)
 override LDFLAGS:=$(LDFLAGS) -lgmp -lgmpxx
-override CFLAGS:=$(CFLAGS) -DUSE_GMP_LIB
+override CFLAGS:=$(CFLAGS) -DUSE_GMP_LIB -fPIC
 else
 override INCLUDES:=$(INCLUDES) -I../../BigNumber/src/BigNumber
-override CFLAGS:=$(CFLAGS) ../../number.o ../../BigNumber.o
+override CFLAGS:=$(CFLAGS) -fPIC
+objs:=../../number.o ../../BigNumber.o
+rmobjs=rmobjs
 endif
 
 override CFLAGS:=$(CFLAGS) $(INCLUDES)
@@ -25,14 +27,20 @@ else
     endif
 endif
 
-all: VMPy.o $(NAME).$(EXT)
+all: VMPy.o $(rmobjs) $(objs) $(NAME).$(EXT)
 .PHONY: all
+
+rmobjs:
+	$(RM) ../../number.o ../../BigNumber.o
+
+%.o:
+	$(MAKE) -C ../../ $(subst ../../,,$@) EXT_CFLAGS=-fPIC
 
 VMPy.o: VMPy.cpp
 	$(CXX) -c $(CFLAGS) $<
 
 $(NAME).$(EXT):
-	$(CXX) $(CFLAGS) VMPy.o ../../VM.cpp $(LDFLAGS) -o $(NAME).$(EXT)
+	$(CXX) $(CFLAGS) $(objs) VMPy.o ../../VM.cpp $(LDFLAGS) -o $(NAME).$(EXT)
 
 clean:
 	$(RM) $(classes) *.o *.$(EXT)

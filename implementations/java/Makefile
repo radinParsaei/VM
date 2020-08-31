@@ -7,7 +7,8 @@ override LDFLAGS:=$(LDFLAGS) -lgmp -lgmpxx
 override CFLAGS:=$(CFLAGS) -DUSE_GMP_LIB
 else
 override INCLUDES:=$(INCLUDES) -I../../BigNumber/src/BigNumber
-override CFLAGS:=$(CFLAGS) ../../number.o ../../BigNumber.o
+objs=../../number.o ../../BigNumber.o
+rmobjs=rmobjs
 endif
 
 override CFLAGS:=$(CFLAGS) $(INCLUDES)
@@ -26,8 +27,14 @@ else
     endif
 endif
 
-all: VM_JNI.o $(NAME).$(EXT) $(classes)
+all: $(rmobjs) $(objs) VM_JNI.o $(NAME).$(EXT) $(classes)
 .PHONY: all
+
+rmobjs:
+	$(RM) $(objs)
+
+%.o:
+	$(MAKE) -C ../.. $(subst ../../,,$@) EXT_CFLAGS=-fPIC
 
 %.class: %.java
 	javac $<
@@ -36,7 +43,7 @@ VM_JNI.o: VM_JNI.cpp VM_JNI.h
 	$(CXX) -c $(CFLAGS) VM_JNI.cpp -fPIC
 
 $(NAME).$(EXT):
-	$(CXX) $(CFLAGS) VM_JNI.o ../../VM.cpp $(LDFLAGS) -o $(NAME).$(EXT)
+	$(CXX) $(CFLAGS) $(objs) VM_JNI.o ../../VM.cpp $(LDFLAGS) -o $(NAME).$(EXT)
 
 clean:
 	$(RM) $(classes) *.o $(NAME).$(EXT)

@@ -18,3 +18,4 @@ implementations/py/*.so
 *.js
 *.html
 .DS_Store
+implementations/py/__pycache__/
