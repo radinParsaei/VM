@@ -1,5 +1,5 @@
 classes=$(subst .java,, $(foreach java-source, $(wildcard *.java), $(java-source).class))
-INCLUDES:=-I. -I../.. -I../../Value -I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/darwin -I$(JAVA_HOME)/include/linux -I$(JAVA_HOME)/include/win32
+INCLUDES:=-I. -I../.. -I../../Value -I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/darwin -I$(JAVA_HOME)/include/linux -I$(JAVA_HOME)/include/win32 -I/usr/lib/jvm/default-java/include -I/usr/lib/jvm/default-java/include/linux
 override LDFLAGS:=$(LDFLAGS) -shared -fPIC
 
 ifeq ($(USE_GMP_LIB),1)
@@ -26,17 +26,17 @@ else
     endif
 endif
 
-all: VM_JNI.o VM.$(EXT) $(classes)
+all: VM_JNI.o $(NAME).$(EXT) $(classes)
 .PHONY: all
 
 %.class: %.java
 	javac $<
 
 VM_JNI.o: VM_JNI.cpp VM_JNI.h
-	$(CXX) -c $(CFLAGS) VM_JNI.cpp
+	$(CXX) -c $(CFLAGS) VM_JNI.cpp -fPIC
 
-VM.$(EXT):
+$(NAME).$(EXT):
 	$(CXX) $(CFLAGS) VM_JNI.o ../../VM.cpp $(LDFLAGS) -o $(NAME).$(EXT)
 
 clean:
-	$(RM) $(classes) *.o *.$(EXT)
+	$(RM) $(classes) *.o $(NAME).$(EXT)
