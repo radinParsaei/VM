@@ -83,7 +83,7 @@ int main(int argc, char const *argv[]){
               tmp1 = tmp2;
               break;
             case VALUE_TYPE_NUMBER:
-              if ((vals[c] > LONG_MAX || vals[c] < LONG_MIN).getBool()) {
+              if (vals[c] > LONG_MAX || vals[c] < LONG_MIN) {
                 tmp1 = "NUMBER(\"";
                 tmp2 = "\")";
               }
