@@ -132,11 +132,11 @@ Value VM::pop() {
 std::vector<Value> VM::assemble(Value line) {
   std::vector<Value> prog;
   line.trimLeft();
-  if(line.startsWith("PUT").getBool()) {
+  if (line.startsWith("PUT")) {
     line.substring(3);
     line.trimLeft();
     prog.push_back(PUT);
-    if (line.startsWith("NUM").getBool()) {
+    if (line.startsWith("NUM")) {
       line.substring(3);
       int i = 0;
       while (!(isdigit(line[i].toString()[0]) || line[i] == '.' || line[i] == '-')) i++;
@@ -144,7 +144,7 @@ std::vector<Value> VM::assemble(Value line) {
       line.trim();
       line.toNum();
       prog.push_back(line);
-    } else if (line.startsWith("TXT").getBool()) {
+    } else if (line.startsWith("TXT")) {
       line.substring(3);
       line.replace("\\n", "\n");
       line.replace("\\\n", "\\n");
@@ -162,7 +162,7 @@ std::vector<Value> VM::assemble(Value line) {
       line.replace("\\\"", "\"");
       line.replace("\\\\", "\\");
       prog.push_back(line);
-    } else if (line.startsWith("BOOL").getBool()) {
+    } else if (line.startsWith("BOOL")) {
       line.substring(4);
       line.trim();
       line.replace("1", "true");
@@ -171,101 +171,101 @@ std::vector<Value> VM::assemble(Value line) {
     } else {
       prog.push_back(null);
     }
-  } else if(line.startsWith("ADD").getBool()) {
+  } else if (line.startsWith("ADD")) {
     prog.push_back(ADD);
-  } else if(line.startsWith("SUB").getBool()) {
+  } else if (line.startsWith("SUB")) {
     prog.push_back(SUB);
-  } else if(line.startsWith("MUL").getBool()) {
+  } else if (line.startsWith("MUL")) {
     prog.push_back(MUL);
-  } else if(line.startsWith("DIV").getBool()) {
+  } else if (line.startsWith("DIV")) {
     prog.push_back(DIV);
-  } else if(line.startsWith("MOD").getBool()) {
+  } else if (line.startsWith("MOD")) {
     prog.push_back(MOD);
-  } else if(line.startsWith("PRINT").getBool()) {
+  } else if (line.startsWith("PRINT")) {
     prog.push_back(PRINT);
-  } else if(line.startsWith("DLCALL").getBool()) {
+  } else if (line.startsWith("DLCALL")) {
     prog.push_back(DLCALL);
-  } else if(line.startsWith("REC").getBool()) {
+  } else if (line.startsWith("REC")) {
     prog.push_back(REC);
-  } else if(line.startsWith("END").getBool()) {
+  } else if (line.startsWith("END")) {
     prog.push_back(END);
-  } else if(line.startsWith("RUN").getBool()) {
+  } else if (line.startsWith("RUN")) {
     prog.push_back(RUN);
-  } else if(line.startsWith("POP").getBool()) {
+  } else if (line.startsWith("POP")) {
     prog.push_back(POP);
-  } else if(line.startsWith("REPEAT").getBool()) {
+  } else if (line.startsWith("REPEAT")) {
     prog.push_back(REPEAT);
-  } else if(line.startsWith("EQ").getBool()) {
+  } else if (line.startsWith("EQ")) {
     prog.push_back(EQ);
-  } else if(line.startsWith("FEQ").getBool()) {
+  } else if (line.startsWith("FEQ")) {
     prog.push_back(FEQ);
-  } else if(line.startsWith("GT").getBool()) {
+  } else if (line.startsWith("GT")) {
     prog.push_back(GT);
-  } else if(line.startsWith("GE").getBool()) {
+  } else if (line.startsWith("GE")) {
     prog.push_back(GE);
-  } else if(line.startsWith("LT").getBool()) {
+  } else if (line.startsWith("LT")) {
     prog.push_back(LT);
-  } else if(line.startsWith("LE").getBool()) {
+  } else if (line.startsWith("LE")) {
     prog.push_back(LE);
-  } else if(line.startsWith("LAND").getBool()) {
+  } else if (line.startsWith("LAND")) {
     prog.push_back(LAND);
-  } else if(line.startsWith("AND").getBool()) {
+  } else if (line.startsWith("AND")) {
     prog.push_back(AND);
-  } else if(line.startsWith("LOR").getBool()) {
+  } else if (line.startsWith("LOR")) {
     prog.push_back(LOR);
-  } else if(line.startsWith("OR").getBool()) {
+  } else if (line.startsWith("OR")) {
     prog.push_back(OR);
-  } else if(line.startsWith("NOT").getBool()) {
+  } else if (line.startsWith("NOT")) {
     prog.push_back(NOT);
-  } else if(line.startsWith("LNOT").getBool()) {
+  } else if (line.startsWith("LNOT")) {
     prog.push_back(LNOT);
-  } else if(line.startsWith("LSHIFT").getBool()) {
+  } else if (line.startsWith("LSHIFT")) {
     prog.push_back(LSHIFT);
-  } else if(line.startsWith("RSHIFT").getBool()) {
+  } else if (line.startsWith("RSHIFT")) {
     prog.push_back(RSHIFT);
-  } else if(line.startsWith("XOR").getBool()) {
+  } else if (line.startsWith("XOR")) {
     prog.push_back(XOR);
-  } else if(line.startsWith("NEG").getBool()) {
+  } else if (line.startsWith("NEG")) {
     prog.push_back(NEG);
-  } else if(line.startsWith("BREAK").getBool()) {
+  } else if (line.startsWith("BREAK")) {
     prog.push_back(BREAK);
-  } else if(line.startsWith("WTRUN").getBool()) {
+  } else if (line.startsWith("WTRUN")) {
     prog.push_back(WTRUN);
-  } else if(line.startsWith("WFRUN").getBool()) {
+  } else if (line.startsWith("WFRUN")) {
     prog.push_back(WFRUN);
-  } else if(line.startsWith("IFFRUN").getBool()) {
+  } else if (line.startsWith("IFFRUN")) {
     prog.push_back(IFFRUN);
-  } else if(line.startsWith("IFTRUN").getBool()) {
+  } else if (line.startsWith("IFTRUN")) {
     prog.push_back(IFTRUN);
-  } else if(line.startsWith("THREAD").getBool()) {
+  } else if (line.startsWith("THREAD")) {
     prog.push_back(THREAD);
-  } else if(line.startsWith("MEMGET").getBool()) {
+  } else if (line.startsWith("MEMGET")) {
     prog.push_back(MEMGET);
-  } else if(line.startsWith("MEMSET").getBool()) {
+  } else if (line.startsWith("MEMSET")) {
     prog.push_back(MEMSET);
-  } else if(line.startsWith("MEMSIZE").getBool()) {
+  } else if (line.startsWith("MEMSIZE")) {
     prog.push_back(MEMSIZE);
-  } else if(line.startsWith("MEMPUT").getBool()) {
+  } else if (line.startsWith("MEMPUT")) {
     prog.push_back(MEMPUT);
-  } else if(line.startsWith("MEMINS").getBool()) {
+  } else if (line.startsWith("MEMINS")) {
     prog.push_back(MEMINS);
-  } else if(line.startsWith("MEMDEL").getBool()) {
+  } else if (line.startsWith("MEMDEL")) {
     prog.push_back(MEMDEL);
-  } else if(line.startsWith("TOTXT").getBool()) {
+  } else if (line.startsWith("TOTXT")) {
     prog.push_back(TOTXT);
-  } else if(line.startsWith("TONUM").getBool()) {
+  } else if (line.startsWith("TONUM")) {
     prog.push_back(TONUM);
-  } else if(line.startsWith("CANNUM").getBool()) {
+  } else if (line.startsWith("CANNUM")) {
     prog.push_back(CANNUM);
-  } else if(line.startsWith("ISNUM").getBool()) {
+  } else if (line.startsWith("ISNUM")) {
     prog.push_back(ISNUM);
-  } else if(line.startsWith("EXIT").getBool()) {
+  } else if (line.startsWith("EXIT")) {
     prog.push_back(EXIT);
-  } else if(line.startsWith("TOBOOL").getBool()) {
+  } else if (line.startsWith("TOBOOL")) {
     prog.push_back(TOBOOL);
-  } else if(line.startsWith("SKIP").getBool()) {
+  } else if (line.startsWith("SKIP")) {
     prog.push_back(SKIP);
-  } else if(line.startsWith("IFSKIP").getBool()) {
+  } else if (line.startsWith("IFSKIP")) {
     prog.push_back(IFSKIP);
   }
   return prog;

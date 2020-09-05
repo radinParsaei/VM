@@ -61,7 +61,7 @@ char* opcodes[] = {
 char* PUT_params[] = { "NUM", "TXT", "BOOL", "NULL", NULL };
 
 char* completion_generator(const char* text, int state) {
-  if (Value(rl_line_buffer).trim().startsWith("PUT").getBool() && (Value(rl_line_buffer).find("TXT") != -1 || Value(rl_line_buffer).find("NUM") != -1)) return NULL;
+  if (Value(rl_line_buffer).trim().startsWith("PUT") && (Value(rl_line_buffer).find("TXT") != -1 || Value(rl_line_buffer).find("NUM") != -1)) return NULL;
   else if (Value(rl_line_buffer).trim().find("PUT") == -1 && Value(rl_line_buffer).find(" ") != -1) return NULL;
   static uint8_t i, len;
   char* name;
@@ -69,7 +69,7 @@ char* completion_generator(const char* text, int state) {
     i = 0;
     len = strlen(text);
   }
-  if (Value(rl_line_buffer).trim().startsWith("PUT").getBool() && Value(rl_line_buffer).find("NUM") == -1 && Value(rl_line_buffer).find("TXT") == -1) {
+  if (Value(rl_line_buffer).trim().startsWith("PUT") && Value(rl_line_buffer).find("NUM") == -1 && Value(rl_line_buffer).find("TXT") == -1) {
     while ((name = PUT_params[i++])) {
       if (strncmp(name, Value(text).toUpper().toString().c_str(), len) == 0) {
         return strdup(name);
