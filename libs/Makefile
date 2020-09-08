@@ -1,6 +1,11 @@
 override CFLAGS:=$(CFLAGS) -DUSE_UTILS -DSTD_INCLUDED -std=c++14 -I. -I$(VM_ROOT) -I$(VM_ROOT)/libs -I$(VM_ROOT)/BigNumber/src -I$(VM_ROOT)/Value $(FLAGS)
 LDFLAGS?=
 
+ifeq ($(USE_GMP_LIB),1)
+override CFLAGS:=$(CFLAGS) -DUSE_GMP_LIB
+override LDFLAGS:=$(LDFLAGS) -lgmp -lgmpxx
+endif
+
 ifeq ($(OS),Windows_NT)
 	CFLAGS += -fdata-sections -ffunction-sections
 	LDFLAGS += -Wl,--gc-sections
@@ -20,8 +25,13 @@ all: compile
 
 compile: check_VM_ROOT check_LIBNAME $(LIBNAME).vmso
 
+ifeq ($(USE_GMP_LIB),1)
+%.vmso: %.o number.o BigNumber.o VM.o
+	$(CXX) -shared -fPIC -o $@ $(CFLAGS) $< VM.o $(LDFLAGS)
+else
 %.vmso: %.o number.o BigNumber.o VM.o
 	$(CXX) -shared -fPIC -o $@ $(CFLAGS) $< number.o BigNumber.o VM.o $(LDFLAGS)
+endif
 
 %.a: %.o number.o BigNumber.o VM.o
 	$(CXX) -shared -fPIC -i $@ $(CFLAGS) $< number.o BigNumber.o VM.o $(LDFLAGS)

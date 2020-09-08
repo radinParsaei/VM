@@ -371,14 +371,13 @@ bool VM::run1(int prog, Value arg) {
     case DLCALL: {
       Value v1 = pop();
       if (v1 == "." && internalLibraryFunction) internalLibraryFunction(pop(), this);
-      break;
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
       HINSTANCE hinstLib;
       dlfunc fn;
       std::string s = v1.getString();
       hinstLib = LoadLibraryA(s.c_str());
       if(hinstLib != NULL) {
-        fn = (dlfunc) GetProcAddress(hinstLib, (LPCSTR)pop().getString());
+        fn = (dlfunc) GetProcAddress(hinstLib, (LPCSTR)pop().getString().c_str());
         if (NULL != fn) {
           fn(this);
         } else {
