@@ -115,7 +115,7 @@ namespace VM_BINARIES {
             continue;
           case VALUE_TYPE_NUMBER: {
             NUMBER j = i.getNumber();
-            if (j < 1000) {
+            if (j < 1000 && i.toString().find(".") == -1) {
               char mode;
               if (j >= 0) {
                 mode = 3;
