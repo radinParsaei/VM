@@ -89,7 +89,15 @@ int main(int argc, char const *argv[]){
               }
               break;
           }
-          cout << ", " << tmp1 << Value(vals[c].toString()).replace("\n", "\\n").replace("\t", "\\t") << tmp2;
+          cout << ", " << tmp1 << Value(vals[c].toString()).replace("\n", "\\n")
+                        .replace("\t", "\\t")
+                        .replace("\a", "\\a")
+                        .replace("\r", "\\r")
+                        .replace("\b", "\\b")
+                        .replace("\f", "\\f")
+                        .replace("\'", "\\\'")
+                        .replace("\"", "\\\"")
+                        .replace("\\", "\\\\") << tmp2;
         }
         cout << ");\n";
       }
