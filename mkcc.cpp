@@ -80,7 +80,7 @@ int main(int argc, char const *argv[]){
           switch (vals[c].getType()) {
             case VALUE_TYPE_TEXT:
               tmp1 = "\"";
-              tmp1 = tmp2;
+              tmp2 = tmp1;
               break;
             case VALUE_TYPE_NUMBER:
               if (vals[c] > LONG_MAX || vals[c] < LONG_MIN) {
@@ -89,15 +89,15 @@ int main(int argc, char const *argv[]){
               }
               break;
           }
-          cout << ", " << tmp1 << Value(vals[c].toString()).replace("\n", "\\n")
+          cout << ", " << tmp1 << Value(vals[c].toString()).replace("\\", "\\\\")
+                        .replace("\n", "\\n")
                         .replace("\t", "\\t")
                         .replace("\a", "\\a")
                         .replace("\r", "\\r")
                         .replace("\b", "\\b")
                         .replace("\f", "\\f")
                         .replace("\'", "\\\'")
-                        .replace("\"", "\\\"")
-                        .replace("\\", "\\\\") << tmp2;
+                        .replace("\"", "\\\"") << tmp2;
         }
         cout << ");\n";
       }
