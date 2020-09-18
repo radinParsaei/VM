@@ -512,7 +512,7 @@ bool VM::run1(int prog, Value arg) {
             prog.insert(prog.begin(), pop());
           }
           while(tos) {
-            run(prog);
+            if (run(prog)) break;
             tos = stack[stack.size() - 1].getBool();
             if(tos)stack.pop_back();
           }
@@ -530,7 +530,7 @@ bool VM::run1(int prog, Value arg) {
             prog.insert(prog.begin(), pop());
           }
           while(!tos) {
-            run(prog);
+            if (run(prog)) break;
             tos = stack[stack.size() - 1].getBool();
             if(!tos)stack.pop_back();
           }
