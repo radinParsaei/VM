@@ -383,7 +383,6 @@ bool VM::run1(int prog, Value arg) {
         } else {
           std::cerr << "SYMBOL NOT FOUND" << GetLastError();
         }
-        FreeLibrary(hinstLib);
       } else {
         std::cerr << "CANNOT OPEN LIBRARY\n";
         std::cerr << GetLastError();
@@ -400,7 +399,6 @@ bool VM::run1(int prog, Value arg) {
       dlerror();//clear errors
       fn = ((dlfunc)dlsym(lib, pop().toString().c_str()));
       fn(this);
-      dlclose(lib);
 #endif
       break;
     }
