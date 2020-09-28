@@ -104,6 +104,8 @@ class VM {
     void attachMem(std::vector<Value> *mem);
     static std::vector<Value> assemble(Value line);
     static Value disassemble(int prog, Value val);
+    Value pop();//pops a data from the stack
+    void push(Value);
   private:
     int skip = 1;
     std::vector<Value> stack;//stack memory
@@ -111,7 +113,6 @@ class VM {
 #if THREADING == PROTOTHREADING
     std::vector<Thread> threads;
 #endif
-    Value pop();//pops a data from the stack
     int rec = 0;
     int recsize;
     int exit_code;
@@ -155,3 +156,5 @@ typedef void (__stdcall *dlfunc)(VM*);
 #else
 typedef void (*dlfunc)(VM*);
 #endif
+
+#include "VM_exts.h"

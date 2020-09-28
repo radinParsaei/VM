@@ -1,4 +1,4 @@
-INCLUDES=-IBigNumber/src/BigNumber -IValue
+INCLUDES=-IBigNumber/src/BigNumber -IValue -I.
 ifeq ($(OS),Windows_NT)
 DEFINES=-DSTD_INCLUDED
 else
@@ -56,7 +56,7 @@ number.o: BigNumber/src/BigNumber/number.c BigNumber/src/BigNumber/number.h
 BigNumber.o: BigNumber/src/BigNumber/BigNumber.cpp BigNumber/src/BigNumber/BigNumber.h
 	$(CXX) -c BigNumber/src/BigNumber/BigNumber.cpp $(DEFINES) $(EXT_CFLAGS)
 
-VM.o: VM.cpp VM.h Value/value.h
+VM.o: VM.cpp VM.h Value/value.h $(wildcard exts/*/*.h) VM_confs.h VM_exts.h
 	$(CXX) $(CFLAGS) -c VM.cpp
 
 %.o: %.cpp VM_binaries.h

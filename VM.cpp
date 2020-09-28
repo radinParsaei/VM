@@ -129,6 +129,10 @@ Value VM::pop() {
   return v;
 }
 
+void VM::push(Value data) {
+  stack.push_back(data);
+}
+
 std::vector<Value> VM::assemble(Value line) {
   std::vector<Value> prog;
   line.trimLeft();
@@ -317,6 +321,9 @@ bool VM::run1(int prog, Value arg) {
   printStack();
   std::cout << std::endl;
 #endif
+  if (VM_ext_run(prog, arg, this)) {
+    return prog == PUT;
+  }
   bool res = 0;
   switch (prog) {
     case EXIT:
