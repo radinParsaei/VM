@@ -4,5 +4,6 @@
 #include "exts/ffi/VMFFI.h"
 
 EXTENSIONS
+CALL_EXT(vmffi)
 END_EXTS
 #endif
