@@ -19,3 +19,8 @@ implementations/py/*.so
 *.html
 .DS_Store
 implementations/py/__pycache__/
+CMakeLists.txt.user
+CMakeCache.txt
+CMakeFiles/
+VM.cbp
+cmake_install.cmake

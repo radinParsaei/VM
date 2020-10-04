@@ -38,7 +38,7 @@ namespace VM_BINARIES {
           while (data[++i] != 0) {
             s += data[i];
           }
-          program.push_back(NUMBER(s));
+          program.push_back(NUMBER(s.c_str()));
         }
       }
     }
@@ -88,7 +88,7 @@ namespace VM_BINARIES {
             if (!in.get(data)) break;
             s += data;
           }
-          program.push_back(NUMBER(s));
+          program.push_back(NUMBER(s.c_str()));
         }
       }
       vm.run(program);
