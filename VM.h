@@ -55,6 +55,7 @@
 #define IFSKIP  86
 #define MKFN    87
 #define CALLFN  88
+#define EXITFN  89
 //library calls and input/output, etc (100- registered for this category)
 #define DLCALL  100
 #define PRINT   101
@@ -121,6 +122,7 @@ class VM {
     int recsize;
     int exit_code;
     bool isBreaked = false;
+    bool fnExited = false;
 };
 
 #if THREADING == PROTOTHREADING

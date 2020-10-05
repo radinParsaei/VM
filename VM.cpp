@@ -98,6 +98,7 @@ Value VM::disassemble(int prog, Value val) {
     case IFSKIP:  return "IFSKIP";
     case MKFN:    return "MKFN";
     case CALLFN:  return "CALLFN";
+    case EXITFN:  return "EXITFN";
     default:      return "???";
     return 0;
   }
@@ -121,7 +122,7 @@ bool VM::run(std::vector<Value> prog, bool forceRun, int pc) {
       isBreaked = false;
       return true;
     }
-	}
+  }
   return false;
 }
 
@@ -265,8 +266,8 @@ std::vector<Value> VM::assemble(Value line) {
     prog.push_back(CANNUM);
   } else if (line.startsWith("ISNUM")) {
     prog.push_back(ISNUM);
-  } else if (line.startsWith("EXIT")) {
-    prog.push_back(EXIT);
+  } else if (line.startsWith("EXITFN")) {
+    prog.push_back(EXITFN);
   } else if (line.startsWith("TOBOOL")) {
     prog.push_back(TOBOOL);
   } else if (line.startsWith("SKIP")) {
@@ -277,6 +278,8 @@ std::vector<Value> VM::assemble(Value line) {
     prog.push_back(MKFN);
   } else if (line.startsWith("CALLFN")) {
     prog.push_back(CALLFN);
+  } else if (line.startsWith("EXIT")) {
+    prog.push_back(EXIT);
   }
   return prog;
 }
@@ -432,6 +435,7 @@ bool VM::run1(int prog, Value arg) {
       }
       for(; count > 0; count--) {
         if (run(prog)) {
+          isBreaked = fnExited;
           break;
         }
       }
@@ -523,7 +527,10 @@ bool VM::run1(int prog, Value arg) {
             prog.insert(prog.begin(), pop());
           }
           while(tos) {
-            if (run(prog)) break;
+            if (run(prog)) {
+              isBreaked = fnExited;
+              break;
+            }
             tos = stack[stack.size() - 1].getBool();
             if(tos)stack.pop_back();
           }
@@ -541,7 +548,10 @@ bool VM::run1(int prog, Value arg) {
             prog.insert(prog.begin(), pop());
           }
           while(!tos) {
-            if (run(prog)) break;
+            if (run(prog)) {
+              isBreaked = fnExited;
+              break;
+            }
             tos = stack[stack.size() - 1].getBool();
             if(!tos)stack.pop_back();
           }
@@ -683,7 +693,11 @@ bool VM::run1(int prog, Value arg) {
     }
     case CALLFN:
       run(functions[pop().getLong()]);
+      fnExited = false;
       break;
+    case EXITFN:
+      fnExited = true;
+      isBreaked = true;
   }
   return res;
 }
