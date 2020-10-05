@@ -53,6 +53,8 @@
 #define THREAD  84
 #define SKIP    85
 #define IFSKIP  86
+#define MKFN    87
+#define CALLFN  88
 //library calls and input/output, etc (100- registered for this category)
 #define DLCALL  100
 #define PRINT   101
@@ -60,6 +62,7 @@
 #include "VM_confs.h"
 #include <iostream>
 #include <vector>
+#include <map>
 #ifndef DYNAMIC_LIBS_NOT_AVAILABLE
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
 #include <windows.h>
@@ -110,6 +113,7 @@ class VM {
     int skip = 1;
     std::vector<Value> stack;//stack memory
     std::vector<Value> *mempointer;//storage for saving variables data
+    std::map< int, std::vector<Value> > functions;
 #if THREADING == PROTOTHREADING
     std::vector<Thread> threads;
 #endif

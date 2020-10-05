@@ -23,8 +23,6 @@ if (${CMAKE_SYSTEM_NAME} MATCHES Linux)
     add_compile_options(-fdata-sections -ffunction-sections)
 endif ()
 
-message(${USE_READLINE})
-
 if (USE_READLINE)
     find_package(Readline)
     INCLUDE_DIRECTORIES("${Readline_INCLUDE_DIR}")

@@ -96,6 +96,8 @@ Value VM::disassemble(int prog, Value val) {
     case TOBOOL:  return "TOBOOL";
     case SKIP:    return "SKIP";
     case IFSKIP:  return "IFSKIP";
+    case MKFN:    return "MKFN";
+    case CALLFN:  return "CALLFN";
     default:      return "???";
     return 0;
   }
@@ -271,6 +273,10 @@ std::vector<Value> VM::assemble(Value line) {
     prog.push_back(SKIP);
   } else if (line.startsWith("IFSKIP")) {
     prog.push_back(IFSKIP);
+  } else if (line.startsWith("MKFN")) {
+    prog.push_back(MKFN);
+  } else if (line.startsWith("CALLFN")) {
+    prog.push_back(CALLFN);
   }
   return prog;
 }
@@ -664,6 +670,19 @@ bool VM::run1(int prog, Value arg) {
       } else {
         pop();
       }
+      break;
+    case MKFN: {
+      int fnCode = pop().getLong();
+      std::vector<Value> prog;
+      int ps = pop().getLong();
+      for(; ps > 0; ps--) {
+        prog.insert(prog.begin(), pop());
+      }
+      functions.insert(std::make_pair(fnCode, prog));
+      break;
+    }
+    case CALLFN:
+      run(functions[pop().getLong()]);
       break;
   }
   return res;
