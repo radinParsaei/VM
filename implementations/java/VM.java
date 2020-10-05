@@ -66,6 +66,9 @@ public class VM {
 	public static final byte THREAD = 84;
 	public static final byte SKIP = 85;
 	public static final byte IFSKIP = 86;
+	public static final byte MKFN = 87;
+	public static final byte CALLFN = 88;
+	public static final byte EXITFN = 89;
 	public static final byte DLCALL = 100;
 	public static final byte PRINT = 101;
 }
