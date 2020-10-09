@@ -99,6 +99,7 @@ Value VM::disassemble(int prog, Value val) {
     case MKFN:    return "MKFN";
     case CALLFN:  return "CALLFN";
     case EXITFN:  return "EXITFN";
+    case STCKGET: return "STCKGET";
     default:      return "???";
     return 0;
   }
@@ -278,6 +279,8 @@ std::vector<Value> VM::assemble(Value line) {
     prog.push_back(MKFN);
   } else if (line.startsWith("CALLFN")) {
     prog.push_back(CALLFN);
+  } else if (line.startsWith("STCKGET")) {
+    prog.push_back(STCKGET);
   } else if (line.startsWith("EXIT")) {
     prog.push_back(EXIT);
   }
@@ -698,6 +701,12 @@ bool VM::run1(int prog, Value arg) {
     case EXITFN:
       fnExited = true;
       isBreaked = true;
+      break;
+    case STCKGET:
+      int point = pop().getLong();
+      stack.push_back(stack[point]);
+      stack.erase(stack.begin() + point);
+      break;
   }
   return res;
 }

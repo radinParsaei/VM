@@ -5,6 +5,7 @@
 #define EXIT    0
 #define PUT     1
 #define POP     2
+#define STCKGET 3
 //operations (15-50 registered for this category)
 #define ADD     15
 #define SUB     16
