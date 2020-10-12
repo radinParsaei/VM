@@ -143,10 +143,19 @@ run program on a real or proto thread
 call libraries from files `*.vmso` or locally from "internalLibraryFunction"
 PRINT:
 `print(pop())`
-## SKIP
+## SKIP:
 skips opcodes with the count of `pop()`
-## IFSKIP
+## IFSKIP:
 ```if (pop()) {
     skips opcodes with the count of `pop()`
 }
 ```
+
+## MKFN:
+make function with number and program (name of functions only should be number)
+
+## CALLFN:
+call function named with the number in `pop()`
+
+## EXITFN:
+acts like return (doesn't return data and you should `PUT` your data)
