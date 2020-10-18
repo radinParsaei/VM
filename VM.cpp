@@ -101,6 +101,7 @@ Value VM::disassemble(int prog, Value val) {
     case EXITFN:  return "EXITFN";
     case STCKGET: return "STCKGET";
     case STCKMOV: return "STCKMOV";
+    case STCKDEL: return "STCKDEL";
     default:      return "???";
     return 0;
   }
@@ -286,6 +287,8 @@ std::vector<Value> VM::assemble(Value line) {
     prog.push_back(STCKMOV);
   } else if (line.startsWith("EXIT")) {
     prog.push_back(EXIT);
+  } else if (line.startsWith("STCKDEL")) {
+    prog.push_back(STCKDEL);
   }
   return prog;
 }
@@ -707,14 +710,19 @@ bool VM::run1(int prog, Value arg) {
       break;
     case STCKGET: {
       int point = pop().getLong();
-      stack.push_back(stack[point]);
+      Value data = stack[point];
       stack.erase(stack.begin() + point);
+      stack.push_back(data);
       break;
     }
     case STCKMOV: {
       int point = pop().getLong();
       Value data = pop();
       stack.insert(stack.begin() + point, data);
+      break;
+    }
+    case STCKDEL: {
+      stack.erase(stack.begin() + pop().getLong());
       break;
     }
   }
