@@ -100,6 +100,7 @@ Value VM::disassemble(int prog, Value val) {
     case CALLFN:  return "CALLFN";
     case EXITFN:  return "EXITFN";
     case STCKGET: return "STCKGET";
+    case STCKGET2:return "STCKGET2";
     case STCKMOV: return "STCKMOV";
     case STCKDEL: return "STCKDEL";
     default:      return "???";
@@ -281,6 +282,8 @@ std::vector<Value> VM::assemble(Value line) {
     prog.push_back(MKFN);
   } else if (line.startsWith("CALLFN")) {
     prog.push_back(CALLFN);
+  } else if (line.startsWith("STCKGET2")) {
+    prog.push_back(STCKGET2);
   } else if (line.startsWith("STCKGET")) {
     prog.push_back(STCKGET);
   } else if (line.startsWith("STCKMOV")) {
@@ -713,6 +716,11 @@ bool VM::run1(int prog, Value arg) {
       Value data = stack[point];
       stack.erase(stack.begin() + point);
       stack.push_back(data);
+      break;
+    }
+    case STCKGET2: {
+      int point = pop().getLong();
+      stack.push_back(stack[point]);
       break;
     }
     case STCKMOV: {

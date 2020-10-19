@@ -2,12 +2,13 @@
 #define VM_H
 
 //VM controllers and stack controllers (0-15 registered for this category)
-#define EXIT    0
-#define PUT     1
-#define POP     2
-#define STCKGET 3
-#define STCKMOV 4
-#define STCKDEL 5
+#define EXIT     0
+#define PUT      1
+#define POP      2
+#define STCKGET  3
+#define STCKMOV  4
+#define STCKDEL  5
+#define STCKGET2 6
 //operations (15-50 registered for this category)
 #define ADD     15
 #define SUB     16
