@@ -141,7 +141,7 @@ break running recorded program
 run program on a real or proto thread
 ## DLCALL:
 call libraries from files `*.vmso` or locally from "internalLibraryFunction"
-PRINT:
+## PRINT:
 `print(pop())`
 ## SKIP:
 skips opcodes with the count of `pop()`
@@ -159,3 +159,24 @@ call function named with the number in `pop()`
 
 ## EXITFN:
 acts like return (doesn't return data and you should `PUT` your data)
+
+## STCKGET:
+push(stack[pop()]) & delete stack[pop()]
+
+## STCKMOV:
+stack.insert(pop(), pop())
+
+example:
+PUT TXTHello
+PUT TXTWorld
+PUT NUM0
+STCKMOV
+PRINT
+PRINT
+; output = HelloWorld
+
+## STCKDEL:
+delete stack[pop()]
+
+## STCKGET2:
+push(stack[pop()])
