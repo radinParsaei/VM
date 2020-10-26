@@ -22,6 +22,10 @@ public class VM {
 	public static final byte EXIT = 0;
 	public static final byte PUT = 1;
 	public static final byte POP = 2;
+	public static final byte STCKGET = 3;
+	public static final byte STCKMOV = 4;
+	public static final byte STCKDEL = 5;
+	public static final byte STCKGET2 = 6;
 	public static final byte ADD = 15;
 	public static final byte SUB = 16;
 	public static final byte MUL = 17;

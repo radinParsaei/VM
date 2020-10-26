@@ -3,6 +3,10 @@ from ctypes import cdll
 EXIT = 0
 PUT = 1
 POP = 2
+STCKGET = 3
+STCKMOV = 4
+STCKDEL = 5
+STCKGET2 = 6
 ADD = 15
 SUB = 16
 MUL = 17
