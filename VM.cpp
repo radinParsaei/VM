@@ -356,9 +356,12 @@ bool VM::run1(int prog, Value arg) {
       stack.push_back(arg);
       res = 1;
       break;
-    case ADD:
-      stack.push_back(pop() + pop());
+    case ADD: {
+      Value a = pop();
+      Value b = pop();
+      stack.push_back(a + b);
       break;
+    }
     case SUB: {
       Value a = pop();
       Value b = pop();
