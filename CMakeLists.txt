@@ -11,10 +11,6 @@ set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/CMake/Modules)
 
 include_directories(Value)
 
-foreach(X IN LISTS EXTENTIONS)
-    include("exts/${X}/CMakeLists.txt")
-endforeach()
-
 if (${CMAKE_SYSTEM_NAME} MATCHES Darwin)
     add_link_options(-dead_strip -dead_strip_dylibs -Os)
 endif ()
@@ -22,6 +18,10 @@ if (${CMAKE_SYSTEM_NAME} MATCHES Linux)
     add_link_options(-Wl,--gc-sections)
     add_compile_options(-fdata-sections -ffunction-sections)
 endif ()
+
+foreach(X IN LISTS EXTENTIONS)
+    include("exts/${X}/CMakeLists.txt")
+endforeach()
 
 if (USE_READLINE)
     find_package(Readline)
@@ -50,3 +50,9 @@ else()
     add_executable(disassembler BigNumber/src/BigNumber/number.c BigNumber/src/BigNumber/BigNumber.cpp VM.cpp disassembler.cpp)
     add_executable(mkcc BigNumber/src/BigNumber/number.c BigNumber/src/BigNumber/BigNumber.cpp VM.cpp mkcc.cpp)
 endif()
+
+target_link_libraries(VM ${CMAKE_DL_LIBS})
+target_link_libraries(repl ${CMAKE_DL_LIBS})
+target_link_libraries(assembler ${CMAKE_DL_LIBS})
+target_link_libraries(disassembler ${CMAKE_DL_LIBS})
+target_link_libraries(mkcc ${CMAKE_DL_LIBS})
