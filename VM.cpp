@@ -140,6 +140,10 @@ void VM::push(Value data) {
   stack.push_back(data);
 }
 
+void VM::set(size_t addr, Value data) {
+  stack[addr] = data;
+}
+
 std::vector<Value> VM::assemble(Value line) {
   std::vector<Value> prog;
   line.trimLeft();

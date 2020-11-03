@@ -114,6 +114,7 @@ class VM {
     static Value disassemble(int prog, Value val);
     Value pop();//pops a data from the stack
     void push(Value);
+    void set(size_t addr, Value data);
   private:
     int skip = 1;
     std::vector<Value> stack;//stack memory
