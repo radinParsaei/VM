@@ -25,8 +25,11 @@ inline bool VM_ext_run_vm_named_memory_and_function(char opcode, Value arg, VM* 
     } else if (opcode == DLCALL) {
         Value tmp = vm->getStack()[vm->getStack().size() - 1];
         if (tmp.startsWith("nm")) { //nm -> name memory
+            vm->pop();
             tmp.substring(2);
             char tmp1 = tmp.find(":").getLong();
+            while (tmp.find(":", (int)++tmp1).getLong() != -1);
+            tmp1--;
             Value tmp2 = tmp;
             tmp2.substring((int)(tmp1 + 1));
             tmp.substring(0, (int)tmp1);
@@ -34,8 +37,11 @@ inline bool VM_ext_run_vm_named_memory_and_function(char opcode, Value arg, VM* 
             variableNames.insert(std::make_pair(tmp.toString(), tmp2.getLong()));
             return true;
         } else if (tmp.startsWith("nf")) { //nf -> name function
+            vm->pop();
             tmp.substring(2);
             char tmp1 = tmp.find(":").getLong();
+            while (tmp.find(":", (int)++tmp1).getLong() != -1);
+            tmp1--;
             Value tmp2 = tmp;
             tmp2.substring((int)(tmp1 + 1));
             tmp.substring(0, (int)tmp1);
