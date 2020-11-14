@@ -48,6 +48,28 @@ inline bool VM_ext_run_vm_named_memory_and_function(char opcode, Value arg, VM* 
             tmp2.toNum();
             functionNames.insert(std::make_pair(tmp.toString(), tmp2.getLong()));
             return true;
+        } else if (tmp == "gpm") { //gpm -> get pointer of memory name
+            vm->pop();
+            Value tmp = vm->getStack()[vm->getStack().size() - 1];
+            if (tmp.getType() == VALUE_TYPE_TEXT) {
+                std::string tmp2 = tmp.toString();
+                if (variableNames.find(tmp2) == variableNames.end()) {
+                    return false;
+                }
+                vm->set(vm->getStack().size() - 1, variableNames[tmp2]);
+            }
+            return true;
+        } else if (tmp == "gpf") { //gpf -> get pointer of function name
+            vm->pop();
+            Value tmp = vm->getStack()[vm->getStack().size() - 1];
+            if (tmp.getType() == VALUE_TYPE_TEXT) {
+                std::string tmp2 = tmp.toString();
+                if (functionNames.find(tmp2) == functionNames.end()) {
+                    return false;
+                }
+                vm->set(vm->getStack().size() - 1, functionNames[tmp2]);
+            }
+            return true;
         }
     }
     return false;
