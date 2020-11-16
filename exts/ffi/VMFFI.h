@@ -1,4 +1,5 @@
 //VMFFI
+#if TARGET != Emscripten
 #include <ffi.h>
 #include <dlfcn.h>
 #include <stdio.h>
@@ -265,3 +266,6 @@ inline bool VM_ext_run_vmffi(char opcode, Value arg, VM* vm) {
   }
   return false;
 }
+#else
+#warning VMFFI not available web
+#endif
