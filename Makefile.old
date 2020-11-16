@@ -1,4 +1,4 @@
-INCLUDES=-IBigNumber/src/BigNumber -IValue -I.
+INCLUDES=-IBigNumber/src/BigNumber -IValue -I. -Ilibs
 ifeq ($(OS),Windows_NT)
 DEFINES=-DSTD_INCLUDED
 else
@@ -22,7 +22,7 @@ else
     endif
 endif
 
-all: VM assembler disassembler mkcc repl
+all: VM assembler disassembler mkcc repl gen_vm_static_dlcall
 .PHONY: all
 
 ifeq ($(OS),Windows_NT)
@@ -42,6 +42,9 @@ disassembler: number.o BigNumber.o VM.o disassembler.o
 mkcc: number.o BigNumber.o VM.o mkcc.o
 	$(CXX) $(CFLAGS) mkcc.o VM.o $(OBJS) -o mkcc $(LDFLAGS)
 
+gen_vm_static_dlcall: number.o BigNumber.o VM.o gen_vm_static_dlcall.o
+	$(CXX) $(CFLAGS) gen_vm_static_dlcall.o VM.o $(OBJS) -o gen_vm_static_dlcall $(LDFLAGS)
+
 ifeq ($(OS),Windows_NT)
 repl: number.o BigNumber.o repl.o VM.o
 	$(CXX) $(CFLAGS) repl.o VM.o $(OBJS) -o repl $(LDFLAGS)
@@ -56,26 +59,27 @@ number.o: BigNumber/src/BigNumber/number.c BigNumber/src/BigNumber/number.h
 BigNumber.o: BigNumber/src/BigNumber/BigNumber.cpp BigNumber/src/BigNumber/BigNumber.h
 	$(CXX) -c BigNumber/src/BigNumber/BigNumber.cpp $(DEFINES) $(EXT_CFLAGS)
 
-VM.o: VM.cpp VM.h Value/value.h $(wildcard exts/*/*.h) VM_confs.h VM_exts.h
+VM.o: VM.cpp VM.h Value/value.h $(wildcard exts/*/*.h) VM_confs.h VM_exts.h static_libcall.h
 	$(CXX) $(CFLAGS) -c VM.cpp
 
 %.o: %.cpp VM_binaries.h
 	$(CXX) $(CFLAGS) -c $<
 
 clean:
-	$(RM) -r *.o VM assembler disassembler repl mkcc x86_64/ arm64/ *.html *.js *.wasm
+	$(RM) -r *.o VM assembler disassembler repl mkcc gen_vm_static_dlcall x86_64/ arm64/ *.html *.js *.wasm
 .PHONY: clean
 apple-universal2:
 	$(MAKE) EXT_CFLAGS="$(EXT_CFLAGS) -target x86_64-apple-macos10.12" EXT_LDFLAGS=$(EXT_LDFLAGS)
 	-mkdir x86_64
-	mv {*.o,VM,assembler,disassembler,repl,mkcc} x86_64
+	mv {*.o,VM,assembler,disassembler,repl,mkcc,gen_vm_static_dlcall} x86_64
 	$(MAKE) EXT_CFLAGS="$(EXT_CFLAGS) -target arm64-apple-macos11" EXT_LDFLAGS=$(EXT_LDFLAGS)
 	-mkdir arm64
-	mv {*.o,VM,assembler,disassembler,repl,mkcc} arm64
+	mv {*.o,VM,assembler,disassembler,repl,mkcc,gen_vm_static_dlcall} arm64
 	lipo -create -output VM arm64/VM x86_64/VM
 	lipo -create -output assembler arm64/assembler x86_64/assembler
 	lipo -create -output disassembler arm64/disassembler x86_64/disassembler
 	lipo -create -output mkcc arm64/mkcc x86_64/mkcc
+	lipo -create -output gen_vm_static_dlcall arm64/gen_vm_static_dlcall x86_64/gen_vm_static_dlcall
 	lipo -create -output repl arm64/repl x86_64/repl
 .PHONY: apple-universal2
 repl_wasm: number.o BigNumber.o repl.o VM.o
@@ -88,7 +92,7 @@ ifeq ($(VM_BIN_FILE),)
 VM_BIN_FILE:=out.bin
 endif
 wasm:
-	$(MAKE) repl_wasm DEFINES=-DSTD_INCLUDED
-	$(MAKE) VM_wasm VM_BIN_FILE=$(VM_BIN_FILE)
+	$(MAKE) -f Makefile.old repl_wasm DEFINES=-DSTD_INCLUDED
+	$(MAKE) -f Makefile.lod VM_wasm VM_BIN_FILE=$(VM_BIN_FILE)
 	echo "Module['arguments'] = ['$(VM_BIN_FILE)']" >> VM_wasm.js
 .PHONY: wasm

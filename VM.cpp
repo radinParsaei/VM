@@ -1,4 +1,5 @@
 #include "VM.h"
+#include "static_libcall.h"
 
 VM::VM() {
 #ifdef USE_GMP_LIB
@@ -404,6 +405,7 @@ bool VM::run1(int prog, Value arg) {
     }
 #ifndef DYNAMIC_LIBS_NOT_AVAILABLE
     case DLCALL: {
+      if (_dlcall(this)) break;
       Value v1 = pop();
       if (v1 == "." && internalLibraryFunction) internalLibraryFunction(pop(), this);
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
@@ -439,6 +441,7 @@ bool VM::run1(int prog, Value arg) {
     }
 #else
     case DLCALL:
+      if (_dlcall(this)) break;
       if (pop() == "." && internalLibraryFunction) internalLibraryFunction(pop(), this);
       break;
 #endif

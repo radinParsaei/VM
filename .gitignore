@@ -5,6 +5,7 @@ assembler
 VM
 repl
 mkcc
+gen_vm_static_dlcall
 *.exe
 *.vmso
 implementations/java/*.class
