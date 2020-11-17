@@ -93,6 +93,6 @@ VM_BIN_FILE:=out.bin
 endif
 wasm:
 	$(MAKE) -f Makefile.old repl_wasm DEFINES=-DSTD_INCLUDED
-	$(MAKE) -f Makefile.lod VM_wasm VM_BIN_FILE=$(VM_BIN_FILE)
-	echo "Module['arguments'] = ['$(VM_BIN_FILE)']" >> VM_wasm.js
+	$(MAKE) -f Makefile.old VM_wasm VM_BIN_FILE=$(VM_BIN_FILE)
+	echo "Module['arguments'] = ['$(VM_BIN_FILE)']" >> VM.js
 .PHONY: wasm
