@@ -108,6 +108,7 @@ class VM {
     bool run1(int prog, Value arg = 0);
     void setInternalLibraryFunction(void (*internalLibraryFunction) (Value, VM*));
     std::vector<Value> getStack();
+    std::vector<Value>* getMemoryPointer();
     void setStack(std::vector<Value> v);
     void attachMem(std::vector<Value> *mem);
     static std::vector<Value> assemble(Value line);

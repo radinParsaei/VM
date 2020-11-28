@@ -4,6 +4,7 @@ inline std::map<std::string, long> variableNames;
 inline std::map<std::string, long> functionNames;
 
 inline bool VM_ext_run_vm_named_memory_and_function(char opcode, Value arg, VM* vm) {
+    if (!(vm->getStack().size() > 0)) return false;
     if (opcode == MEMGET || opcode == MEMSET || opcode == MEMDEL || opcode == MEMINS) {
         Value tmp = vm->getStack()[vm->getStack().size() - 1];
         if (tmp.getType() == VALUE_TYPE_TEXT) {

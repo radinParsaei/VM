@@ -42,6 +42,10 @@ std::vector<Value> VM::getStack() {
   return stack;
 }
 
+std::vector<Value>* VM::getMemoryPointer() {
+  return mempointer;
+}
+
 void VM::setStack(std::vector<Value> v) {
   stack = v;
 }
