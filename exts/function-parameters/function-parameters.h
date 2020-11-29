@@ -1,7 +1,7 @@
 //VM function parameter holder
 #include <map>
 #include <vector>
-inline std::map<int, std::vector<long>> parameters;
+inline std::map<int, std::vector<long> > parameters;
 
 inline bool VM_ext_run_vm_function_pointers(char opcode, Value arg, VM* vm) {
     if (opcode == MKFN) {
@@ -10,7 +10,9 @@ inline bool VM_ext_run_vm_function_pointers(char opcode, Value arg, VM* vm) {
             Value function = vmStack[vmStack.size() - 1] + " ";
             int i = 0;
             while (isdigit(function.charAt(i))) i++;
-            Value functionCode = function.substring(0, i);
+            Value functionCode = function;
+            functionCode.substring(0, i);
+            function.substring(i);
             vm->set(vmStack.size() - 1, functionCode.toNum());
             std::vector<long> parametersVector;
             parametersVector.reserve(50); //reserve memory for 50 params (not limited but make vector acts faster)
