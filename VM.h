@@ -31,6 +31,7 @@
 #define RSHIFT  33
 #define XOR     34
 #define NEG     35    //negative
+#define POW     36
 //memory-related opcodes (50-65 registered for this category)
 #define MEMSET  50
 #define MEMGET  51

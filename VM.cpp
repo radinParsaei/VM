@@ -59,6 +59,7 @@ Value VM::disassemble(int prog, Value val) {
     case MUL:     return "MUL";
     case DIV:     return "DIV";
     case MOD:     return "MOD";
+    case POW:     return "POW";
     case DLCALL:  return "DLCALL";
     case RUN:     return "RUN";
     case REC:     return "REC";
@@ -201,6 +202,8 @@ std::vector<Value> VM::assemble(Value line) {
     prog.push_back(DIV);
   } else if (line.startsWith("MOD")) {
     prog.push_back(MOD);
+  } else if (line.startsWith("POW")) {
+    prog.push_back(POW);
   } else if (line.startsWith("PRINT")) {
     prog.push_back(PRINT);
   } else if (line.startsWith("DLCALL")) {
@@ -390,6 +393,12 @@ bool VM::run1(int prog, Value arg) {
       Value a = pop();
       Value b = pop();
       stack.push_back(a % b);
+      break;
+    }
+    case POW: {
+      Value a = pop();
+      Value b = pop();
+      stack.push_back(a.pow(b));
       break;
     }
     case PRINT:
