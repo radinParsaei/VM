@@ -61,6 +61,7 @@
 #define MKFN    87
 #define CALLFN  88
 #define EXITFN  89
+#define CONTINU 90
 //library calls and input/output, etc (100- registered for this category)
 #define DLCALL  100
 #define PRINT   101
@@ -129,6 +130,7 @@ class VM {
     int recsize;
     int exit_code;
     bool isBreaked = false;
+    bool isContinued = false;
     bool fnExited = false;
 };
 

@@ -84,6 +84,7 @@ Value VM::disassemble(int prog, Value val) {
     case XOR:     return "XOR";
     case NEG:     return "NEG";
     case BREAK:   return "BREAK";
+    case CONTINU: return "CONTINUE";
     case WTRUN:   return "WTRUN";
     case WFRUN:   return "WFRUN";
     case IFFRUN:  return "IFFRUN";
@@ -128,6 +129,10 @@ bool VM::run(std::vector<Value> prog, bool forceRun, int pc) {
   for (; pc < prog.size(); pc++) {//fetch
     if(running)pc += run1(prog[pc].getLong(), (prog.size() - 1) == pc? 0:prog[pc + 1]);
     else break;
+    if(isContinued) {
+        isContinued = false;
+        break;
+    }
     if(isBreaked) {
       isBreaked = false;
       return true;
@@ -252,6 +257,8 @@ std::vector<Value> VM::assemble(Value line) {
     prog.push_back(NEG);
   } else if (line.startsWith("BREAK")) {
     prog.push_back(BREAK);
+  } else if (line.startsWith("CONTINU")) {
+    prog.push_back(CONTINU);
   } else if (line.startsWith("WTRUN")) {
     prog.push_back(WTRUN);
   } else if (line.startsWith("WFRUN")) {
@@ -550,6 +557,9 @@ bool VM::run1(int prog, Value arg) {
     }
     case BREAK:
       isBreaked = true;
+      break;
+    case CONTINU:
+      isContinued = true;
       break;
     case WTRUN: {
         if(stack.size() < 2)break;
