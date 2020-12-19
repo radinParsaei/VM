@@ -127,12 +127,11 @@ bool VM::run(std::vector<Value> prog, bool forceRun, int pc) {
   isBreaked = false;
   if(forceRun)running = true;
   for (; pc < prog.size(); pc++) {//fetch
+    if(isContinued) {
+      break;
+    }
     if(running)pc += run1(prog[pc].getLong(), (prog.size() - 1) == pc? 0:prog[pc + 1]);
     else break;
-    if(isContinued) {
-        isContinued = false;
-        break;
-    }
     if(isBreaked) {
       isBreaked = false;
       return true;
@@ -477,9 +476,11 @@ bool VM::run1(int prog, Value arg) {
       }
       for(; count > 0; count--) {
         if (run(prog)) {
+          isContinued = false;
           isBreaked = fnExited;
           break;
         }
+        isContinued = false;
       }
       break;
     }
@@ -573,9 +574,11 @@ bool VM::run1(int prog, Value arg) {
           }
           while(tos) {
             if (run(prog)) {
+              isContinued = false;
               isBreaked = fnExited;
               break;
             }
+            isContinued = false;
             tos = stack[stack.size() - 1].getBool();
             if(tos)stack.pop_back();
           }
@@ -594,9 +597,11 @@ bool VM::run1(int prog, Value arg) {
           }
           while(!tos) {
             if (run(prog)) {
+              isContinued = false;
               isBreaked = fnExited;
               break;
             }
+            isContinued = false;
             tos = stack[stack.size() - 1].getBool();
             if(!tos)stack.pop_back();
           }
