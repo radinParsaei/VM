@@ -1,6 +1,8 @@
 #include "VM.h"
 #include "static_libcall.h"
 
+void freeUnusedPointer(long) {}
+
 VM::VM() {
 #ifdef USE_GMP_LIB
   mpf_set_default_prec(1024);
@@ -98,6 +100,7 @@ Value VM::disassemble(int prog, Value val) {
     case MEMINS:  return "MEMINS";
     case TOTXT:   return "TOTXT";
     case TONUM:   return "TONUM";
+    case TOPTR:   return "TOPTR";
     case ISNUM:   return "ISNUM";
     case CANNUM:  return "CANNUM";
     case TOBOOL:  return "TOBOOL";
@@ -284,6 +287,8 @@ std::vector<Value> VM::assemble(Value line) {
     prog.push_back(TOTXT);
   } else if (line.startsWith("TONUM")) {
     prog.push_back(TONUM);
+  } else if (line.startsWith("TOPTR")) {
+    prog.push_back(TOPTR);
   } else if (line.startsWith("CANNUM")) {
     prog.push_back(CANNUM);
   } else if (line.startsWith("ISNUM")) {
@@ -688,6 +693,9 @@ bool VM::run1(int prog, Value arg) {
       break;
     case TONUM:
       stack[stack.size() - 1].toNum();
+      break;
+    case TOPTR:
+      stack[stack.size() - 1].toPtr();
       break;
     case ISNUM:
       if(stack.size() == 0) break;
