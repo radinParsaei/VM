@@ -1,4 +1,5 @@
 //VM named-memory-and-function
+#define NAMED_MEMORY_AND_FUNCTION
 #include <map>
 inline std::map<std::string, long> variableNames;
 inline std::map<std::string, long> functionNames;
