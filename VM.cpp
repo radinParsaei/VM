@@ -84,6 +84,11 @@ Value VM::disassemble(int prog, Value val) {
     case LSHIFT:  return "LSHIFT";
     case RSHIFT:  return "RSHIFT";
     case XOR:     return "XOR";
+    case GET:     return "GET";
+    case SET:     return "SET";
+    case APPEND:  return "APPEND";
+    case INSERT:  return "INSERT";
+    case PUTARR:  return "PUTARR";
     case NEG:     return "NEG";
     case BREAK:   return "BREAK";
     case CONTINU: return "CONTINUE";
@@ -160,7 +165,9 @@ void VM::set(size_t addr, Value data) {
 std::vector<Value> VM::assemble(Value line) {
   std::vector<Value> prog;
   line.trimLeft();
-  if (line.startsWith("PUT")) {
+  if (line.startsWith("PUTARR")) {
+    prog.push_back(PUTARR);
+  } else if (line.startsWith("PUT")) {
     line.substring(3);
     line.trimLeft();
     prog.push_back(PUT);
@@ -231,6 +238,8 @@ std::vector<Value> VM::assemble(Value line) {
     prog.push_back(FEQ);
   } else if (line.startsWith("GT")) {
     prog.push_back(GT);
+  } else if (line.startsWith("GET")) {
+    prog.push_back(GET);
   } else if (line.startsWith("GE")) {
     prog.push_back(GE);
   } else if (line.startsWith("LT")) {
@@ -315,6 +324,12 @@ std::vector<Value> VM::assemble(Value line) {
     prog.push_back(EXIT);
   } else if (line.startsWith("STCKDEL")) {
     prog.push_back(STCKDEL);
+  } else if (line.startsWith("APPEND")) {
+    prog.push_back(APPEND);
+  } else if (line.startsWith("INSERT")) {
+    prog.push_back(INSERT);
+  } else if (line.startsWith("SET")) {
+    prog.push_back(SET);
   }
   return prog;
 }
@@ -413,7 +428,7 @@ bool VM::run1(int prog, Value arg) {
       break;
     }
     case PRINT:
-      std::cout << pop().toString();
+      std::cout << pop();
       break;
     case REC:
       rec++;
@@ -777,6 +792,32 @@ bool VM::run1(int prog, Value arg) {
     }
     case STCKDEL: {
       stack.erase(stack.begin() + pop().getLong());
+      break;
+    }
+    case PUTARR:
+      stack.push_back(Array);
+      break;
+    case SET: {
+      long point = pop().getLong();
+      Value data = pop();
+      stack[stack.size() - 1].set(point, data);
+      break;
+    }
+    case GET: {
+      long point = pop().getLong();
+      Value array = pop();
+      stack.push_back(array.get(point));
+      break;
+    }
+    case APPEND: {
+      Value data = pop();
+      stack[stack.size() - 1].append(data);
+      break;
+    }
+    case INSERT: {
+      long point = pop().getLong();
+      Value data = pop();
+      stack[stack.size() - 1].insert(point, data);
       break;
     }
   }
