@@ -10,6 +10,7 @@
 #define STCKDEL  5
 #define STCKGET2 6
 #define PUTARR   7
+#define MKARR    8
 //operations (15-50 registered for this category)
 #define ADD     15
 #define SUB     16

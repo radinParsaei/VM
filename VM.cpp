@@ -89,6 +89,7 @@ Value VM::disassemble(int prog, Value val) {
     case APPEND:  return "APPEND";
     case INSERT:  return "INSERT";
     case PUTARR:  return "PUTARR";
+    case MKARR:   return "MKARR";
     case NEG:     return "NEG";
     case BREAK:   return "BREAK";
     case CONTINU: return "CONTINUE";
@@ -330,6 +331,8 @@ std::vector<Value> VM::assemble(Value line) {
     prog.push_back(INSERT);
   } else if (line.startsWith("SET")) {
     prog.push_back(SET);
+  } else if (line.startsWith("MKARR")) {
+    prog.push_back(MKARR);
   }
   return prog;
 }
@@ -797,6 +800,15 @@ bool VM::run1(int prog, Value arg) {
     case PUTARR:
       stack.push_back(Array);
       break;
+    case MKARR: {
+      long size = pop().getLong();
+      Value tmp(Array);
+      for (; size > 0; size--) {
+        tmp.insert(0, pop());
+      }
+      stack.push_back(tmp);
+      break;
+    }
     case SET: {
       long point = pop().getLong();
       Value data = pop();
