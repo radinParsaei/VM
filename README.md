@@ -54,9 +54,11 @@ pop one value from VM stack
 ## MUL:
 `push(pop() * pop())`
 ## DIV:
-`push(pop()/pop())`
+`push(pop() / pop())`
 ## MOD:
-`push(pop()%pop())`
+`push(pop() % pop())`
+## POW:
+`push(pop() ** pop())`
 ## EQ:
 `push(pop() == pop())` (`1 == "1"`), (`1 == True`)
 ## FEQ:
@@ -180,3 +182,22 @@ delete stack[pop()]
 
 ## STCKGET2:
 push(stack[pop()])
+
+## CONTINU[E]:
+continue in the loop
+
+## MKARR:
+push([])
+create empty array and puts it to stack
+
+## APPEND:
+append data to end of array
+
+## SET:
+sets data in array
+
+## GET:
+get data from array
+
+## INSERT:
+insert data in array
