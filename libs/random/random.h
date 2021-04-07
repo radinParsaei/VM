@@ -7,4 +7,5 @@
 #include <VMLib.h>
 
 LIB_FUNCTION(random);
+LIB_FUNCTION(randint);
 LIB_FUNCTION(seed);
