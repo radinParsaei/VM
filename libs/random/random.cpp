@@ -11,7 +11,17 @@ LIB_FUNCTION(random) {
     gmp_random.seed(time(NULL));
     init = false;
   }
-  vm->push(Value(gmp_random.get_f(1024)));
+  vm->push(Value(gmp_random.get_f()));
+}
+
+LIB_FUNCTION(randint) {
+  Value max = vm->pop();
+  Value min = vm->pop();
+  if (init) {
+    gmp_random.seed(time(NULL));
+    init = false;
+  }
+  vm->push(Value(mpf_class(gmp_random.get_z_range(mpz_class((max - min).toString())))) + min);
 }
 
 LIB_FUNCTION(seed) {

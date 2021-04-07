@@ -15,6 +15,11 @@ bool _dlcall(VM *vm) {
 			random_1_0_seed(vm);
 			return true;
 		}
+		if (vm->getStack()[vm->getStack().size() - 2].toString() == "randint") {
+			vm->pop(); vm->pop();
+			random_1_0_randint(vm);
+			return true;
+		}
 	}
 	return false;
 }

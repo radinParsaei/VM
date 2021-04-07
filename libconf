@@ -1,3 +1,4 @@
 random|random|1_0
 	random
 	seed
+	randint
