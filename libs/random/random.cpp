@@ -1,9 +1,10 @@
 #include <random.h>
 #include <time.h>
 
+bool init = true;
+
 #ifdef USE_GMP_LIB
 
-bool init = true;
 gmp_randclass gmp_random(gmp_randinit_default);
 
 LIB_FUNCTION(random) {
@@ -27,6 +28,41 @@ LIB_FUNCTION(randint) {
 LIB_FUNCTION(seed) {
   Value seedValue = vm->pop();
   gmp_random.seed(seedValue.getNumber().get_d());
+}
+
+#else
+
+LIB_FUNCTION(random) {
+  if (init) {
+    srand(time(NULL));
+    init = false;
+  }
+  char s[] = "0.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
+  for (int i = 0; i < 310; i++) {
+    s[2 + i] = (rand() % 10) + '0';
+  }
+  Value num = s;
+  vm->push(num.toNum());
+}
+
+LIB_FUNCTION(randint) {
+  Value max = vm->pop();
+  Value min = vm->pop();
+  if (init) {
+    srand(time(NULL));
+    init = false;
+  }
+  Value gap = max - min;
+  std::string s = "";
+  for (int i = 0; i <= gap.toString().length(); i++) {
+    s += (rand() % 10) + '0';
+  }
+  vm->push((Value(s).toNum() % gap) + min);
+}
+
+LIB_FUNCTION(seed) {
+  Value seedValue = vm->pop();
+  srand(seedValue.getLong());
 }
 
 #endif
