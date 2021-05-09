@@ -12,11 +12,13 @@ LIB_FUNCTION(input) {
 #else
   int x = EM_ASM_INT({
     var str = prompt("Input:");
+    if (str == null) return 0;
     var buffer = Module._malloc(str.length + 1);
   	Module.stringToUTF8(str, buffer, str.length + 1);
   	return buffer;
   });
-  data = (char*) x;
+  if (x == 0) data = "";
+  else data = (char*) x;
 #endif
   vm->push(Value(data));
 }
