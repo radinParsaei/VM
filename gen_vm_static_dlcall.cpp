@@ -36,9 +36,9 @@ int main(int argc, char const *argv[]){
     while (getline(fconf, line)) {
       Value name = Value(line.substr(0, line.find("|"))).trim();
       cout << "\tif (vm->getStack()[vm->getStack().size() - 1].toString() == \"" << name << "\") {\n";
-      string fnName = line.substr(line.find("|") + 1);
-      fnName = fnName.substr(0, fnName.find("|"));
-      string libVer = line.substr(line.find("|") + 1 + fnName.size());
+      // string fnName = line.substr(line.find("|") + 1);
+      // fnName = fnName.substr(0, fnName.find("|"));
+      string libVer = line.substr(line.find("|")/* + 1 + fnName.size()*/);
       libVer = libVer.substr(1);
       while (getline(fconf, line)) {
         if (Value(line).find(" ") != 0 && Value(line).find("\t") != 0) break;

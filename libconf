@@ -1,4 +1,7 @@
-random|random|1_0
+random|1_0
 	random
 	seed
 	randint
+
+input|1_0
+	input

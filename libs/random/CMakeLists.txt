@@ -1,3 +1,3 @@
 include_directories(libs/random)
 include_directories(.)
-SET(libsources libs/random/random.cpp)
+SET(libsources ${libsources} libs/random/random.cpp)

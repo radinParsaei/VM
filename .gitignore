@@ -25,3 +25,4 @@ CMakeCache.txt
 CMakeFiles/
 VM.cbp
 cmake_install.cmake
+Makefile
