@@ -450,6 +450,7 @@ bool VM::run1(int prog, Value arg) {
       if (_dlcall(this)) break;
       Value v1 = pop();
       if (v1 == "." && internalLibraryFunction) internalLibraryFunction(pop(), this);
+      break;
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
       HINSTANCE hinstLib;
       dlfunc fn;
