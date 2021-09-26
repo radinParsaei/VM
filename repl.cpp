@@ -62,6 +62,16 @@ char* opcodes[] = {
   "EXITFN",
   "DLCALL",
   "PRINT",
+  "APPEND",
+  "CONTINU",
+  "GET",
+  "INSERT",
+  "MKARR",
+  "POW",
+  "PUTARR",
+  "SET",
+  "STCKGET2",
+  "TOPTR",
   NULL
 };
 
