@@ -4,8 +4,8 @@
 #define LIB_LICENSE UNKNOWN //just for now
 #define LIB_DESCRIPTION "random 1.0"
 
-#include <VMLib.h>
+#include "VMLib.h"
 
-LIB_FUNCTION(random);
+LIB_FUNCTION(random_);
 LIB_FUNCTION(randint);
 LIB_FUNCTION(seed);

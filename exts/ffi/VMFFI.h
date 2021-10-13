@@ -1,5 +1,5 @@
 //VMFFI
-#if TARGET != Emscripten
+#if TARGET != Emscripten && TARGET != ARDUINO
 #include <ffi.h>
 #include <dlfcn.h>
 #include <stdio.h>
@@ -267,5 +267,5 @@ inline bool VM_ext_run_vmffi(char opcode, Value arg, VM* vm) {
   return false;
 }
 #else
-#warning VMFFI not available web
+#warning VMFFI not available web OR arduino
 #endif

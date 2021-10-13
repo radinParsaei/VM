@@ -4,6 +4,6 @@
 #define LIB_LICENSE UNKNOWN //just for now
 #define LIB_DESCRIPTION "input 1.0"
 
-#include <VMLib.h>
+#include "VMLib.h"
 
 LIB_FUNCTION(input);

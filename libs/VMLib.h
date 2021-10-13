@@ -1,4 +1,4 @@
-#include <VM.h>
+#include "VM.h"
 #ifndef LIB_NAME
 #error please define LIB_NAME
 #endif

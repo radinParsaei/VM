@@ -1,16 +1,16 @@
-#include <random.h>
+#include "random.h"
 #include <time.h>
 
-bool init = true;
+bool _init = true;
 
 #ifdef USE_GMP_LIB
 
 gmp_randclass gmp_random(gmp_randinit_default);
 
-LIB_FUNCTION(random) {
-  if (init) {
+LIB_FUNCTION(random_) {
+  if (_init) {
     gmp_random.seed(time(NULL));
-    init = false;
+    _init = false;
   }
   vm->push(Value(gmp_random.get_f()));
 }
@@ -18,9 +18,9 @@ LIB_FUNCTION(random) {
 LIB_FUNCTION(randint) {
   Value max = vm->pop();
   Value min = vm->pop();
-  if (init) {
+  if (_init) {
     gmp_random.seed(time(NULL));
-    init = false;
+    _init = false;
   }
   vm->push(Value(mpf_class(gmp_random.get_z_range(mpz_class((max - min).toString())))) + min);
 }
@@ -32,10 +32,10 @@ LIB_FUNCTION(seed) {
 
 #else
 
-LIB_FUNCTION(random) {
-  if (init) {
+LIB_FUNCTION(random_) {
+  if (_init) {
     srand(time(NULL));
-    init = false;
+    _init = false;
   }
   char s[] = "0.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
   for (int i = 0; i < 310; i++) {
@@ -50,7 +50,7 @@ LIB_FUNCTION(randint) {
   Value min = vm->pop();
   if (init) {
     srand(time(NULL));
-    init = false;
+    _init = false;
   }
   Value gap = max - min;
   std::string s = "";

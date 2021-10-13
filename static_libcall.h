@@ -6,9 +6,9 @@
 
 bool _dlcall(VM *vm) {
 	if (vm->getStack()[vm->getStack().size() - 1].toString() == "random") {
-		if (vm->getStack()[vm->getStack().size() - 2].toString() == "random") {
+		if (vm->getStack()[vm->getStack().size() - 2].toString() == "random_") {
 			vm->pop(); vm->pop();
-			random_1_0_random(vm);
+			random_1_0_random_(vm);
 			return true;
 		}
 		if (vm->getStack()[vm->getStack().size() - 2].toString() == "seed") {
