@@ -1,15 +1,15 @@
 //VM named-memory-and-function
 #define NAMED_MEMORY_AND_FUNCTION
 #include <map>
-inline std::map<std::string, long> variableNames;
-inline std::map<std::string, long> functionNames;
+inline std::map<TEXT, long> variableNames;
+inline std::map<TEXT, long> functionNames;
 
 inline bool VM_ext_run_vm_named_memory_and_function(char opcode, Value arg, VM* vm) {
     if (!(vm->getStack().size() > 0)) return false;
     if (opcode == MEMGET || opcode == MEMSET || opcode == MEMDEL || opcode == MEMINS) {
         Value tmp = vm->getStack()[vm->getStack().size() - 1];
         if (tmp.getType() == VALUE_TYPE_TEXT) {
-            std::string tmp2 = tmp.toString();
+            TEXT tmp2 = tmp.toString();
             if (variableNames.find(tmp2) == variableNames.end()) {
                 return false;
             }
@@ -18,7 +18,7 @@ inline bool VM_ext_run_vm_named_memory_and_function(char opcode, Value arg, VM* 
     } else if (opcode == CALLFN || opcode == MKFN) {
         Value tmp = vm->getStack()[vm->getStack().size() - 1];
         if (tmp.getType() == VALUE_TYPE_TEXT) {
-            std::string tmp2 = tmp.toString();
+            TEXT tmp2 = tmp.toString();
             if (functionNames.find(tmp2) == functionNames.end()) {
                 return false;
             }
@@ -54,7 +54,7 @@ inline bool VM_ext_run_vm_named_memory_and_function(char opcode, Value arg, VM* 
             vm->pop();
             Value tmp = vm->getStack()[vm->getStack().size() - 1];
             if (tmp.getType() == VALUE_TYPE_TEXT) {
-                std::string tmp2 = tmp.toString();
+                TEXT tmp2 = tmp.toString();
                 if (variableNames.find(tmp2) == variableNames.end()) {
                     return false;
                 }
@@ -65,7 +65,7 @@ inline bool VM_ext_run_vm_named_memory_and_function(char opcode, Value arg, VM* 
             vm->pop();
             Value tmp = vm->getStack()[vm->getStack().size() - 1];
             if (tmp.getType() == VALUE_TYPE_TEXT) {
-                std::string tmp2 = tmp.toString();
+                TEXT tmp2 = tmp.toString();
                 if (functionNames.find(tmp2) == functionNames.end()) {
                     return false;
                 }

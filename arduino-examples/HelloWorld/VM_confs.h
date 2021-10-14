@@ -9,6 +9,14 @@
 #include <ArduinoSTL.h>
 #endif
 #include <vector>
+#define STATIC_BUILD_MODE
+
+#define USE_ARDUINO_STRING
+
+#define Emscripten 1
+#define ARDUINO 2
+
+#define TARGET ARDUINO
 
 #ifdef ESP8266
 inline void exit(int) {

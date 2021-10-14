@@ -55,7 +55,7 @@ void VM::setStack(std::vector<Value> v) {
 Value VM::disassemble(int prog, Value val) {
   switch (prog) {
     case EXIT:    return "EXIT";
-    case PUT:     return std::string(val.getType() == VALUE_TYPE_NUMBER? "PUT\tNUM" : (val.getType() == True || val.getType() == False)? "PUT\tBOOL" : (val.getType() == VALUE_TYPE_TEXT? "PUT\tTXT" : "PUT\t")) + val.toString();
+    case PUT:     return TEXT(val.getType() == VALUE_TYPE_NUMBER? "PUT\tNUM" : (val.getType() == True || val.getType() == False)? "PUT\tBOOL" : (val.getType() == VALUE_TYPE_TEXT? "PUT\tTXT" : "PUT\t")) + val.toString();
     case ADD:     return "ADD";
     case SUB:     return "SUB";
     case MUL:     return "MUL";
@@ -127,7 +127,8 @@ Value VM::disassemble(int prog, Value val) {
 void VM::printStack() {
   std::cout << "[";
   for(int i = 0; i < stack.size(); i++) {
-    std::cout << (stack[i].toString()) << ((i + 1) == stack.size()? "":", ");
+    Value::print(stack[i].toString());
+    Value::print(((i + 1) == stack.size()? "":", "));
   }
   std::cout << "]";
 }
@@ -431,7 +432,7 @@ bool VM::run1(int prog, Value arg) {
       break;
     }
     case PRINT:
-      std::cout << pop();
+      Value::print(pop());
       break;
     case REC:
       rec++;

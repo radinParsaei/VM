@@ -18,12 +18,12 @@ inline bool VM_ext_run_vm_function_pointers(char opcode, Value arg, VM* vm) {
             parametersVector.reserve(50); //reserve memory for 50 params (not limited but make vector acts faster)
             parameters.insert(std::make_pair(functionCode.getLong(), parametersVector));
             i = 0;
-            while (i != function.getString().size() - 1) {
+            while (i != function.length().getLong() - 1) {
                 if (!isdigit(function.charAt(i))) i++;
                 else {
                     function.substring(i);
                     i = 0;
-                    while (i != function.getString().size() - 1 && isdigit(function.charAt(i))) i++;
+                    while (i != function.length().getLong() - 1 && isdigit(function.charAt(i))) i++;
                     Value tmp = function;
                     tmp.substring(0, i);
                     parameters[functionCode.getLong()].push_back(tmp.toNum().getLong());
