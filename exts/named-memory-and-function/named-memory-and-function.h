@@ -1,8 +1,14 @@
 //VM named-memory-and-function
 #define NAMED_MEMORY_AND_FUNCTION
 #include <map>
-inline std::map<TEXT, long> variableNames;
-inline std::map<TEXT, long> functionNames;
+
+#if __cplusplus >= 201703
+static std::map<TEXT, long> variableNames;
+static std::map<TEXT, long> functionNames;
+#else
+static std::map<TEXT, long> variableNames;
+static std::map<TEXT, long> functionNames;
+#endif
 
 inline bool VM_ext_run_vm_named_memory_and_function(char opcode, Value arg, VM* vm) {
     if (!(vm->getStack().size() > 0)) return false;

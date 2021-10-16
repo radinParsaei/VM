@@ -5,7 +5,7 @@
 
 LIB_FUNCTION(input) {
   TEXT data;
-#if TARGET != Emscripten && !defined(USE_ARDUINO_STRING)
+#if TARGET != Emscripten && !defined(USE_ARDUINO_STRING) && !defined(ARDUINO_SAM_DUE)
   std::getline(std::cin, data);
 #elif defined(WASM_INPUT)
   data = WASM_INPUT;

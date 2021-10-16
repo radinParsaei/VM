@@ -1,7 +1,7 @@
 #include "random.h"
 #include <time.h>
 
-bool _init = true;
+static bool _init = true;
 
 #ifdef USE_GMP_LIB
 

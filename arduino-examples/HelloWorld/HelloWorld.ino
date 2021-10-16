@@ -1,5 +1,11 @@
 #include "VM.h"
 
+#ifdef ARDUINO_SAM_DUE
+extern "C" int _gettimeofday() {
+    return 0;
+}
+#endif
+
 VM vm;
 
 void setup() {

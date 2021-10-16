@@ -1,9 +1,15 @@
 //VM function parameter holder
 #include <map>
 #include <vector>
+
+#if __cplusplus >= 201703
 inline std::map<int, std::vector<long> > parameters;
+#endif
 
 inline bool VM_ext_run_vm_function_pointers(char opcode, Value arg, VM* vm) {
+#if __cplusplus < 201703
+    static std::map<int, std::vector<long> > parameters;
+#endif
     if (opcode == MKFN) {
         std::vector<Value> vmStack = vm->getStack();
         if (vmStack[vmStack.size() - 1].getType() == VALUE_TYPE_TEXT) {

@@ -5,13 +5,15 @@
 #define THREADING PROTOTHREADING
 #endif
 #include <Arduino.h>
-#if !defined(ESP8266) && !defined(ESP32)
-#include <ArduinoSTL.h>
-#endif
+#if !defined(ESP8266) && !defined(ESP32) && defined(__AVR__)
+//#include <ArduinoSTL.h>
 #include <vector>
+#endif
 #define STATIC_BUILD_MODE
 
+#if !defined(ESP32) && !defined(ESP8266) && defined(__AVR__)
 #define USE_ARDUINO_STRING
+#endif
 
 #define Emscripten 1
 #define ARDUINO 2
