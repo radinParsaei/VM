@@ -2,76 +2,76 @@
 #define VM_H
 
 //VM controllers and stack controllers (0-15 registered for this category)
-#define EXIT     0
-#define PUT      1
-#define POP      2
-#define STCKGET  3
-#define STCKMOV  4
-#define STCKDEL  5
-#define STCKGET2 6
-#define PUTARR   7
-#define MKARR    8
+#define opcode_EXIT     0
+#define opcode_PUT      1
+#define opcode_POP      2
+#define opcode_STCKGET  3
+#define opcode_STCKMOV  4
+#define opcode_STCKDEL  5
+#define opcode_STCKGET2 6
+#define opcode_PUTARR   7
+#define opcode_MKARR    8
 //operations (15-50 registered for this category)
-#define ADD     15
-#define SUB     16
-#define MUL     17
-#define DIV     18
-#define MOD     19
-#define EQ      20
-#define FEQ     21
-#define GT      22
-#define GE      23
-#define LT      24
-#define LE      25
-#define LAND    26
-#define LOR     27
-#define AND     28
-#define OR      29
-#define NOT     30
-#define LNOT    31
-#define LSHIFT  32
-#define RSHIFT  33
-#define XOR     34
-#define NEG     35    //negative
-#define POW     36
-#define SET     37
-#define GET     38
-#define APPEND  39
-#define INSERT  40
+#define opcode_ADD     15
+#define opcode_SUB     16
+#define opcode_MUL     17
+#define opcode_DIV     18
+#define opcode_MOD     19
+#define opcode_EQ      20
+#define opcode_FEQ     21
+#define opcode_GT      22
+#define opcode_GE      23
+#define opcode_LT      24
+#define opcode_LE      25
+#define opcode_LAND    26
+#define opcode_LOR     27
+#define opcode_AND     28
+#define opcode_OR      29
+#define opcode_NOT     30
+#define opcode_LNOT    31
+#define opcode_LSHIFT  32
+#define opcode_RSHIFT  33
+#define opcode_XOR     34
+#define opcode_NEG     35    //negative
+#define opcode_POW     36
+#define opcode_SET     37
+#define opcode_GET     38
+#define opcode_APPEND  39
+#define opcode_INSERT  40
 //memory-related opcodes (50-65 registered for this category)
-#define MEMSET  50
-#define MEMGET  51
-#define MEMSIZE 52
-#define MEMPUT  53
-#define MEMINS  54
-#define MEMDEL  55
+#define opcode_MEMSET  50
+#define opcode_MEMGET  51
+#define opcode_MEMSIZE 52
+#define opcode_MEMPUT  53
+#define opcode_MEMINS  54
+#define opcode_MEMDEL  55
 //type conversion opcodes (65-75 registered for this category)
-#define TONUM   65
-#define TOTXT   66
-#define ISNUM   67
-#define CANNUM  68
-#define TOBOOL  69
-#define TOPTR   70
+#define opcode_TONUM   65
+#define opcode_TOTXT   66
+#define opcode_ISNUM   67
+#define opcode_CANNUM  68
+#define opcode_TOBOOL  69
+#define opcode_TOPTR   70
 //run cycle controllers (75-100 registered for this category)
-#define REC     75
-#define END     76
-#define RUN     77
-#define REPEAT  78
-#define BREAK   79
-#define IFTRUN  80    //if(top of stack) RUN
-#define IFFRUN  81    //if(!top of stack) RUN
-#define WTRUN   82    //while(top of stack) RUN
-#define WFRUN   83    //while(!top of stack) RUN
-#define THREAD  84
-#define SKIP    85
-#define IFSKIP  86
-#define MKFN    87
-#define CALLFN  88
-#define EXITFN  89
-#define CONTINU 90
+#define opcode_REC     75
+#define opcode_END     76
+#define opcode_RUN     77
+#define opcode_REPEAT  78
+#define opcode_BREAK   79
+#define opcode_IFTRUN  80    //if(top of stack) RUN
+#define opcode_IFFRUN  81    //if(!top of stack) RUN
+#define opcode_WTRUN   82    //while(top of stack) RUN
+#define opcode_WFRUN   83    //while(!top of stack) RUN
+#define opcode_THREAD  84
+#define opcode_SKIP    85
+#define opcode_IFSKIP  86
+#define opcode_MKFN    87
+#define opcode_CALLFN  88
+#define opcode_EXITFN  89
+#define opcode_CONTINU 90
 //library calls and input/output, etc (100- registered for this category)
-#define DLCALL  100
-#define PRINT   101
+#define opcode_DLCALL  100
+#define opcode_PRINT   101
 
 #include "VM_confs.h"
 #ifndef USE_ARDUINO_STRING

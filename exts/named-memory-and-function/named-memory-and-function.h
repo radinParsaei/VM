@@ -12,7 +12,7 @@ static std::map<TEXT, long> functionNames;
 
 inline bool VM_ext_run_vm_named_memory_and_function(char opcode, Value arg, VM* vm) {
     if (!(vm->getStack().size() > 0)) return false;
-    if (opcode == MEMGET || opcode == MEMSET || opcode == MEMDEL || opcode == MEMINS) {
+    if (opcode == opcode_MEMGET || opcode == opcode_MEMSET || opcode == opcode_MEMDEL || opcode == opcode_MEMINS) {
         Value tmp = vm->getStack()[vm->getStack().size() - 1];
         if (tmp.getType() == VALUE_TYPE_TEXT) {
             TEXT tmp2 = tmp.toString();
@@ -21,7 +21,7 @@ inline bool VM_ext_run_vm_named_memory_and_function(char opcode, Value arg, VM* 
             }
             vm->set(vm->getStack().size() - 1, variableNames[tmp2]);
         }
-    } else if (opcode == CALLFN || opcode == MKFN) {
+    } else if (opcode == opcode_CALLFN || opcode == opcode_MKFN) {
         Value tmp = vm->getStack()[vm->getStack().size() - 1];
         if (tmp.getType() == VALUE_TYPE_TEXT) {
             TEXT tmp2 = tmp.toString();
@@ -30,7 +30,7 @@ inline bool VM_ext_run_vm_named_memory_and_function(char opcode, Value arg, VM* 
             }
             vm->set(vm->getStack().size() - 1, functionNames[tmp2]);
         }
-    } else if (opcode == DLCALL) {
+    } else if (opcode == opcode_DLCALL) {
         Value tmp = vm->getStack()[vm->getStack().size() - 1];
         if (tmp.startsWith("nm")) { //nm -> name memory
             vm->pop();

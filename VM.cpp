@@ -54,83 +54,83 @@ void VM::setStack(std::vector<Value> v) {
 
 Value VM::disassemble(int prog, Value val) {
   switch (prog) {
-    case EXIT:    return "EXIT";
-    case PUT:     return TEXT(val.getType() == VALUE_TYPE_NUMBER? "PUT\tNUM" : (val.getType() == True || val.getType() == False)? "PUT\tBOOL" : (val.getType() == VALUE_TYPE_TEXT? "PUT\tTXT" : "PUT\t")) + val.toString();
-    case ADD:     return "ADD";
-    case SUB:     return "SUB";
-    case MUL:     return "MUL";
-    case DIV:     return "DIV";
-    case MOD:     return "MOD";
-    case POW:     return "POW";
-    case DLCALL:  return "DLCALL";
-    case RUN:     return "RUN";
-    case REC:     return "REC";
-    case END:     return "END";
-    case PRINT:   return "PRINT";
-    case POP:     return "POP";
-    case REPEAT:  return "REPEAT";
-    case EQ:      return "EQ";
-    case FEQ:     return "FEQ";
-    case GT:      return "GT";
-    case GE:      return "GE";
-    case LT:      return "LT";
-    case LE:      return "LE";
-    case LAND:    return "LAND";
-    case LOR:     return "LOR";
-    case AND:     return "AND";
-    case OR:      return "OR";
-    case NOT:     return "NOT";
-    case LNOT:    return "LNOT";
-    case LSHIFT:  return "LSHIFT";
-    case RSHIFT:  return "RSHIFT";
-    case XOR:     return "XOR";
-    case GET:     return "GET";
-    case SET:     return "SET";
-    case APPEND:  return "APPEND";
-    case INSERT:  return "INSERT";
-    case PUTARR:  return "PUTARR";
-    case MKARR:   return "MKARR";
-    case NEG:     return "NEG";
-    case BREAK:   return "BREAK";
-    case CONTINU: return "CONTINUE";
-    case WTRUN:   return "WTRUN";
-    case WFRUN:   return "WFRUN";
-    case IFFRUN:  return "IFFRUN";
-    case IFTRUN:  return "IFTRUN";
-    case THREAD:  return "THREAD";
-    case MEMGET:  return "MEMGET";
-    case MEMSET:  return "MEMSET";
-    case MEMPUT:  return "MEMPUT";
-    case MEMSIZE: return "MEMSIZE";
-    case MEMDEL:  return "MEMDEL";
-    case MEMINS:  return "MEMINS";
-    case TOTXT:   return "TOTXT";
-    case TONUM:   return "TONUM";
-    case TOPTR:   return "TOPTR";
-    case ISNUM:   return "ISNUM";
-    case CANNUM:  return "CANNUM";
-    case TOBOOL:  return "TOBOOL";
-    case SKIP:    return "SKIP";
-    case IFSKIP:  return "IFSKIP";
-    case MKFN:    return "MKFN";
-    case CALLFN:  return "CALLFN";
-    case EXITFN:  return "EXITFN";
-    case STCKGET: return "STCKGET";
-    case STCKGET2:return "STCKGET2";
-    case STCKMOV: return "STCKMOV";
-    case STCKDEL: return "STCKDEL";
+    case opcode_EXIT:    return "EXIT";
+    case opcode_PUT:     return TEXT(val.getType() == VALUE_TYPE_NUMBER? "PUT\tNUM" : (val.getType() == True || val.getType() == False)? "PUT\tBOOL" : (val.getType() == VALUE_TYPE_TEXT? "PUT\tTXT" : "PUT\t")) + val.toString();
+    case opcode_ADD:     return "ADD";
+    case opcode_SUB:     return "SUB";
+    case opcode_MUL:     return "MUL";
+    case opcode_DIV:     return "DIV";
+    case opcode_MOD:     return "MOD";
+    case opcode_POW:     return "POW";
+    case opcode_DLCALL:  return "DLCALL";
+    case opcode_RUN:     return "RUN";
+    case opcode_REC:     return "REC";
+    case opcode_END:     return "END";
+    case opcode_PRINT:   return "PRINT";
+    case opcode_POP:     return "POP";
+    case opcode_REPEAT:  return "REPEAT";
+    case opcode_EQ:      return "EQ";
+    case opcode_FEQ:     return "FEQ";
+    case opcode_GT:      return "GT";
+    case opcode_GE:      return "GE";
+    case opcode_LT:      return "LT";
+    case opcode_LE:      return "LE";
+    case opcode_LAND:    return "LAND";
+    case opcode_LOR:     return "LOR";
+    case opcode_AND:     return "AND";
+    case opcode_OR:      return "OR";
+    case opcode_NOT:     return "NOT";
+    case opcode_LNOT:    return "LNOT";
+    case opcode_LSHIFT:  return "LSHIFT";
+    case opcode_RSHIFT:  return "RSHIFT";
+    case opcode_XOR:     return "XOR";
+    case opcode_GET:     return "GET";
+    case opcode_SET:     return "SET";
+    case opcode_APPEND:  return "APPEND";
+    case opcode_INSERT:  return "INSERT";
+    case opcode_PUTARR:  return "PUTARR";
+    case opcode_MKARR:   return "MKARR";
+    case opcode_NEG:     return "NEG";
+    case opcode_BREAK:   return "BREAK";
+    case opcode_CONTINU: return "CONTINUE";
+    case opcode_WTRUN:   return "WTRUN";
+    case opcode_WFRUN:   return "WFRUN";
+    case opcode_IFFRUN:  return "IFFRUN";
+    case opcode_IFTRUN:  return "IFTRUN";
+    case opcode_THREAD:  return "THREAD";
+    case opcode_MEMGET:  return "MEMGET";
+    case opcode_MEMSET:  return "MEMSET";
+    case opcode_MEMPUT:  return "MEMPUT";
+    case opcode_MEMSIZE: return "MEMSIZE";
+    case opcode_MEMDEL:  return "MEMDEL";
+    case opcode_MEMINS:  return "MEMINS";
+    case opcode_TOTXT:   return "TOTXT";
+    case opcode_TONUM:   return "TONUM";
+    case opcode_TOPTR:   return "TOPTR";
+    case opcode_ISNUM:   return "ISNUM";
+    case opcode_CANNUM:  return "CANNUM";
+    case opcode_TOBOOL:  return "TOBOOL";
+    case opcode_SKIP:    return "SKIP";
+    case opcode_IFSKIP:  return "IFSKIP";
+    case opcode_MKFN:    return "MKFN";
+    case opcode_CALLFN:  return "CALLFN";
+    case opcode_EXITFN:  return "EXITFN";
+    case opcode_STCKGET: return "STCKGET";
+    case opcode_STCKGET2:return "STCKGET2";
+    case opcode_STCKMOV: return "STCKMOV";
+    case opcode_STCKDEL: return "STCKDEL";
     default:      return "???";
     return 0;
   }
 }
 
 void VM::printStack() {
-  std::cout << "[";
+  Value::print("[");
   for(int i = 0; i < stack.size(); i++) {
     Value::print(stack[i].toString());
     Value::print(((i + 1) == stack.size()? "":", "));
   }
-  std::cout << "]";
+  Value::print("]");
 }
 
 bool VM::run(std::vector<Value> prog, bool forceRun, int pc) {
@@ -168,11 +168,11 @@ std::vector<Value> VM::assemble(Value line) {
   std::vector<Value> prog;
   line.trimLeft();
   if (line.startsWith("PUTARR")) {
-    prog.push_back(PUTARR);
+    prog.push_back(opcode_PUTARR);
   } else if (line.startsWith("PUT")) {
     line.substring(3);
     line.trimLeft();
-    prog.push_back(PUT);
+    prog.push_back(opcode_PUT);
     if (line.startsWith("NUM")) {
       line.substring(3);
       int i = 0;
@@ -209,138 +209,138 @@ std::vector<Value> VM::assemble(Value line) {
       prog.push_back(null);
     }
   } else if (line.startsWith("ADD")) {
-    prog.push_back(ADD);
+    prog.push_back(opcode_ADD);
   } else if (line.startsWith("SUB")) {
-    prog.push_back(SUB);
+    prog.push_back(opcode_SUB);
   } else if (line.startsWith("MUL")) {
-    prog.push_back(MUL);
+    prog.push_back(opcode_MUL);
   } else if (line.startsWith("DIV")) {
-    prog.push_back(DIV);
+    prog.push_back(opcode_DIV);
   } else if (line.startsWith("MOD")) {
-    prog.push_back(MOD);
+    prog.push_back(opcode_MOD);
   } else if (line.startsWith("POW")) {
-    prog.push_back(POW);
+    prog.push_back(opcode_POW);
   } else if (line.startsWith("PRINT")) {
-    prog.push_back(PRINT);
+    prog.push_back(opcode_PRINT);
   } else if (line.startsWith("DLCALL")) {
-    prog.push_back(DLCALL);
+    prog.push_back(opcode_DLCALL);
   } else if (line.startsWith("REC")) {
-    prog.push_back(REC);
+    prog.push_back(opcode_REC);
   } else if (line.startsWith("END")) {
-    prog.push_back(END);
+    prog.push_back(opcode_END);
   } else if (line.startsWith("RUN")) {
-    prog.push_back(RUN);
+    prog.push_back(opcode_RUN);
   } else if (line.startsWith("POP")) {
-    prog.push_back(POP);
+    prog.push_back(opcode_POP);
   } else if (line.startsWith("REPEAT")) {
-    prog.push_back(REPEAT);
+    prog.push_back(opcode_REPEAT);
   } else if (line.startsWith("EQ")) {
-    prog.push_back(EQ);
+    prog.push_back(opcode_EQ);
   } else if (line.startsWith("FEQ")) {
-    prog.push_back(FEQ);
+    prog.push_back(opcode_FEQ);
   } else if (line.startsWith("GT")) {
-    prog.push_back(GT);
+    prog.push_back(opcode_GT);
   } else if (line.startsWith("GET")) {
-    prog.push_back(GET);
+    prog.push_back(opcode_GET);
   } else if (line.startsWith("GE")) {
-    prog.push_back(GE);
+    prog.push_back(opcode_GE);
   } else if (line.startsWith("LT")) {
-    prog.push_back(LT);
+    prog.push_back(opcode_LT);
   } else if (line.startsWith("LE")) {
-    prog.push_back(LE);
+    prog.push_back(opcode_LE);
   } else if (line.startsWith("LAND")) {
-    prog.push_back(LAND);
+    prog.push_back(opcode_LAND);
   } else if (line.startsWith("AND")) {
-    prog.push_back(AND);
+    prog.push_back(opcode_AND);
   } else if (line.startsWith("LOR")) {
-    prog.push_back(LOR);
+    prog.push_back(opcode_LOR);
   } else if (line.startsWith("OR")) {
-    prog.push_back(OR);
+    prog.push_back(opcode_OR);
   } else if (line.startsWith("NOT")) {
-    prog.push_back(NOT);
+    prog.push_back(opcode_NOT);
   } else if (line.startsWith("LNOT")) {
-    prog.push_back(LNOT);
+    prog.push_back(opcode_LNOT);
   } else if (line.startsWith("LSHIFT")) {
-    prog.push_back(LSHIFT);
+    prog.push_back(opcode_LSHIFT);
   } else if (line.startsWith("RSHIFT")) {
-    prog.push_back(RSHIFT);
+    prog.push_back(opcode_RSHIFT);
   } else if (line.startsWith("XOR")) {
-    prog.push_back(XOR);
+    prog.push_back(opcode_XOR);
   } else if (line.startsWith("NEG")) {
-    prog.push_back(NEG);
+    prog.push_back(opcode_NEG);
   } else if (line.startsWith("BREAK")) {
-    prog.push_back(BREAK);
+    prog.push_back(opcode_BREAK);
   } else if (line.startsWith("CONTINU")) {
-    prog.push_back(CONTINU);
+    prog.push_back(opcode_CONTINU);
   } else if (line.startsWith("WTRUN")) {
-    prog.push_back(WTRUN);
+    prog.push_back(opcode_WTRUN);
   } else if (line.startsWith("WFRUN")) {
-    prog.push_back(WFRUN);
+    prog.push_back(opcode_WFRUN);
   } else if (line.startsWith("IFFRUN")) {
-    prog.push_back(IFFRUN);
+    prog.push_back(opcode_IFFRUN);
   } else if (line.startsWith("IFTRUN")) {
-    prog.push_back(IFTRUN);
+    prog.push_back(opcode_IFTRUN);
   } else if (line.startsWith("THREAD")) {
-    prog.push_back(THREAD);
+    prog.push_back(opcode_THREAD);
   } else if (line.startsWith("MEMGET")) {
-    prog.push_back(MEMGET);
+    prog.push_back(opcode_MEMGET);
   } else if (line.startsWith("MEMSET")) {
-    prog.push_back(MEMSET);
+    prog.push_back(opcode_MEMSET);
   } else if (line.startsWith("MEMSIZE")) {
-    prog.push_back(MEMSIZE);
+    prog.push_back(opcode_MEMSIZE);
   } else if (line.startsWith("MEMPUT")) {
-    prog.push_back(MEMPUT);
+    prog.push_back(opcode_MEMPUT);
   } else if (line.startsWith("MEMINS")) {
-    prog.push_back(MEMINS);
+    prog.push_back(opcode_MEMINS);
   } else if (line.startsWith("MEMDEL")) {
-    prog.push_back(MEMDEL);
+    prog.push_back(opcode_MEMDEL);
   } else if (line.startsWith("TOTXT")) {
-    prog.push_back(TOTXT);
+    prog.push_back(opcode_TOTXT);
   } else if (line.startsWith("TONUM")) {
-    prog.push_back(TONUM);
+    prog.push_back(opcode_TONUM);
   } else if (line.startsWith("TOPTR")) {
-    prog.push_back(TOPTR);
+    prog.push_back(opcode_TOPTR);
   } else if (line.startsWith("CANNUM")) {
-    prog.push_back(CANNUM);
+    prog.push_back(opcode_CANNUM);
   } else if (line.startsWith("ISNUM")) {
-    prog.push_back(ISNUM);
+    prog.push_back(opcode_ISNUM);
   } else if (line.startsWith("EXITFN")) {
-    prog.push_back(EXITFN);
+    prog.push_back(opcode_EXITFN);
   } else if (line.startsWith("TOBOOL")) {
-    prog.push_back(TOBOOL);
+    prog.push_back(opcode_TOBOOL);
   } else if (line.startsWith("SKIP")) {
-    prog.push_back(SKIP);
+    prog.push_back(opcode_SKIP);
   } else if (line.startsWith("IFSKIP")) {
-    prog.push_back(IFSKIP);
+    prog.push_back(opcode_IFSKIP);
   } else if (line.startsWith("MKFN")) {
-    prog.push_back(MKFN);
+    prog.push_back(opcode_MKFN);
   } else if (line.startsWith("CALLFN")) {
-    prog.push_back(CALLFN);
+    prog.push_back(opcode_CALLFN);
   } else if (line.startsWith("STCKGET2")) {
-    prog.push_back(STCKGET2);
+    prog.push_back(opcode_STCKGET2);
   } else if (line.startsWith("STCKGET")) {
-    prog.push_back(STCKGET);
+    prog.push_back(opcode_STCKGET);
   } else if (line.startsWith("STCKMOV")) {
-    prog.push_back(STCKMOV);
+    prog.push_back(opcode_STCKMOV);
   } else if (line.startsWith("EXIT")) {
-    prog.push_back(EXIT);
+    prog.push_back(opcode_EXIT);
   } else if (line.startsWith("STCKDEL")) {
-    prog.push_back(STCKDEL);
+    prog.push_back(opcode_STCKDEL);
   } else if (line.startsWith("APPEND")) {
-    prog.push_back(APPEND);
+    prog.push_back(opcode_APPEND);
   } else if (line.startsWith("INSERT")) {
-    prog.push_back(INSERT);
+    prog.push_back(opcode_INSERT);
   } else if (line.startsWith("SET")) {
-    prog.push_back(SET);
+    prog.push_back(opcode_SET);
   } else if (line.startsWith("MKARR")) {
-    prog.push_back(MKARR);
+    prog.push_back(opcode_MKARR);
   }
   return prog;
 }
 
 bool VM::run1(int prog, Value arg) {
   skip && skip--;
-  if (skip) return prog == PUT;
+  if (skip) return prog == opcode_PUT;
 #if THREADING == PROTOTHREADING
   for (int i = 0; i < threads.size(); i++) {
     threads[i].runNext();
@@ -350,7 +350,7 @@ bool VM::run1(int prog, Value arg) {
   }
 #endif
   if(rec) {
-    if(prog == END) {
+    if(prog == opcode_END) {
       rec--;
       if(rec == 0) {
         stack.push_back(recsize);
@@ -362,11 +362,11 @@ bool VM::run1(int prog, Value arg) {
     } else {
       stack.push_back(prog);
       recsize++;
-      if(prog == PUT) {
+      if(prog == opcode_PUT) {
         stack.push_back(arg);
         recsize++;
         return 1;
-      } else if(prog == REC) {
+      } else if(prog == opcode_REC) {
         rec++;
       }
     }
@@ -385,59 +385,59 @@ bool VM::run1(int prog, Value arg) {
   std::cout << std::endl;
 #endif
   if (VM_ext_run(prog, arg, this)) {
-    return prog == PUT;
+    return prog == opcode_PUT;
   }
   bool res = 0;
   switch (prog) {
-    case EXIT:
+    case opcode_EXIT:
       running = false;
       exit_code = pop().getLong();
       if(autoKill)exit(exit_code);
       break;
-    case PUT:
+    case opcode_PUT:
       stack.push_back(arg);
       res = 1;
       break;
-    case ADD: {
+    case opcode_ADD: {
       Value a = pop();
       Value b = pop();
       stack.push_back(a + b);
       break;
     }
-    case SUB: {
+    case opcode_SUB: {
       Value a = pop();
       Value b = pop();
       stack.push_back(a - b);
       break;
     }
-    case MUL:
+    case opcode_MUL:
       stack.push_back(pop() * pop());
       break;
-    case DIV: {
+    case opcode_DIV: {
       Value a = pop();
       Value b = pop();
       stack.push_back(a / b);
       break;
     }
-    case MOD: {
+    case opcode_MOD: {
       Value a = pop();
       Value b = pop();
       stack.push_back(a % b);
       break;
     }
-    case POW: {
+    case opcode_POW: {
       Value a = pop();
       Value b = pop();
       stack.push_back(a.pow(b));
       break;
     }
-    case PRINT:
+    case opcode_PRINT:
       Value::print(pop());
       break;
-    case REC:
+    case opcode_REC:
       rec++;
       break;
-    case RUN: {
+    case opcode_RUN: {
       std::vector<Value> prog;
       int ps = pop().getLong();
       for(; ps > 0; ps--) {
@@ -447,7 +447,7 @@ bool VM::run1(int prog, Value arg) {
       break;
     }
 #ifndef DYNAMIC_LIBS_NOT_AVAILABLE
-    case DLCALL: {
+    case opcode_DLCALL: {
       if (_dlcall(this)) break;
       Value v1 = pop();
       if (v1 == "." && internalLibraryFunction) internalLibraryFunction(pop(), this);
@@ -484,15 +484,15 @@ bool VM::run1(int prog, Value arg) {
       break;
     }
 #else
-    case DLCALL:
+    case opcode_DLCALL:
       if (_dlcall(this)) break;
       if (pop() == "." && internalLibraryFunction) internalLibraryFunction(pop(), this);
       break;
 #endif
-    case POP:
+    case opcode_POP:
       stack.pop_back();
       break;
-    case REPEAT: {
+    case opcode_REPEAT: {
       int count = pop().getLong();
       std::vector<Value> prog;
       int ps = pop().getLong();
@@ -509,70 +509,70 @@ bool VM::run1(int prog, Value arg) {
       }
       break;
     }
-    case EQ:
+    case opcode_EQ:
       stack.push_back(pop().equals(pop()));
       break;
-    case FEQ:
+    case opcode_FEQ:
       stack.push_back(pop().strictEquals(pop()));
       break;
-    case GT: {
+    case opcode_GT: {
       Value a = pop();
       Value b = pop();
       stack.push_back(a > b);
       break;
     }
-    case GE: {
+    case opcode_GE: {
       Value a = pop();
       Value b = pop();
       stack.push_back(a >= b);
       break;
     }
-    case LT: {
+    case opcode_LT: {
       Value a = pop();
       Value b = pop();
       stack.push_back(a < b);
       break;
     }
-    case LE: {
+    case opcode_LE: {
       Value a = pop();
       Value b = pop();
       stack.push_back(a <= b);
       break;
     }
-    case LAND:
+    case opcode_LAND:
       stack.push_back(pop() && pop());
       break;
-    case LOR:
+    case opcode_LOR:
       stack.push_back(pop() || pop());
       break;
-    case AND:
+    case opcode_AND:
       stack.push_back(pop() & pop());
       break;
-    case OR:
+    case opcode_OR:
       stack.push_back(pop() | pop());
       break;
-    case NOT:
+    case opcode_NOT:
       stack.push_back(~pop());
       break;
-    case LNOT:
+    case opcode_LNOT:
       stack.push_back(!pop());
       break;
-    case LSHIFT: {
+    case opcode_LSHIFT: {
       Value a = pop();
       Value b = pop();
       stack.push_back(a << b);
       break;
     }
-    case RSHIFT: {
+    case opcode_RSHIFT: {
       Value a = pop();
       Value b = pop();
       stack.push_back(a >> b);
       break;
     }
-    case XOR:
+    case opcode_XOR:
       stack.push_back(pop() ^ pop());
       break;
-    case NEG: {
+    case opcode_NEG: {
       Value a = pop();
       if (a.getType() == VALUE_TYPE_NUMBER) {
         stack.push_back(-a);
@@ -581,13 +581,13 @@ bool VM::run1(int prog, Value arg) {
       }
       break;
     }
-    case BREAK:
+    case opcode_BREAK:
       isBreaked = true;
       break;
-    case CONTINU:
+    case opcode_CONTINU:
       isContinued = true;
       break;
-    case WTRUN: {
+    case opcode_WTRUN: {
         if(stack.size() < 2)break;
         bool tos = stack[stack.size() - 1].getBool();
         if(tos) {
@@ -610,7 +610,7 @@ bool VM::run1(int prog, Value arg) {
         }
         break;
       }
-    case WFRUN: {
+    case opcode_WFRUN: {
         if(stack.size() < 2)break;
         bool tos = stack[stack.size() - 1].getBool();
         if(!tos) {
@@ -633,7 +633,7 @@ bool VM::run1(int prog, Value arg) {
         }
         break;
       }
-    case IFTRUN: {
+    case opcode_IFTRUN: {
         if(stack.size() < 2)break;
         bool tos = stack[stack.size() - 1].getBool();
         if(tos) {
@@ -647,7 +647,7 @@ bool VM::run1(int prog, Value arg) {
         }
         break;
       }
-    case IFFRUN: {
+    case opcode_IFFRUN: {
         if(stack.size() < 2)break;
         bool tos = stack[stack.size() - 1].getBool();
         if(!tos) {
@@ -661,7 +661,7 @@ bool VM::run1(int prog, Value arg) {
         }
         break;
       }
-    case THREAD: {
+    case opcode_THREAD: {
       std::vector<Value> prog;
       int ps = pop().getLong();
 #if THREADING == PROTOTHREADING
@@ -684,44 +684,44 @@ bool VM::run1(int prog, Value arg) {
 #endif
       break;
     }
-    case MEMSET: {
+    case opcode_MEMSET: {
       int n = pop().getLong();
       if(mempointer->size() < (n + 1))mempointer->resize(n + 1);
       mempointer->at(n) = pop();
       break;
     }
-    case MEMGET:
+    case opcode_MEMGET:
       stack.push_back(mempointer->at(pop().getLong()));
       break;
-    case MEMSIZE:
+    case opcode_MEMSIZE:
       stack.push_back((int)mempointer->size());
       break;
-    case MEMPUT:
+    case opcode_MEMPUT:
       mempointer->push_back(pop());
       break;
-    case MEMINS: {
+    case opcode_MEMINS: {
       Value a = pop();
       Value b = pop();
       mempointer->insert(mempointer->begin() + a.getLong(), b);
       break;
     }
-    case MEMDEL:
+    case opcode_MEMDEL:
       mempointer->erase(mempointer->begin() + pop().getLong());
       break;
-    case TOTXT:
+    case opcode_TOTXT:
       stack.push_back(pop().toString());
       break;
-    case TONUM:
+    case opcode_TONUM:
       stack[stack.size() - 1].toNum();
       break;
-    case TOPTR:
+    case opcode_TOPTR:
       stack[stack.size() - 1].toPtr();
       break;
-    case ISNUM:
+    case opcode_ISNUM:
       if(stack.size() == 0) break;
       stack.push_back(!stack[stack.size() - 1].getType());
       break;
-    case CANNUM: {
+    case opcode_CANNUM: {
       if(stack.size() == 0) break;
       Value v = stack[stack.size() - 1];
       if(!v.getType()) {
@@ -738,7 +738,7 @@ bool VM::run1(int prog, Value arg) {
       }
       break;
     }
-    case TOBOOL: {
+    case opcode_TOBOOL: {
       Value a = stack[stack.size() - 1];
       if (a == True || a == False) break;
       stack.pop_back();
@@ -749,17 +749,17 @@ bool VM::run1(int prog, Value arg) {
       }
       break;
     }
-    case SKIP:
+    case opcode_SKIP:
       skip = pop().getLong() + 1;
       break;
-    case IFSKIP:
+    case opcode_IFSKIP:
       if (pop().getBool()) {
         skip = pop().getLong() + 1;
       } else {
         pop();
       }
       break;
-    case MKFN: {
+    case opcode_MKFN: {
       int fnCode = pop().getLong();
       std::vector<Value> prog;
       int ps = pop().getLong();
@@ -769,40 +769,40 @@ bool VM::run1(int prog, Value arg) {
       functions.insert(std::make_pair(fnCode, prog));
       break;
     }
-    case CALLFN:
+    case opcode_CALLFN:
       run(functions[pop().getLong()]);
       fnExited = false;
       break;
-    case EXITFN:
+    case opcode_EXITFN:
       fnExited = true;
       isBreaked = true;
       break;
-    case STCKGET: {
+    case opcode_STCKGET: {
       int point = pop().getLong();
       Value data = stack[point];
       stack.erase(stack.begin() + point);
       stack.push_back(data);
       break;
     }
-    case STCKGET2: {
+    case opcode_STCKGET2: {
       int point = pop().getLong();
       stack.push_back(stack[point]);
       break;
     }
-    case STCKMOV: {
+    case opcode_STCKMOV: {
       int point = pop().getLong();
       Value data = pop();
       stack.insert(stack.begin() + point, data);
       break;
     }
-    case STCKDEL: {
+    case opcode_STCKDEL: {
       stack.erase(stack.begin() + pop().getLong());
       break;
     }
-    case PUTARR:
+    case opcode_PUTARR:
       stack.push_back(Array);
       break;
-    case MKARR: {
+    case opcode_MKARR: {
       long size = pop().getLong();
       Value tmp(Array);
       for (; size > 0; size--) {
@@ -811,24 +811,24 @@ bool VM::run1(int prog, Value arg) {
       stack.push_back(tmp);
       break;
     }
-    case SET: {
+    case opcode_SET: {
       long point = pop().getLong();
       Value data = pop();
       stack[stack.size() - 1].set(point, data);
       break;
     }
-    case GET: {
+    case opcode_GET: {
       long point = pop().getLong();
       Value array = pop();
       stack.push_back(array.get(point));
       break;
     }
-    case APPEND: {
+    case opcode_APPEND: {
       Value data = pop();
       stack[stack.size() - 1].append(data);
       break;
     }
-    case INSERT: {
+    case opcode_INSERT: {
       long point = pop().getLong();
       Value data = pop();
       stack[stack.size() - 1].insert(point, data);

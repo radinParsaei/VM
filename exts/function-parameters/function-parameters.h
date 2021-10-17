@@ -10,7 +10,7 @@ inline bool VM_ext_run_vm_function_pointers(char opcode, Value arg, VM* vm) {
 #if __cplusplus < 201703
     static std::map<int, std::vector<long> > parameters;
 #endif
-    if (opcode == MKFN) {
+    if (opcode == opcode_MKFN) {
         std::vector<Value> vmStack = vm->getStack();
         if (vmStack[vmStack.size() - 1].getType() == VALUE_TYPE_TEXT) {
             Value function = vmStack[vmStack.size() - 1] + " ";
@@ -36,7 +36,7 @@ inline bool VM_ext_run_vm_function_pointers(char opcode, Value arg, VM* vm) {
                 }
             }
         }
-    } else if (opcode == DLCALL) {
+    } else if (opcode == opcode_DLCALL) {
         std::vector<Value> vmStack = vm->getStack();
         if (vmStack.size() > 0 && vmStack[vmStack.size() - 1].getType() == VALUE_TYPE_TEXT) {
             Value tmp = vmStack[vmStack.size() - 1];
@@ -66,8 +66,8 @@ inline bool VM_ext_run_vm_function_pointers(char opcode, Value arg, VM* vm) {
                         if (vm->getMemoryPointer()->size() < (l + 1)) vm->getMemoryPointer()->resize(l + 1);
                         vm->getMemoryPointer()->at(l) = vm->pop();
                     }
-                    vm->run1(PUT, tmp.toNum());
-                    vm->run1(CALLFN);
+                    vm->run1(opcode_PUT, tmp.toNum());
+                    vm->run1(opcode_CALLFN);
                     return true;
                 }
             }
