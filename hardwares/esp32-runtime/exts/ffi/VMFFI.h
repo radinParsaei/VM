@@ -16,7 +16,7 @@ inline char* stringDuplicate(const char* data) {
 	}
 
 inline bool VM_ext_run_vmffi(char opcode, Value arg, VM* vm) {
-  if (opcode == opcode_DLCALL) {
+  if (opcode == DLCALL) {
     Value tmp = vm->getStack()[vm->getStack().size() - 1];
     if (tmp.startsWith("ffi:")) {
       vm->pop();

@@ -8,7 +8,7 @@ namespace VM_BINARIES {
     std::vector<Value> program;
     for (size_t i = 0; i < data.size(); i++) {
       program.push_back((int)data[i]);
-      if (data[i] == PUT) {
+      if (data[i] == opcode_PUT) {
         i++;
         if (data[i] == 0) {
           program.push_back(null);
@@ -51,7 +51,7 @@ namespace VM_BINARIES {
     bool dataAvailable = (bool)(bool)in.get(data);
     while (dataAvailable) {
       program.push_back((int)data);
-      if (data == PUT) {
+      if (data == opcode_PUT) {
         if (!in.get(data)) break;
         if (data == 0) {
           program.push_back(null);
@@ -164,7 +164,7 @@ namespace VM_BINARIES {
             continue;
         }
       }
-      if (i.getLong() == PUT) {
+      if (i.getLong() == opcode_PUT) {
         PUT_DATA = true;
       }
       res += (char)i.getLong();

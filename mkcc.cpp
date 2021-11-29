@@ -60,7 +60,7 @@ int main(int argc, char const *argv[]){
       }
       cout << "\t}\n";
     }
-    cout << "\tvm->run1(DLCALL);\n";
+    cout << "\tvm->run1(opcode_DLCALL);\n";
     cout << "}\n";
   }
   cout << "int main(int argc, char** argv){\n";
@@ -69,11 +69,11 @@ int main(int argc, char const *argv[]){
   for (int c = 0; c < vals.size(); c++) {
     Value v = vals[c];
     if (v.getType() == VALUE_TYPE_NUMBER) {
-      if (v.getLong() == DLCALL && (argc > 2)) {
+      if (v.getLong() == opcode_DLCALL && (argc > 2)) {
         cout << "\t_dlcall(&vm);" << endl;
       } else {
         cout << "\tvm.run1(" << v.toString();
-        if (v.getLong() == PUT) {
+        if (v.getLong() == opcode_PUT) {
           c++;
           string tmp1 = "";
           string tmp2 = "";

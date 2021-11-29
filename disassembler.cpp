@@ -23,7 +23,7 @@ int main(int argc, char const *argv[]){
   for(int c = 0; c < vals.size(); c++){
     if (vals[c].getType() == VALUE_TYPE_NUMBER) {
       cout << VM::disassemble(vals[c].getLong(), (vals.size() - 1 == c)? 0:vals[c + 1]) << endl;
-      if (vals[c].getNumber() == PUT) c++;
+      if (vals[c].getNumber() == opcode_PUT) c++;
     }
   }
   f.close();
