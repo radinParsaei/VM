@@ -4,6 +4,7 @@
 #include <WebServer.h>
 #include "SPIFFS.h"
 #include <ArduinoJson.h>
+#include <pthread.h>
 
 WebServer server(80);
 
@@ -30,6 +31,7 @@ extern "C" void _getpid(int) {}
 //}
 
 VM vm;
+TaskHandle_t Task1;
 
 void runCode() {
   const size_t CAPACITY = JSON_ARRAY_SIZE(100);
@@ -68,8 +70,16 @@ void handleUpload() {
   File f = SPIFFS.open("/main", "w");
   f.print(server.arg(0));
   f.close();
-  runCode();
   server.send(200);
+  ESP.restart();
+}
+
+void updateFirmware() {
+  File f = SPIFFS.open("/updateFirmware", "w");
+  f.print("");
+  f.close();
+  server.send(200);
+  ESP.restart();
 }
 
 void setup() {
@@ -89,13 +99,32 @@ void setup() {
   Serial.println(WiFi.localIP());
   Serial.println();
   server.on("/upload", handleUpload);
+  server.on("/updateFirmware", updateFirmware);
   server.begin();
+  if (SPIFFS.exists("/updateFirmware")) {
+    SPIFFS.remove("/updateFirmware");
+    while (true) {
+      webota.handle(); // to make firmware updating easier
+    }
+  }
   std::vector<Value>* mem = new std::vector<Value>;
   vm.attachMem(mem);
-  runCode();
+  xTaskCreatePinnedToCore(
+        _loop,   /* Task function. */
+        "",     /* name of task. */
+        10000,       /* Stack size of task */
+        NULL,        /* parameter of the task */
+        0,           /* priority of the task */
+        &Task1,      /* Task handle to keep track of created task */
+        0);
+  if (SPIFFS.exists("/main")) runCode();
 }
 
-void loop() {
-  webota.handle(); // to make firmware updating easier
-  server.handleClient();
+void _loop(void *) {
+  while (true) {
+    // webota.handle(); // to make firmware updating easier
+    server.handleClient();
+  }
 }
+
+void loop() {}

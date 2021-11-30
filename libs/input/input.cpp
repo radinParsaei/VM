@@ -3,14 +3,28 @@
 #include <emscripten.h>
 #endif
 
+#ifdef WASM_INPUT
+#define CUSTOM_INPUT WASM_INPUT
+#endif
+
 LIB_FUNCTION(input) {
   TEXT data;
-#if TARGET != Emscripten && !defined(USE_ARDUINO_STRING) && !defined(ARDUINO_SAM_DUE)
+#if TARGET != Emscripten && !defined(USE_ARDUINO_STRING) && !defined(INPUT_ARDUINO) && !defined(CUSTOM_INPUT)
   std::getline(std::cin, data);
-#elif defined(WASM_INPUT)
-  data = WASM_INPUT;
-#elif defined(USE_ARDUINO_STRING)
-  data = Serial.read();
+#elif defined(CUSTOM_INPUT)
+  data = CUSTOM_INPUT;
+#elif defined(USE_ARDUINO_STRING) || defined(INPUT_ARDUINO)
+  data = "";
+  while (Serial.available() == 0);
+  for (byte i = 0; i < 3; i++) {
+    while (Serial.available() > 0) {
+      data += (char) Serial.read();
+      long long t = millis() + 50;
+      while (t > millis() && Serial.available() == 0); 
+    }
+    long long t = millis() + 50;
+    while (t > millis() && Serial.available() == 0); 
+  }
 #else
   int x = EM_ASM_INT({
     var str = prompt("Input:");
